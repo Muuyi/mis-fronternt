@@ -1,5 +1,4 @@
 import { Component } from '@angular/core';
-import { faCoffee } from '@fortawesome/free-solid-svg-icons';
 import * as $ from 'jquery';
 
 @Component({
@@ -9,5 +8,4 @@ import * as $ from 'jquery';
 })
 export class AppComponent {
   title = 'mis';
-  faCoffee = faCoffee;
 }
