@@ -19,7 +19,6 @@ export class AdminComponent implements OnInit {
       $("#navigation-body").css({"position":"relative","top":profileHeight});
 
       //Getting screen size
-      var windowHeight = $(window).height();
       $("#menu li:has(ul)").click(function(e){
         e.preventDefault();
         if($(this).hasClass("active")){
@@ -32,6 +31,10 @@ export class AdminComponent implements OnInit {
           $(this).children("ul").slideDown();
         }
       })
+      //DISPLAYING ADMIN CONTENT
+      //Profile width
+      var sideNavWidth = $("#side-nav").width(); 
+      $("#content-section").css({"margin-top":headerHeight,"margin-left":sideNavWidth})     
     })
   }
 
