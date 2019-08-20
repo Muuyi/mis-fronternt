@@ -1,2 +1,10 @@
 /* You can add global styles to this file, and also import other style files 34495E 22313F 2*/
-@import "../node_modules/font-awesome/css/font-awesome.css";
+// @import "../node_modules/font-awesome/css/font-awesome.css";
+input.ng-touched.ng-invalid{
+    border-color:#FF0000;
+}
+.validation-error{
+    color:#FF0000;
+    font-weight:bolder;
+    font-style:small;
+}

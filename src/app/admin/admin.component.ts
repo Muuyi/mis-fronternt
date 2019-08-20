@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import {Ng2TelInputModule} from 'ng2-tel-input';
 import * as $ from 'jquery';
 @Component({
   selector: 'app-admin',
@@ -12,6 +13,8 @@ export class AdminComponent implements OnInit {
   ngOnInit() {
     $(document).ready(function(){
       //ADMIN WINDOW MENU BAR STYLING
+        // "node_modules/intl-tel-input/build/css/intlTelInput.css",
+        // "node_modules/intl-tel-input/build/js/intlTelInput.min.js",
       var headerHeight = $("#admin-header").height();
       $("#side-nav").css({"position":"fixed","top":headerHeight});
       
