@@ -1,9 +1,10 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import {Ng2TelInputModule} from 'ng2-tel-input';
 import { EmployeesService } from 'src/app/shared/employees.service';
 import { NgForm } from '@angular/forms';
-import { empty } from 'rxjs';
+import { Observable,Subject } from 'rxjs';
 import { ToastrService } from 'ngx-toastr';
+import { DataTableDirective } from 'angular-datatables';
 
 @Component({
   selector: 'app-employees-list',
@@ -11,11 +12,21 @@ import { ToastrService } from 'ngx-toastr';
   styleUrls: ['./employees-list.component.scss']
 })
 export class EmployeesListComponent implements OnInit {
-  
+  dtOptions: DataTables.Settings = {};
+  dtTrigger: Subject<any> = new Subject();
+  // @ViewChild(DataTableDirective) dtElement: DataTableDirective;
   constructor(private service: EmployeesService, private toastr : ToastrService ) { }
 
   ngOnInit() {
     this.resetForm();
+    //Datatables
+    this.dtOptions = {
+      pagingType:'full_numbers',
+      pageLength:5,
+      autoWidth:true,
+      order : [[0,'desc']]
+    };
+    this.service.getEmployee();
   }
   resetForm(form? : NgForm){
     if( form != null)
