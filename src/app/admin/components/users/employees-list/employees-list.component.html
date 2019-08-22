@@ -11,13 +11,13 @@
             <th>Action</th>
         </thead>
         <tbody>
-            <tr *ngFor="let emp of service.employeeList">
-                <td>{{ emp.FirstName}} {{emp.LastName}}</td>
-                <td>{{ emp.Email }}</td>
-                <td>{{ emp.Phone }}</td>
-                <td>{{ emp.Department }}</td>
-                <td>{{ emp.DateCreated }}</td>
-                <td><button class="btn btn-sm btn-danger">Delete</button></td>
+            <tr *ngFor="let emp of employeeService.employeesList">
+                <td>{{ emp.firstName}} {{emp.lastName}}</td>
+                <td>{{ emp.email }}</td>
+                <td>{{ emp.phone }}</td>
+                <td>{{ emp.department }}</td>
+                <td>{{ emp.createdDate }}</td>
+                <td><button class="btn btn-sm btn-success">Edit</button> | <button class="btn btn-sm btn-danger">Delete</button></td>
                 <!-- <td>{{}}</td> -->
             </tr>
         </tbody>
@@ -36,32 +36,35 @@
                         <div class="col-md-6">
                             <div class="form-group">
                                 <label>First Name</label>
-                                <input name="FirstName" #FirstName="ngModel" [(ngModel)]="service.formData.FirstName" class="form-control" placeholder="First Name" required/>
+                                <input name="FirstName" #FirstName="ngModel" [(ngModel)]="employeeService.formData.FirstName" class="form-control" placeholder="First Name" required/>
                                 <div class="validation-error" *ngIf="FirstName.invalid && FirstName.touched">This field is required</div>
                             </div>
                         </div>
                         <div class="col-md-6">
                             <div class="form-group">
                                 <label>Last name</label>
-                                <input name="LastName" #LastName="ngModel" [(ngModel)]="service.formData.LastName" class="form-control" placeholder="Last Name" />
+                                <input name="LastName" #LastName="ngModel" [(ngModel)]="employeeService.formData.LastName" class="form-control" placeholder="Last Name" />
                             </div>
                         </div>
                         <div class="col-md-6">
                             <div class="form-group">
                                 <label>Email</label>
-                                <input name="Email" #Email="ngModel" [(ngModel)]="service.formData.Email" class="form-control" placeholder="Email" />
+                                <input name="Email" #Email="ngModel" [(ngModel)]="employeeService.formData.Email" class="form-control" placeholder="Email" />
                             </div>
                         </div>
                         <div class="col-md-6">
                             <div class="form-group">
                                 <label>Phone</label>
-                                <input name="Phone" #Phone="ngModel" [(ngModel)]="service.formData.Phone" class="form-control" placeholder="Phone number" />
+                                <input name="Phone" #Phone="ngModel" [(ngModel)]="employeeService.formData.Phone" class="form-control" placeholder="Phone number" />
                             </div>
                         </div>
                         <div class="col-md-6">
                             <div class="form-group">
                                 <label>Department</label>
-                                <input name="Department" #Department="ngModel" [(ngModel)]="service.formData.Department" class="form-control" placeholder="Department" />
+                                <select class="form-control" name="DepartmentId" #DepartmentId="ngModel" [(ngModel)]="employeeService.formData.DepartmentId">
+                                    <option value="0">--Select--</option>
+                                    <option *ngFor="let dep of departmentService.departmentsList" value="{{dep.id}}">{{dep.departmentName}}</option>
+                                </select>
                             </div>
                         </div>
                     </div>

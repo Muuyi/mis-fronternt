@@ -12,7 +12,7 @@ import {FormsModule} from '@angular/forms';
 import { PageNotFoundComponent } from './page-not-found/page-not-found.component';
 import { PersonalDetailsComponent } from './admin/components/users/personal-details/personal-details.component';
 import { ChangePasswordComponent } from './admin/components/users/change-password/change-password.component';
-import { EmployeesService } from './shared/employees.service';
+import { EmployeesService,DepartmentsService } from './shared/employees.service';
 
 @NgModule({
   declarations: [
@@ -31,7 +31,7 @@ import { EmployeesService } from './shared/employees.service';
     ToastrModule.forRoot(),
     DataTablesModule
   ],
-  providers: [EmployeesService],
+  providers: [EmployeesService,DepartmentsService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

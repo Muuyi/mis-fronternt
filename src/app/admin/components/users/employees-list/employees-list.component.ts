@@ -1,6 +1,6 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import {Ng2TelInputModule} from 'ng2-tel-input';
-import { EmployeesService } from 'src/app/shared/employees.service';
+import { EmployeesService, DepartmentsService } from 'src/app/shared/employees.service';
 import { NgForm } from '@angular/forms';
 import { Observable,Subject } from 'rxjs';
 import { ToastrService } from 'ngx-toastr';
@@ -12,12 +12,15 @@ import { DataTableDirective } from 'angular-datatables';
   styleUrls: ['./employees-list.component.scss']
 })
 export class EmployeesListComponent implements OnInit {
+  //DEPARTMENTS LIST
+  // departmentList : Departments[];
   dtOptions: DataTables.Settings = {};
   dtTrigger: Subject<any> = new Subject();
   // @ViewChild(DataTableDirective) dtElement: DataTableDirective;
-  constructor(private service: EmployeesService, private toastr : ToastrService ) { }
+  constructor(private employeeService: EmployeesService,private departmentService:DepartmentsService, private toastr : ToastrService ) { }
 
   ngOnInit() {
+    //Resetting employees form
     this.resetForm();
     //Datatables
     this.dtOptions = {
@@ -26,25 +29,27 @@ export class EmployeesListComponent implements OnInit {
       autoWidth:true,
       order : [[0,'desc']]
     };
-    this.service.getEmployee();
+    this.employeeService.getEmployee();
+    //Getting department list
+    this.departmentService.getDepartments();
   }
   resetForm(form? : NgForm){
     if( form != null)
       form.resetForm();
-    this.service.formData = {
+    this.employeeService.formData = {
       Id : null,
       FirstName:'',
       LastName:'',
       Email:'',
       Phone:null,
-      DepartmentId:null,
+      DepartmentId:0,
     }
   }
   onSubmit(form: NgForm){
     this.insertRecord(form);
   }
   insertRecord(form:NgForm){
-    this.service.postEmployee(form.value).subscribe(res=>{
+    this.employeeService.postEmployee(form.value).subscribe(res=>{
       this.toastr.success('Record inserted successfully','Employee registration');
       this.resetForm(form);
     })
