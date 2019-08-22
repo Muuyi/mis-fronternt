@@ -5,6 +5,7 @@ import { HttpClientModule } from "@angular/common/http";
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ToastrModule } from 'ngx-toastr';
 import { DataTablesModule } from 'angular-datatables';
+import { MaterialModule } from './material/material.module';
 
 import { AppRoutingModule, routingComponents } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -29,7 +30,8 @@ import { EmployeesService,DepartmentsService } from './shared/employees.service'
     HttpClientModule,
     BrowserAnimationsModule, 
     ToastrModule.forRoot(),
-    DataTablesModule
+    DataTablesModule,
+    MaterialModule
   ],
   providers: [EmployeesService,DepartmentsService],
   bootstrap: [AppComponent]
