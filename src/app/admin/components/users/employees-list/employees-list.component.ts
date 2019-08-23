@@ -1,10 +1,11 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChildren } from '@angular/core';
 import {Ng2TelInputModule} from 'ng2-tel-input';
 import { EmployeesService, DepartmentsService } from 'src/app/shared/employees.service';
 import { NgForm } from '@angular/forms';
 import { Observable,Subject } from 'rxjs';
 import { ToastrService } from 'ngx-toastr';
 import { DataTableDirective } from 'angular-datatables';
+import * as $ from 'jquery'; 
 
 @Component({
   selector: 'app-employees-list',
@@ -16,7 +17,7 @@ export class EmployeesListComponent implements OnInit {
   // departmentList : Departments[];
   dtOptions: DataTables.Settings = {};
   dtTrigger: Subject<any> = new Subject();
-  // @ViewChild(DataTableDirective) dtElement: DataTableDirective;
+  @ViewChildren(DataTableDirective) dtElement: DataTableDirective;
   constructor(private employeeService: EmployeesService,private departmentService:DepartmentsService, private toastr : ToastrService ) { }
 
   ngOnInit() {
@@ -30,6 +31,7 @@ export class EmployeesListComponent implements OnInit {
       order : [[0,'desc']]
     };
     this.employeeService.getEmployee();
+    this.dtTrigger.next();
     //Getting department list
     this.departmentService.getDepartments();
   }

@@ -1,1 +1,73 @@
-<p>system-users works!</p>
+<div class="alert alert-success"><h3>System users</h3></div>
+<button class="btn btn-success" data-toggle="modal" data-target="#users-modal">Add users</button>
+<div class="table-responsive">
+    <table datatable [dtOptions]="dtOptions" [dtTrigger]="dtTrigger" class="table table-striped">
+        <thead>
+            <th>Name</th>
+            <th>Username</th>
+            <th>Date created</th>
+            <th>Action</th>
+        </thead>
+        <tbody>
+            <tr *ngFor="let user of usersService.usersList">
+                <td>{{ user.firstName}} {{user.lastName}}</td>
+                <td>{{ user.username }}</td>
+                <td>{{ user.createdDate }}</td>
+                <td><button class="btn btn-sm btn-success">Edit</button> | <button class="btn btn-sm btn-danger">Delete</button></td>
+            </tr>
+        </tbody>
+    </table> 
+</div>
+<!-- <div class="modal" id="users-modal">
+    <div class="modal-content">
+        <h4>Signup</h4>
+        <div class="input-field col s12">
+            <input type="text" name="Username" #Username="ngModel" [(ngModel)]="users.Username" /> 
+            <label>Username</label>
+        </div>
+    </div>
+    <div class="modal-footer">
+
+    </div>
+</div> -->
+<div class="modal" id="users-modal">
+    <div class="modal-dialog modal-lg">
+        <form #form="ngForm" (submit)="onSubmit(form)" >
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3 class="modal-title">Add system user</h3>
+                    <button class="close" data-dismiss="modal">&times;</button>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-12">
+                            <div class="form-group">
+                                <label>Select Employee</label>
+                                <select class="form-control" name="EmployeesId" #EmployeesId="ngModel" [(ngModel)]="user.EmployeesId">
+                                    <option value="0">--Select--</option>
+                                    <option *ngFor="let emp of employeesService.employeesList" value="{{emp.id}}">{{emp.id}} ({{emp.firstName}} {{emp.lastName}})</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-12">
+                            <div class="form-group">
+                                <label>Username</label>
+                                <input type="text" name="Username" #Username="ngModel" [(ngModel)]="user.Username" class="form-control" placeholder="Username" />
+                            </div>
+                        </div>
+                        <div class="col-12">
+                            <div class="form-group">
+                                <label>Password</label>
+                                <input type="text" name="Password" #Password="ngModel" [(ngModel)]="user.Password" class="form-control" placeholder="Password" />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" [disabled]="form.invalid" class="btn btn-success">Save</button>
+                    <button class="btn btn-danger" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div> 
