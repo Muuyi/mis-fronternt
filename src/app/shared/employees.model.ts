@@ -28,3 +28,11 @@ export class Customers{
     Phone : number;
     Address : string;
 }
+//MEETINGS MODEL
+export class Meetings{
+    Id : number;
+    Subject : string;
+    Description : string;
+    MeetingDate : string;
+    CreatedDate : String;
+}

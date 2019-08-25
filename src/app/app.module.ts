@@ -14,7 +14,8 @@ import {FormsModule} from '@angular/forms';
 import { PageNotFoundComponent } from './page-not-found/page-not-found.component';
 import { PersonalDetailsComponent } from './admin/components/users/personal-details/personal-details.component';
 import { ChangePasswordComponent } from './admin/components/users/change-password/change-password.component';
-import { EmployeesService,DepartmentsService,UsersService,CustomersService } from './shared/employees.service';
+import { EmployeesService,DepartmentsService,UsersService,CustomersService, MeetingsService } from './shared/employees.service';
+import { MeetingsComponent } from './admin/components/meetings/meetings.component';
 
 @NgModule({
   declarations: [
@@ -22,7 +23,8 @@ import { EmployeesService,DepartmentsService,UsersService,CustomersService } fro
     routingComponents,
     PageNotFoundComponent,
     PersonalDetailsComponent,
-    ChangePasswordComponent
+    ChangePasswordComponent,
+    MeetingsComponent
   ],
   imports: [
     BrowserModule,
@@ -35,7 +37,7 @@ import { EmployeesService,DepartmentsService,UsersService,CustomersService } fro
     MaterialModule,
     AngularFontAwesomeModule
   ],
-  providers: [EmployeesService,DepartmentsService,UsersService,CustomersService],
+  providers: [EmployeesService,DepartmentsService,UsersService,CustomersService,MeetingsService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
