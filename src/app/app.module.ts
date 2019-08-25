@@ -14,8 +14,9 @@ import {FormsModule} from '@angular/forms';
 import { PageNotFoundComponent } from './page-not-found/page-not-found.component';
 import { PersonalDetailsComponent } from './admin/components/users/personal-details/personal-details.component';
 import { ChangePasswordComponent } from './admin/components/users/change-password/change-password.component';
-import { EmployeesService,DepartmentsService,UsersService,CustomersService, MeetingsService } from './shared/employees.service';
+import { EmployeesService,DepartmentsService,UsersService,CustomersService, MeetingsService, TasksService } from './shared/employees.service';
 import { MeetingsComponent } from './admin/components/meetings/meetings.component';
+import { TasksListComponent } from './admin/components/tasks/tasks-list/tasks-list.component';
 
 @NgModule({
   declarations: [
@@ -24,7 +25,8 @@ import { MeetingsComponent } from './admin/components/meetings/meetings.componen
     PageNotFoundComponent,
     PersonalDetailsComponent,
     ChangePasswordComponent,
-    MeetingsComponent
+    MeetingsComponent,
+    TasksListComponent
   ],
   imports: [
     BrowserModule,
@@ -37,7 +39,7 @@ import { MeetingsComponent } from './admin/components/meetings/meetings.componen
     MaterialModule,
     AngularFontAwesomeModule
   ],
-  providers: [EmployeesService,DepartmentsService,UsersService,CustomersService,MeetingsService],
+  providers: [EmployeesService,DepartmentsService,UsersService,CustomersService,MeetingsService,TasksService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

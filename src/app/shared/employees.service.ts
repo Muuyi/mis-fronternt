@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Employees,Departments, Users,Customers, Meetings } from './employees.model';
+import { Employees,Departments, Users,Customers, Meetings, Tasks } from './employees.model';
 import { HttpClient } from "@angular/common/http";
 import { environment } from 'src/environments/environment';
 
@@ -84,6 +84,23 @@ export class MeetingsService{
   //POST CUSTOMERS
   postCustomer(formData : Meetings){
     return this.http.post(environment.rootApi+'/meetings',formData);
+  }
+
+}
+////////////////////////////////////////////TASKS SERVICE///////////////////////
+export class TasksService{
+  tasksData : Tasks;
+  tasksList : Tasks[];
+  constructor (private http : HttpClient){
+
+  }
+  //GET CUSTOMERS LIST
+  getTasks(){
+    return this.http.get(environment.rootApi+'/tasks').toPromise().then(res=>this.tasksList = res as Tasks[]);
+  }
+  //POST CUSTOMERS
+  postTasks(formData : Tasks){
+    return this.http.post(environment.rootApi+'/tasks',formData);
   }
 
 }

@@ -36,3 +36,13 @@ export class Meetings{
     MeetingDate : string;
     CreatedDate : String;
 }
+//TASKS
+export class Tasks{
+    Id : number;
+    TaskSubject : String;
+    Description : string;
+    StartDate : String;
+    EndDate : String;
+    EmployeesId : number;
+    CreatedDate : string;
+}

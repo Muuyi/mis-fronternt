@@ -1,0 +1,82 @@
+<div class="alert alert-success"><h3>User tasks</h3></div>
+<button class="btn btn-success" data-toggle="modal" data-target="#tasks-modal">Add task</button>
+<div class="table-responsive">
+    <table datatable [dtOptions]="dtOptions" [dtTrigger]="dtTrigger" class="table table-striped">
+        <thead>
+            <th>Title</th>
+            <th>Description</th>
+            <th>Start date</th>
+            <th>End date</th>
+            <th>Employee name</th>
+            <th>Date posted</th>
+            <th>Action</th>
+        </thead>
+        <tbody>
+            <tr *ngFor="let task of tasksService.tasksList">
+                <td>{{ task.taskSubject}}</td>
+                <td>{{ task.description }}</td>
+                <td>{{ task.startDate }}</td>
+                <td>{{ task.endDate}}</td>
+                <th></th>
+                <td>{{ task.createdDate}}</td>
+                <td><button class="btn btn-sm btn-success">Edit</button> | <button class="btn btn-sm btn-danger">Delete</button></td>
+            </tr>
+        </tbody>
+    </table> 
+</div>
+<div class="modal" id="tasks-modal">
+    <div class="modal-dialog modal-lg">
+        <form #form="ngForm" (submit)="onSubmit(form)" >
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3 class="modal-title">Add task</h3>
+                    <button class="close" data-dismiss="modal">&times;</button>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-12">
+                            <div class="form-group">
+                                <label>Task subject</label>
+                                <input type="text" name="TaskSubject" #TaskSubject="ngModel" [(ngModel)]="task.taskSubject" class="form-control" placeholder="Task subject" />
+                            </div>
+                        </div>
+                        <div class="col-12">
+                            <div class="form-group">
+                                <label>Task description</label>
+                                <input type="text" name="Description" #Description="ngModel" [(ngModel)]="task.Description" class="form-control" placeholder="Task description" />
+                            </div>
+                        </div>
+                        <div class="col-12">
+                            <div class="form-group">
+                                <label>Start date</label>
+                                <input type="text" name="StartDate" #StartDate="ngModel" [(ngModel)]="task.StartDate" class="form-control" placeholder="Start date" />
+                            </div>
+                        </div>
+                        <div class="col-12">
+                            <div class="form-group">
+                                <label>End date</label>
+                                <input type="text" name="EndDate" #EndDate="ngModel" [(ngModel)]="task.EndDate" class="form-control" placeholder="End date" />
+                            </div>
+                        </div>
+                        <div class="col-12">
+                            <div class="form-group">
+                                <label>Select Employee</label>
+                                <select class="form-control" name="EmployeesId" #EmployeesId="ngModel" [(ngModel)]="task.EmployeesId">
+                                    <option value="0">--Select--</option>
+                                    <option *ngFor="let emp of employeesService.employeesList" value="{{emp.id}}">{{emp.id}} ({{emp.firstName}} {{emp.lastName}})</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="submit"  class="btn btn-success">Save</button>
+                    <button class="btn btn-danger" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div> 
+
+
+
