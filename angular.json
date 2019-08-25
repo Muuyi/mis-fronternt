@@ -30,7 +30,6 @@
             "styles": [
               "node_modules/datatables.net-dt/css/jquery.dataTables.css",
               "src/styles.scss",
-              "node_modules/font-awesome/css/font-awesome.scss",
               "node_modules/ngx-toastr/toastr.css"
             ],
             "scripts": [

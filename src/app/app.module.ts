@@ -14,7 +14,7 @@ import {FormsModule} from '@angular/forms';
 import { PageNotFoundComponent } from './page-not-found/page-not-found.component';
 import { PersonalDetailsComponent } from './admin/components/users/personal-details/personal-details.component';
 import { ChangePasswordComponent } from './admin/components/users/change-password/change-password.component';
-import { EmployeesService,DepartmentsService,UsersService } from './shared/employees.service';
+import { EmployeesService,DepartmentsService,UsersService,CustomersService } from './shared/employees.service';
 
 @NgModule({
   declarations: [
@@ -35,7 +35,7 @@ import { EmployeesService,DepartmentsService,UsersService } from './shared/emplo
     MaterialModule,
     AngularFontAwesomeModule
   ],
-  providers: [EmployeesService,DepartmentsService,UsersService],
+  providers: [EmployeesService,DepartmentsService,UsersService,CustomersService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

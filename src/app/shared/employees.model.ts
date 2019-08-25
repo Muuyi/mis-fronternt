@@ -20,3 +20,11 @@ export class Users{
     EmployeesId : number;
     CreatedDate : string;
 }
+//CUSTOMERS USERS MODEL
+export class Customers{
+    Id : number;
+    Name : string;
+    Email : string;
+    Phone : number;
+    Address : string;
+}
