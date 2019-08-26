@@ -1,0 +1,75 @@
+<div class="alert alert-success"><h3>Projects</h3></div>
+<button class="btn btn-success" data-toggle="modal" data-target="#project-modal">Add task</button>
+<div class="table-responsive">
+    <table datatable [dtOptions]="dtOptions" [dtTrigger]="dtTrigger" class="table table-striped">
+        <thead>
+            <th>Title</th>
+            <th>Start date</th>
+            <th>End date</th>
+            <th>Employee name</th>
+            <th>Date posted</th>
+            <th>Action</th>
+        </thead>
+        <tbody>
+            <tr *ngFor="let proj of projectService.projectList">
+                <td>{{ proj.projectName}}</td>
+                <td>{{ proj.startDate }}</td>
+                <td>{{ proj.endDate}}</td>
+                <th></th>
+                <td>{{ proj.createdDate}}</td>
+                <td><button class="btn btn-sm btn-success">Edit</button> | <button class="btn btn-sm btn-danger">Delete</button></td>
+            </tr>
+        </tbody>
+    </table> 
+</div>
+<div class="modal" id="project-modal">
+    <div class="modal-dialog modal-lg">
+        <form #form="ngForm" (submit)="onSubmit(form)" >
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3 class="modal-title">Add Project</h3>
+                    <button class="close" data-dismiss="modal">&times;</button>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-12">
+                            <div class="form-group">
+                                <label>Project subject</label>
+                                <input type="text" name="ProjectName" #ProjectName="ngModel" [(ngModel)]="project.ProjectName" class="form-control" placeholder="Project name" />
+                            </div>
+                        </div>
+                        <div class="col-12">
+                            <div class="form-group">
+                                <label>Start date</label>
+                                <input type="text" name="StartDate" #StartDate="ngModel" [(ngModel)]="project.StartDate" class="form-control" placeholder="Start date" />
+                            </div>
+                        </div>
+                        <div class="col-12">
+                            <div class="form-group">
+                                <label>End date</label>
+                                <input type="text" name="EndDate" #EndDate="ngModel" [(ngModel)]="project.EndDate" class="form-control" placeholder="End date" />
+                            </div>
+                        </div>
+                        <div class="col-12">
+                            <div class="form-group">
+                                <label>Select Employee</label>
+                                <select class="form-control" name="EmployeesId" #EmployeesId="ngModel" [(ngModel)]="project.EmployeesId">
+                                    <option value="0">--Select--</option>
+                                    <option *ngFor="let emp of employeesService.employeesList" value="{{emp.id}}">{{emp.id}} ({{emp.firstName}} {{emp.lastName}})</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="submit"  class="btn btn-success">Save</button>
+                    <button class="btn btn-danger" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div> 
+
+
+
+

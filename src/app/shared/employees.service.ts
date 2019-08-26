@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Employees,Departments, Users,Customers, Meetings, Tasks } from './employees.model';
+import { Employees,Departments, Users,Customers, Meetings, Tasks, Projects, Leave } from './employees.model';
 import { HttpClient } from "@angular/common/http";
 import { environment } from 'src/environments/environment';
 
@@ -14,13 +14,18 @@ export class EmployeesService {
   constructor(private http : HttpClient) { 
 
   }
+  //GET EMPLOYEE DATA
+  getEmpData(index){
+    return index;
+  }
   //POST EMPLOYEE DATA
   postEmployee(formData: Employees){
     return this.http.post(environment.rootApi+'/employees',formData);
   }
   //GET EMPLOYEES DATA
   getEmployee(){
-    return this.http.get(environment.rootApi+'/employees').toPromise().then(res=>this.employeesList = res as Employees[]);
+    return this.http.get(environment.rootApi+'/employees').toPromise();
+    // .then(res=>this.employeesList = res as Employees[]);
   }
 }
 /////////////////////////////////////////////DEPARTMENTS SERVICE////////////////////////
@@ -57,6 +62,7 @@ export class UsersService{
 export class CustomersService{
   customersData : Customers;
   customersList : Customers[];
+  empId : null;
   constructor (private http : HttpClient){
 
   }
@@ -101,6 +107,40 @@ export class TasksService{
   //POST CUSTOMERS
   postTasks(formData : Tasks){
     return this.http.post(environment.rootApi+'/tasks',formData);
+  }
+
+}
+///////////////////////////////////////////////PROJECTS SERVICE/////////////////////
+export class ProjectsService{
+  projectData : Projects;
+  projectList : Projects[];
+  constructor (private http : HttpClient){
+
+  }
+  //GET CUSTOMERS LIST
+  getProjects(){
+    return this.http.get(environment.rootApi+'/projects').toPromise().then(res=>this.projectList = res as Projects[]);
+  }
+  //POST CUSTOMERS
+  postProject(formData : Projects){
+    return this.http.post(environment.rootApi+'/projects',formData);
+  }
+
+}
+//////////////////////////////////////////////LEAVE SERVICE//////////////////////////////////////////
+export class LeaveService{
+  leaveData : Leave;
+  leaveList : Leave[];
+  constructor (private http : HttpClient){
+
+  }
+  //GET CUSTOMERS LIST
+  getLeave(){
+    return this.http.get(environment.rootApi+'/leave').toPromise().then(res=>this.leaveList = res as Leave[]);
+  }
+  //POST CUSTOMERS
+  postLeave(formData : Leave){
+    return this.http.post(environment.rootApi+'/leave',formData);
   }
 
 }

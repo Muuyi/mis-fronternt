@@ -46,3 +46,23 @@ export class Tasks{
     EmployeesId : number;
     CreatedDate : string;
 }
+//PROJECTS
+export class Projects{
+    Id : number;
+    ProjectName : string;
+    StartDate : string;
+    EndDate : string;
+    EmployeesId : number;
+    CreatedDate : string;
+}
+
+//LEAVE MODEL
+export class Leave{
+    Id : number;
+    EmployeesId : number;
+    StartDate : string;
+    EndDate : string;
+    PlaceholderId : number;
+    CreatedDate : string;
+}
+

@@ -10,6 +10,8 @@ import { SystemUsersComponent } from './admin/components/users/system-users/syst
 import { CustomersListComponent } from './admin/components/users/customers-list/customers-list.component';
 import { MeetingsComponent } from './admin/components/meetings/meetings.component';
 import { TasksListComponent } from './admin/components/tasks/tasks-list/tasks-list.component';
+import { ProjectsComponent } from './admin/components/projects/projects/projects.component';
+import { LeaveComponent } from './admin/components/leave/leave/leave.component';
 
 
 const routes: Routes = [
@@ -23,7 +25,9 @@ const routes: Routes = [
       {path:'system-users',component:SystemUsersComponent},
       {path:'customers-list',component:CustomersListComponent},
       {path:'meetings',component:MeetingsComponent},
-      {path:'tasks',component:TasksListComponent}
+      {path:'tasks',component:TasksListComponent},
+      {path:'projects',component:ProjectsComponent},
+      {path:'leave',component:LeaveComponent}
     ]
   },
   {path:'**', component:PageNotFoundComponent}
@@ -35,4 +39,4 @@ const routes: Routes = [
   exports: [RouterModule]
 })
 export class AppRoutingModule { }
-export const routingComponents = [LoginComponent,AdminComponent,PersonalDetailsComponent,ChangePasswordComponent,EmployeesListComponent,SystemUsersComponent,PageNotFoundComponent,CustomersListComponent,MeetingsComponent,TasksListComponent]
+export const routingComponents = [LoginComponent,AdminComponent,PersonalDetailsComponent,ChangePasswordComponent,EmployeesListComponent,SystemUsersComponent,PageNotFoundComponent,CustomersListComponent,MeetingsComponent,TasksListComponent,ProjectsComponent,LeaveComponent]

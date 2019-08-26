@@ -1,0 +1,87 @@
+<div class="alert alert-success"><h3>Leave management</h3></div>
+<button class="btn btn-success" data-toggle="modal" data-target="#leave-modal">Add leave</button>
+<div class="table-responsive">
+    <table class="table table-striped">
+        <thead>
+            <th>Name</th>
+            <th>Start date</th>
+            <th>End date</th>
+            <th>Place holder name</th>
+            <th>Date created</th>
+            <th>Action</th>
+        </thead>
+        <tbody>
+            <tr *ngFor="let lv of leaveService.leaveList">
+                <td>{{ lv.employeesId}}</td>
+                <td>{{ lv.startDate }}</td>
+                <td>{{ lv.endDate }}</td>
+                <td>{{ lv.placeholderId}}</td>
+                <td>{{ lv.createdDate }}</td>
+                <td><button class="btn btn-sm btn-success">Edit</button> | <button class="btn btn-sm btn-danger">Delete</button></td>
+            </tr>
+        </tbody>
+    </table> 
+</div>
+<!-- <div class="modal" id="users-modal">
+    <div class="modal-content">
+        <h4>Signup</h4>
+        <div class="input-field col s12">
+            <input type="text" name="Username" #Username="ngModel" [(ngModel)]="users.Username" /> 
+            <label>Username</label>
+        </div>
+    </div>
+    <div class="modal-footer">
+
+    </div>
+</div> -->
+<div class="modal" id="leave-modal">
+    <div class="modal-dialog modal-lg">
+        <form #form="ngForm" (submit)="onSubmit(form)" >
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3 class="modal-title">Add leave</h3>
+                    <button class="close" data-dismiss="modal">&times;</button>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-12">
+                            <div class="form-group">
+                                <label>Select Employee</label>
+                                <select class="form-control" name="EmployeesId" #EmployeesId="ngModel" [(ngModel)]="leave.EmployeesId">
+                                    <option value="0">--Select--</option>
+                                    <option *ngFor="let emp of employeesService.employeesList" value="{{emp.id}}">{{emp.id}} ({{emp.firstName}} {{emp.lastName}})</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-12">
+                            <div class="form-group">
+                                <label>Start date</label>
+                                <input type="text" name="StartDate" #StartDate="ngModel" [(ngModel)]="leave.StartDate" class="form-control" placeholder="Start date" />
+                            </div>
+                        </div>
+                        <div class="col-12">
+                            <div class="form-group">
+                                <label>End date</label>
+                                <input type="text" name="EndDate" #EndDate="ngModel" [(ngModel)]="leave.EndDate" class="form-control" placeholder="End date" />
+                            </div>
+                        </div>
+                        <div class="col-12">
+                            <div class="form-group">
+                                <label>Select placeholder Id</label>
+                                <select class="form-control" name="PlaceholderId" #PlaceholderId="ngModel" [(ngModel)]="leave.PlaceholderId">
+                                    <option value="0">--Select--</option>
+                                    <option *ngFor="let emp of employeesService.employeesList" value="{{emp.id}}">{{emp.id}} ({{emp.firstName}} {{emp.lastName}})</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" [disabled]="form.invalid" class="btn btn-success">Save</button>
+                    <button class="btn btn-danger" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div> 
+
