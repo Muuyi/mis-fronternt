@@ -1,5 +1,5 @@
 <div class="alert alert-success"><h3>Projects</h3></div>
-<button class="btn btn-success" data-toggle="modal" data-target="#project-modal">Add task</button>
+<button class="btn btn-success" data-toggle="modal" data-target="#project-modal">Add project</button>
 <div class="table-responsive">
     <table datatable [dtOptions]="dtOptions" [dtTrigger]="dtTrigger" class="table table-striped">
         <thead>
@@ -11,7 +11,8 @@
             <th>Action</th>
         </thead>
         <tbody>
-            <tr *ngFor="let proj of projectService.projectList">
+            {{ console.log(projectsList)}}
+            <tr *ngFor="let proj of projectsList">
                 <td>{{ proj.projectName}}</td>
                 <td>{{ proj.startDate }}</td>
                 <td>{{ proj.endDate}}</td>

@@ -17,7 +17,7 @@ import {FormsModule} from '@angular/forms';
 import { PageNotFoundComponent } from './page-not-found/page-not-found.component';
 import { PersonalDetailsComponent } from './admin/components/users/personal-details/personal-details.component';
 import { ChangePasswordComponent } from './admin/components/users/change-password/change-password.component';
-import { EmployeesService,DepartmentsService,UsersService,CustomersService, MeetingsService, TasksService, ProjectsService, LeaveService } from './shared/employees.service';
+import { EmployeesService,DepartmentsService,UsersService,CustomersService, MeetingsService, TasksService, ProjectsService, LeaveService, TicketsService } from './shared/employees.service';
 import { MeetingsComponent } from './admin/components/meetings/meetings.component';
 import { TasksListComponent } from './admin/components/tasks/tasks-list/tasks-list.component';
 import { ProjectsComponent } from './admin/components/projects/projects/projects.component';
@@ -31,7 +31,8 @@ import { EmployeesListComponent } from './admin/components/users/employees-list/
     routingComponents,
     PageNotFoundComponent,
     PersonalDetailsComponent,
-    ChangePasswordComponent
+    ChangePasswordComponent,
+    ProjectsComponent
   ],
   imports: [
     BrowserModule,
@@ -48,7 +49,7 @@ import { EmployeesListComponent } from './admin/components/users/employees-list/
     NgxSmartModalModule.forRoot(),
   ],
   entryComponents : [EmployeesListComponent],
-  providers: [EmployeesService,DepartmentsService,UsersService,CustomersService,MeetingsService,TasksService,ProjectsService,LeaveService],
+  providers: [EmployeesService,DepartmentsService,UsersService,CustomersService,MeetingsService,TasksService,ProjectsService,LeaveService,TicketsService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

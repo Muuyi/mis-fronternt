@@ -17,7 +17,7 @@
                 <td>{{ emp.phone }}</td>
                 <td>{{ emp.department }}</td>
                 <td>{{ emp.createdDate }}</td>
-                <td><button class="btn btn-sm btn-success" (click)="openEmployeesModal(content,emp.id,i)">Edit</button> | <button class="btn btn-sm btn-danger">Delete</button></td>
+                <td><button class="btn btn-sm btn-success" (click)="openEmployeesModal(content,emp.id,i)">Edit</button> | <button (click)="deleteEmployees(emp.id,i)" class="btn btn-sm btn-danger">Delete</button></td>
                 <!-- <td>{{}}</td> -->
             </tr>
         </tbody>

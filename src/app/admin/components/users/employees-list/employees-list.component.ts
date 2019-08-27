@@ -19,6 +19,7 @@ export class EmployeesListComponent implements OnInit {
   formData : Employees;
   employeesList :Employees[];
   closeResult: string;
+  getEmployeeData : null;
   //DEPARTMENTS LIST
   // departmentList : Departments[];
   dtOptions: DataTables.Settings = {};
@@ -41,15 +42,19 @@ export class EmployeesListComponent implements OnInit {
     //Getting department list
     this.departmentService.getDepartments();
     //FORM DATA INITIALIZATION
-    // if()
-    this.formData = {
-      Id : null,
-      FirstName:this.formData.FirstName,
-      LastName:'',
-      Email:'',
-      Phone:null,
-      DepartmentId:0,
+    if(this.getEmployeeData == null){
+      this.formData = {
+        Id : null,
+        FirstName:'',
+        LastName:'',
+        Email:'',
+        Phone:null,
+        DepartmentId:0,
+      }
+    }else{
+      this.formData = Object.assign({},this.employeeService.employeesList[1]);
     }
+    
   }
   //RESET FORM
   resetForm(form? : NgForm){
@@ -75,7 +80,7 @@ export class EmployeesListComponent implements OnInit {
       this.resetForm(form);
     })
   }
-  //EDIT AND ADD DATA
+  //EDIT AND ADD DATA OPEN MODAL WINDOW
   openEmployeesModal(content,id,index) {
     if(id == null){
       this.modalService.open(content, {ariaLabelledBy: 'modal-basic-title'}).result.then((result) => {
@@ -84,13 +89,16 @@ export class EmployeesListComponent implements OnInit {
         this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
       });
     }else{
+      this.getEmployeeData = index;
       this.formData = this.employeesList[index];
       this.modalService.open(content);
+      debugger;
       console.log(this.formData);
 
     }
       
   }
+  //DISMISS MODAL WINDOW
   private getDismissReason(reason: any): string {
     if (reason === ModalDismissReasons.ESC) {
       return 'by pressing ESC';
@@ -99,5 +107,9 @@ export class EmployeesListComponent implements OnInit {
     } else {
       return  `with: ${reason}`;
     }
+  }
+  //DELETE EMPLOYEES
+  deleteEMployees(id:number,index:number){
+    
   }
 }

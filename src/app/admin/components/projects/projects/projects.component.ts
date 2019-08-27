@@ -11,11 +11,12 @@ import { Projects } from 'src/app/shared/employees.model';
 })
 export class ProjectsComponent implements OnInit {
  project : Projects;
+ projectsList : Projects[];
 
   constructor(private projectService : ProjectsService, private toastr : ToastrService,private employeesService : EmployeesService) { }
 
   ngOnInit() {
-    this.projectService.getProjects();
+    this.projectService.getProjects() .toPromise().then(res=>this.projectsList = res as Projects[]);;
   }
    //RESET FORM
    resetForm(form? : NgForm){

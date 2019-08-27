@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Employees,Departments, Users,Customers, Meetings, Tasks, Projects, Leave } from './employees.model';
+import { Employees,Departments, Users,Customers, Meetings, Tasks, Projects, Leave, Tickets } from './employees.model';
 import { HttpClient } from "@angular/common/http";
 import { environment } from 'src/environments/environment';
 
@@ -113,13 +113,14 @@ export class TasksService{
 ///////////////////////////////////////////////PROJECTS SERVICE/////////////////////
 export class ProjectsService{
   projectData : Projects;
-  projectList : Projects[];
+  projectsList : Projects[];
   constructor (private http : HttpClient){
 
   }
   //GET CUSTOMERS LIST
   getProjects(){
-    return this.http.get(environment.rootApi+'/projects').toPromise().then(res=>this.projectList = res as Projects[]);
+    return this.http.get(environment.rootApi+'/projects')
+    // .toPromise().then(res=>this.projectsList = res as Projects[]);
   }
   //POST CUSTOMERS
   postProject(formData : Projects){
@@ -143,4 +144,20 @@ export class LeaveService{
     return this.http.post(environment.rootApi+'/leave',formData);
   }
 
+}
+/////////////////////////////////////////////TICKETS SERVICE/////////////////////////////////////
+export class TicketsService{
+  ticketsData : Tickets;
+  ticketsList : Tickets[];
+  constructor (private http : HttpClient){
+
+  }
+  //GET CUSTOMERS LIST
+  getTickets(){
+    return this.http.get(environment.rootApi+'/tickets').toPromise().then(res=>this.ticketsList = res as Tickets[]);
+  }
+  //POST CUSTOMERS
+  postTicket(formData : Tickets){
+    return this.http.post(environment.rootApi+'/tickets',formData);
+  }
 }

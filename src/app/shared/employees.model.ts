@@ -65,4 +65,10 @@ export class Leave{
     PlaceholderId : number;
     CreatedDate : string;
 }
+//TICKETS
+export class Tickets{
+    Id : number;
+    EmployeesId : number;
+    CreatedDate : string;
+}
 
