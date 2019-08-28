@@ -2,8 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { NgForm } from '@angular/forms';
 import { ToastrService } from 'ngx-toastr';
 
-import { UsersService, EmployeesService } from 'src/app/shared/employees.service';
-import { Users } from 'src/app/shared/employees.model';
+import { AdministratorsService, EmployeesService } from 'src/app/shared/employees.service';
+import { Administrators } from 'src/app/shared/employees.model';
 
 @Component({
   selector: 'app-system-users',
@@ -11,8 +11,8 @@ import { Users } from 'src/app/shared/employees.model';
   styleUrls: ['./system-users.component.scss']
 })
 export class SystemUsersComponent implements OnInit {
-  user : Users;
-  constructor(private usersService : UsersService,private employeesService : EmployeesService,private toastr: ToastrService) { }
+  user : Administrators;
+  constructor(private usersService : AdministratorsService,private employeesService : EmployeesService,private toastr: ToastrService) { }
 
   ngOnInit() {
     this.resetForm();

@@ -1,7 +1,8 @@
 import { Injectable } from '@angular/core';
-import { Employees,Departments, Users,Customers, Meetings, Tasks, Projects, Leave, Tickets } from './employees.model';
+import { Employees,Departments,Customers, Meetings, Tasks, Projects, Leave, Tickets, Administrators } from './employees.model';
 import { HttpClient } from "@angular/common/http";
 import { environment } from 'src/environments/environment';
+import { FormBuilder } from '@angular/forms';
 
 @Injectable({
   providedIn: 'root'
@@ -43,19 +44,19 @@ export class DepartmentsService{
 
 }
 ////////////////////////////////////////////////USERS SERVICE//////////////////////////
-export class UsersService{
-  usersForm : Users;
-  usersList : Users[]
+export class AdministratorsService{
+  usersForm : Administrators;
+  usersList : Administrators[]
   constructor(private http : HttpClient){
 
   }
   //GET USERS LIST
   getUsers(){
-    return this.http.get(environment.rootApi+'/users').toPromise().then(res=>this.usersList = res as Users[]);
+    return this.http.get(environment.rootApi+'/administrators').toPromise().then(res=>this.usersList = res as Administrators[]);
   }
   //POST USERS
-  postUsers(formData : Users){
-    return this.http.post(environment.rootApi+'/users',formData);
+  postUsers(formData : Administrators){
+    return this.http.post(environment.rootApi+'/administrators',formData);
   }
 }
 //////////////////////////////////////////CUSTOMERS SERVICE//////////////////////
@@ -160,4 +161,19 @@ export class TicketsService{
   postTicket(formData : Tickets){
     return this.http.post(environment.rootApi+'/tickets',formData);
   }
+}
+///////////////////////////////////////////APPLICATION USER SERVICE///////////////////////////
+export class ApplicationUserService{
+  constructor (private fb: FormBuilder){
+
+  }
+  formModel = this.fb.group({
+    UserName :[''],
+    Email : [''],
+    FullName : [''],
+    Passwords : this.fb.group({
+      Password : [''],
+      ConfirmPassword : ['']
+    })
+  })
 }

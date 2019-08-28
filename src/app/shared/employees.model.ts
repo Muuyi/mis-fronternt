@@ -13,7 +13,7 @@ export class Departments{
     DepartmentName:string;
 }
 //SYSTEM USERS MODEL
-export class Users{
+export class Administrators{
     Id: number;
     Username : string;
     Password : string;
