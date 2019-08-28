@@ -1,7 +1,7 @@
 <section id="login-section">
     <h1>Login</h1>
     <div class="row"></div>
-    <form #form="ngForm">
+    <form #form="ngForm" (submit)="onSubmit(form)">
         <div class="form-group col">
             <div class="input-group mb-3">
                 <i class="fab fa-accessible-icon"></i>
@@ -16,7 +16,7 @@
                 <div class="input-group-prepend">
                     <span class="input-group-text" id="basic-addon1"><i class="fas fa-user"></i></span>
                 </div>
-                <input #Password="ngModel" name="Password" [(ngModel)]="user.Password" class="form-control" placeholder="Password" required>
+                <input type="password" #Password="ngModel" name="Password" [(ngModel)]="user.Password" class="form-control" placeholder="Password" required>
             </div>
         </div>
         <button type="submit" class="btn btn-success form-control" [disabled]="form.invalid">Login</button>

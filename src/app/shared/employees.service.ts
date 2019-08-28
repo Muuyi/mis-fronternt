@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { Employees,Departments,Customers, Meetings, Tasks, Projects, Leave, Tickets, Administrators } from './employees.model';
 import { HttpClient } from "@angular/common/http";
 import { environment } from 'src/environments/environment';
-import { FormBuilder } from '@angular/forms';
+import { FormBuilder, Validators, FormGroup} from '@angular/forms';
 
 @Injectable({
   providedIn: 'root'
@@ -164,16 +164,41 @@ export class TicketsService{
 }
 ///////////////////////////////////////////APPLICATION USER SERVICE///////////////////////////
 export class ApplicationUserService{
-  constructor (private fb: FormBuilder){
+  constructor (private fb: FormBuilder,private http : HttpClient){
 
   }
+  //Form models
   formModel = this.fb.group({
-    UserName :[''],
-    Email : [''],
+    UserName :['',Validators.required],
+    Email : ['',Validators.email],
     FullName : [''],
     Passwords : this.fb.group({
-      Password : [''],
-      ConfirmPassword : ['']
-    })
+      Password : ['',[Validators.required,Validators.minLength(4)]],
+      ConfirmPassword : ['',Validators.required]
+    },{validator : this.compare_passwords})
   })
+  //Compare passwords
+  compare_passwords(fb:FormGroup){
+    let confirmPswdCtrl = fb.get("ConfirmPassword");
+    if(confirmPswdCtrl.errors == null || 'passwordMismatch' in confirmPswdCtrl.errors){
+      if(fb.get("Password").value != confirmPswdCtrl.value)
+        confirmPswdCtrl.setErrors({ passwordMismatch:true})
+      else
+        confirmPswdCtrl.setErrors(null)
+    }
+  }
+  //POST DATA TO THE DATABASE
+  register(){
+    var body = {
+      UserName : this.formModel.value.UserName,
+      Email : this.formModel.value.Email,
+      FullName : this.formModel.value.FullName,
+      Password : this.formModel.value.Passwords.Password,
+    }
+    return this.http.post(environment.rootApi+'/ApplicationUser/Register',body);
+  }
+  //LOGIN FORM DATA
+  login(formData){
+    return this.http.post(environment.rootApi+'/ApplicationUser/Login',formData);
+  }
 }

@@ -13,6 +13,7 @@ import { TasksListComponent } from './admin/components/tasks/tasks-list/tasks-li
 import { ProjectsComponent } from './admin/components/projects/projects/projects.component';
 import { LeaveComponent } from './admin/components/leave/leave/leave.component';
 import { TicketsComponent } from './admin/components/tickets/tickets/tickets.component';
+import { ApplicationUserComponent } from './admin/components/users/application-user/application-user.component';
 
 
 const routes: Routes = [
@@ -29,7 +30,8 @@ const routes: Routes = [
       {path:'tasks',component:TasksListComponent},
       {path:'projects',component:ProjectsComponent},
       {path:'leave',component:LeaveComponent},
-      {path:'tickets',component:TicketsComponent}
+      {path:'tickets',component:TicketsComponent},
+      {path:'application-users',component:ApplicationUserComponent}
     ]
   },
   {path:'**', component:PageNotFoundComponent}

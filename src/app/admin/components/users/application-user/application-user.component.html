@@ -1,1 +1,84 @@
-<p>application-user works!</p>
+<div class="alert alert-success"><h3>Application users</h3></div>
+<button class="btn btn-success" (click)="openModal(content,null,null)">Add users</button>
+<div class="table-responsive">
+    <table datatable [dtOptions]="dtOptions" [dtTrigger]="dtTrigger" class="table table-striped">
+        <thead>
+            <th>Name</th>
+            <th>Email</th>
+            <th>Phone</th>
+            <th>Department</th>
+            <th>Date created</th>
+            <th>Action</th>
+        </thead>
+        <tbody>
+            <tr *ngFor="let emp of employeesList;let i=index;">
+                <td>{{ emp.firstName}} {{emp.lastName}}</td>
+                <td>{{ emp.email }}</td>
+                <td>{{ emp.phone }}</td>
+                <td>{{ emp.department }}</td>
+                <td>{{ emp.createdDate }}</td>
+                <td><button class="btn btn-sm btn-success" (click)="openEmployeesModal(content,emp.id,i)">Edit</button> | <button (click)="deleteEmployees(emp.id,i)" class="btn btn-sm btn-danger">Delete</button></td>
+                <!-- <td>{{}}</td> -->
+            </tr>
+        </tbody>
+    </table>
+</div>
+<!--EMPLOYEES MODALL-->
+<ng-template #content let-modal>
+    <form [formGroup]="userService.formModel" (submit)="onSubmit()" >
+        <div class="modal-header">
+        <h4 class="modal-title" id="modal-basic-title">Add application users</h4>
+        <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+            <span aria-hidden="true">&times;</span>
+        </button>
+        </div>
+        <!-- <p>{{formData.firstName}}</p> -->
+        <div class="modal-body">
+            <div class="row">
+                <div class="col-12">
+                    <div class="form-group">
+                        <label>Username</label>
+                        <input formControlName="UserName" class="form-control" placeholder="Username"/>
+                        <label class="text-danger" *ngIf="userService.formModel.get('UserName').touched && userService.formModel.get('UserName').errors?.required">This field is mandatory</label>
+                    </div>
+                </div>
+                <div class="col-12">
+                    <div class="form-group">
+                        <label>Email</label>
+                        <input formControlName="Email" class="form-control" placeholder="Enter email"/>
+                        <label class="text-danger" *ngIf="userService.formModel.get('Email').touched && userService.formModel.get('Email').errors?.email">Invalid email entry</label>
+                    </div>
+                </div>
+                <div class="col-12">
+                    <div class="form-group">
+                        <label>Full name</label>
+                        <input formControlName="FullName" class="form-control" placeholder="Enter full name"/>
+                    </div>
+                </div>
+                <div class="col">
+                    <div class="row" formGroupName="Passwords">
+                        <div class="col-6">
+                            <div class="form-group">
+                                <label>Password</label>
+                                <input type="password" formControlName="Password" class="form-control" placeholder="Enter password"/>
+                                <label class="text-danger" *ngIf="userService.formModel.get('Passwords.Password').touched && userService.formModel.get('Passwords.Password').errors?.required">This field is mandatory</label>
+                                <label class="text-danger" *ngIf="userService.formModel.get('Passwords.Password').touched && userService.formModel.get('Passwords.Password').errors?.minlength">Minimum of 4 characters</label>
+                            </div>
+                        </div>
+                        <div class="col-6">
+                            <div class="form-group">
+                                <label>Confirm Password</label>
+                                <input type="password" formControlName="ConfirmPassword" class="form-control" placeholder="Confirm password"/>
+                                <label class="text-danger" *ngIf="userService.formModel.get('Passwords.ConfirmPassword').touched && userService.formModel.get('Passwords.ConfirmPassword').errors?.required">This field is mandatory</label>
+                                <label class="text-danger" *ngIf="userService.formModel.get('Passwords.ConfirmPassword').touched && userService.formModel.get('Passwords.ConfirmPassword').errors?.passwordMismatch">Password confirm does not match</label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button type="submit" [disabled]="!userService.formModel.valid" class="btn btn-success">Save</button>
+        </div>
+    </form>
+  </ng-template>
