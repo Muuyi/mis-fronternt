@@ -1,14 +1,16 @@
 import { Component, OnInit } from '@angular/core';
 import {Ng2TelInputModule} from 'ng2-tel-input';
 import * as $ from 'jquery';
+import { Router } from '@angular/router';
+import { ApplicationUserService } from '../shared/employees.service';
 @Component({
   selector: 'app-admin',
   templateUrl: './admin.component.html',
   styleUrls: ['./admin.component.scss']
 })
 export class AdminComponent implements OnInit {
-
-  constructor() { }
+  userDetails;
+  constructor(private router : Router, private userService : ApplicationUserService) { }
 
   ngOnInit() {
     $(document).ready(function(){
@@ -37,8 +39,22 @@ export class AdminComponent implements OnInit {
       //DISPLAYING ADMIN CONTENT
       //Profile width
       var sideNavWidth = $("#side-nav").width(); 
-      $("#content-section").css({"margin-top":headerHeight,"margin-left":sideNavWidth})     
+      $("#content-section").css({"margin-top":headerHeight,"margin-left":sideNavWidth})
+      //GET USER DATA
+      // this.userService.getUserProfile().subscribe(
+      //   res => {
+      //     this.userDetails = res;
+      //   },
+      //   err => {
+      //     console.log(err)
+      //   }
+      // )     
     })
+  }
+  //LOGOUT METHOD
+  logout(){
+    localStorage.remove("token");
+    this.router.navigate(["/login"]);
   }
 
 }

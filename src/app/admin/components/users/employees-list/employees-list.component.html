@@ -11,13 +11,14 @@
             <th>Action</th>
         </thead>
         <tbody>
-            <tr *ngFor="let emp of employeesList;let i=index;">
+            <tr *ngFor="let emp of employeeService.employeesList;let i=index;">
                 <td>{{ emp.firstName}} {{emp.lastName}}</td>
                 <td>{{ emp.email }}</td>
                 <td>{{ emp.phone }}</td>
                 <td>{{ emp.department }}</td>
                 <td>{{ emp.createdDate }}</td>
-                <td><button class="btn btn-sm btn-success" (click)="openEmployeesModal(content,emp.id,i)">Edit</button> | <button (click)="deleteEmployees(emp.id,i)" class="btn btn-sm btn-danger">Delete</button></td>
+                <td><button class="btn btn-sm btn-success" (click)=populateEmployeesForm(content,emp,i) >Edit</button> | <button (click)="onDelete(emp.id)" class="btn btn-sm btn-danger">Delete</button></td>
+                <!-- (click)="openEmployeesModal(content,emp,i)" -->
                 <!-- <td>{{}}</td> -->
             </tr>
         </tbody>
@@ -40,32 +41,32 @@
                     <!-- <input type="hidden" name="Id" #Id="ngModel" [(ngModel)]="formData.Id" > -->
                     <div class="form-group">
                         <label>First Name</label>
-                        <input name="FirstName" #FirstName="ngModel" [(ngModel)]="formData.FirstName" class="form-control" placeholder="First Name" required/>
+                        <input name="FirstName" #FirstName="ngModel" [(ngModel)]="employeeService.formData.FirstName" class="form-control" placeholder="First Name" required/>
                         <div class="validation-error" *ngIf="FirstName.invalid && FirstName.touched">This field is required</div>
                     </div>
                 </div>
                 <div class="col-md-6">
                     <div class="form-group">
                         <label>Last name</label>
-                        <input name="LastName" #LastName="ngModel" [(ngModel)]="formData.LastName" class="form-control" placeholder="Last Name" />
+                        <input name="LastName" #LastName="ngModel" [(ngModel)]="employeeService.formData.LastName" class="form-control" placeholder="Last Name" />
                     </div>
                 </div>
                 <div class="col-md-6">
                     <div class="form-group">
                         <label>Email</label>
-                        <input name="Email" #Email="ngModel" [(ngModel)]="formData.Email" class="form-control" placeholder="Email" />
+                        <input name="Email" #Email="ngModel" [(ngModel)]="employeeService.formData.Email" class="form-control" placeholder="Email" />
                     </div>
                 </div>
                 <div class="col-md-6">
                     <div class="form-group">
                         <label>Phone</label>
-                        <input name="Phone" #Phone="ngModel" [(ngModel)]="formData.Phone" class="form-control" placeholder="Phone number" />
+                        <input name="Phone" #Phone="ngModel" [(ngModel)]="employeeService.formData.Phone" class="form-control" placeholder="Phone number" />
                     </div>
                 </div>
                 <div class="col-md-6">
                     <div class="form-group">
                         <label>Department</label>
-                        <select class="form-control" name="DepartmentId" #DepartmentId="ngModel" [(ngModel)]="formData.DepartmentId">
+                        <select class="form-control" name="DepartmentId" #DepartmentId="ngModel" [(ngModel)]="employeeService.formData.DepartmentId">
                             <option value="0">--Select--</option>
                             <option *ngFor="let dep of departmentService.departmentsList" value="{{dep.id}}">{{dep.departmentName}}</option>
                         </select>

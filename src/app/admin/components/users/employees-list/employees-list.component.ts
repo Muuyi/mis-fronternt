@@ -5,7 +5,7 @@ import { NgForm } from '@angular/forms';
 import { Observable,Subject } from 'rxjs';
 import { ToastrService } from 'ngx-toastr';
 import { DataTableDirective } from 'angular-datatables';
-import { MatDialog, MatDialogConfig } from '@angular/material';
+import { MatDialog, MatDialogConfig, throwToolbarMixedModesError } from '@angular/material';
 import {NgbModal, ModalDismissReasons} from '@ng-bootstrap/ng-bootstrap';
 import { Employees } from 'src/app/shared/employees.model';
 // import * as $ from 'jquery'; 
@@ -16,10 +16,8 @@ declare var $:any;
   styleUrls: ['./employees-list.component.scss']
 })
 export class EmployeesListComponent implements OnInit {
-  formData : Employees;
   employeesList :Employees[];
   closeResult: string;
-  getEmployeeData : null;
   //DEPARTMENTS LIST
   // departmentList : Departments[];
   dtOptions: DataTables.Settings = {};
@@ -29,7 +27,7 @@ export class EmployeesListComponent implements OnInit {
 
   ngOnInit() {
     //Resetting employees form
-    this.resetForm();
+    // this.resetForm();
     //Datatables
     this.dtOptions = {
       pagingType:'full_numbers',
@@ -37,30 +35,17 @@ export class EmployeesListComponent implements OnInit {
       autoWidth:true,
       order : [[0,'desc']]
     };
-    this.employeeService.getEmployee().then(res=>this.employeesList = res as Employees[]);
+    this.employeeService.getEmployee();
     this.dtTrigger.next();
     //Getting department list
     this.departmentService.getDepartments();
     //FORM DATA INITIALIZATION
-    if(this.getEmployeeData == null){
-      this.formData = {
-        Id : null,
-        FirstName:'',
-        LastName:'',
-        Email:'',
-        Phone:null,
-        DepartmentId:0,
-      }
-    }else{
-      this.formData = Object.assign({},this.employeeService.employeesList[1]);
-    }
-    
   }
   //RESET FORM
   resetForm(form? : NgForm){
     if( form != null)
       form.resetForm();
-    this.formData = {
+    this.employeeService.formData = {
       Id : null,
       FirstName:'',
       LastName:'',
@@ -77,25 +62,30 @@ export class EmployeesListComponent implements OnInit {
   insertRecord(form:NgForm){ 
     this.employeeService.postEmployee(form.value).subscribe(res=>{
       this.toastr.success('Record inserted successfully','Employee registration');
+      this.employeeService.getEmployee();
       this.resetForm(form);
     })
   }
+  //POPULATE EMPLOYEES RECORDS
+  populateEmployeesForm(content,emp:Employees){
+    this.employeeService.formData = Object.assign({},emp);
+    console.log(this.employeeService.formData);
+    this.openEmployeesModal(content);
+  }
   //EDIT AND ADD DATA OPEN MODAL WINDOW
-  openEmployeesModal(content,id,index) {
-    if(id == null){
+  openEmployeesModal(content) {
+    // if(index == null){
       this.modalService.open(content, {ariaLabelledBy: 'modal-basic-title'}).result.then((result) => {
         this.closeResult = `Closed with: ${result}`;
       }, (reason) => {
         this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
       });
-    }else{
-      this.getEmployeeData = index;
-      this.formData = this.employeesList[index];
-      this.modalService.open(content);
-      debugger;
-      console.log(this.formData);
-
-    }
+     
+    // }else{
+    //   this.getEmployeeData = index;
+    //   this.modalService.open(content);
+    //   console.log(this.employeeService.formData);
+    // }
       
   }
   //DISMISS MODAL WINDOW
@@ -109,7 +99,12 @@ export class EmployeesListComponent implements OnInit {
     }
   }
   //DELETE EMPLOYEES
-  deleteEMployees(id:number,index:number){
-    
+  onDelete(id:number){
+    if(confirm("Are you sure you want to delete this record?")){
+      this.employeeService.deleteEmployee(id).subscribe(res=>{
+        this.employeeService.getEmployee();
+        this.toastr.warning('Record deleted successfully!!','Employee Delete');
+      })
+    }
   }
 }

@@ -16,7 +16,7 @@ export class ProjectsComponent implements OnInit {
   constructor(private projectService : ProjectsService, private toastr : ToastrService,private employeesService : EmployeesService) { }
 
   ngOnInit() {
-    this.projectService.getProjects() .toPromise().then(res=>this.projectsList = res as Projects[]);;
+    this.projectService.projectsList;
   }
    //RESET FORM
    resetForm(form? : NgForm){
@@ -30,6 +30,7 @@ export class ProjectsComponent implements OnInit {
         CreatedDate : '',
         EmployeesId : null
       }
+     
   }
   //SUBMIT FORM
   onSubmit(form : NgForm){

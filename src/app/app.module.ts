@@ -1,7 +1,7 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import {Ng2TelInputModule} from 'ng2-tel-input';
-import { HttpClientModule } from "@angular/common/http";
+import { HttpClientModule, HTTP_INTERCEPTORS } from "@angular/common/http";
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ToastrModule } from 'ngx-toastr';
 import { DataTablesModule } from 'angular-datatables';
@@ -25,6 +25,7 @@ import { TicketsComponent } from './admin/components/tickets/tickets/tickets.com
 import { LeaveComponent } from './admin/components/leave/leave/leave.component';
 import { EmployeesListComponent } from './admin/components/users/employees-list/employees-list.component';
 import { ApplicationUserComponent } from './admin/components/users/application-user/application-user.component';
+import { AuthInterceptor } from './auth/auth.interceptor';
 
 @NgModule({
   declarations: [
@@ -52,7 +53,11 @@ import { ApplicationUserComponent } from './admin/components/users/application-u
     NgxSmartModalModule.forRoot(),
   ],
   entryComponents : [EmployeesListComponent],
-  providers: [EmployeesService,DepartmentsService,CustomersService,MeetingsService,TasksService,ProjectsService,LeaveService,TicketsService,AdministratorsService,ApplicationUserService],
+  providers: [EmployeesService,DepartmentsService,CustomersService,MeetingsService,TasksService,ProjectsService,LeaveService,TicketsService,AdministratorsService,ApplicationUserService,{
+    provide : HTTP_INTERCEPTORS,
+    useClass : AuthInterceptor,
+    multi : true
+  }],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

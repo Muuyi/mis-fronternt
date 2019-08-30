@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Employees,Departments,Customers, Meetings, Tasks, Projects, Leave, Tickets, Administrators } from './employees.model';
-import { HttpClient } from "@angular/common/http";
+import { HttpClient, HttpHeaders } from "@angular/common/http";
 import { environment } from 'src/environments/environment';
 import { FormBuilder, Validators, FormGroup} from '@angular/forms';
 
@@ -15,18 +15,17 @@ export class EmployeesService {
   constructor(private http : HttpClient) { 
 
   }
-  //GET EMPLOYEE DATA
-  getEmpData(index){
-    return index;
-  }
   //POST EMPLOYEE DATA
   postEmployee(formData: Employees){
     return this.http.post(environment.rootApi+'/employees',formData);
   }
   //GET EMPLOYEES DATA
   getEmployee(){
-    return this.http.get(environment.rootApi+'/employees').toPromise();
-    // .then(res=>this.employeesList = res as Employees[]);
+    return this.http.get(environment.rootApi+'/employees').toPromise().then(res=>this.employeesList = res as Employees[]);
+  }
+  //DELETE EMPLOYEES DATA
+  deleteEmployee(id:number){
+    return this.http.delete(environment.rootApi+'/employees/'+id);
   }
 }
 /////////////////////////////////////////////DEPARTMENTS SERVICE////////////////////////
@@ -120,8 +119,7 @@ export class ProjectsService{
   }
   //GET CUSTOMERS LIST
   getProjects(){
-    return this.http.get(environment.rootApi+'/projects')
-    // .toPromise().then(res=>this.projectsList = res as Projects[]);
+    return this.http.get(environment.rootApi+'/projects').toPromise().then(res=>this.projectsList = res as Projects[]);
   }
   //POST CUSTOMERS
   postProject(formData : Projects){
@@ -201,4 +199,11 @@ export class ApplicationUserService{
   login(formData){
     return this.http.post(environment.rootApi+'/ApplicationUser/Login',formData);
   }
+  //DELETE EMPLOYEES
+
+  //GET USER DATA
+  // getUserProfile(){
+  //   var tokenHeader = new HttpHeaders({'Authorization':'Bearer '+localStorage.getItem('token')})
+  //   return this.http.get(environment.rootApi+'/ApplicationUser/UserProfile',{headers : tokenHeader})
+  // }
 }

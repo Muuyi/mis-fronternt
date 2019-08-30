@@ -14,6 +14,7 @@ import { ProjectsComponent } from './admin/components/projects/projects/projects
 import { LeaveComponent } from './admin/components/leave/leave/leave.component';
 import { TicketsComponent } from './admin/components/tickets/tickets/tickets.component';
 import { ApplicationUserComponent } from './admin/components/users/application-user/application-user.component';
+import { AuthGuard } from './auth/auth.guard';
 
 
 const routes: Routes = [
@@ -35,7 +36,7 @@ const routes: Routes = [
     ]
   },
   {path:'**', component:PageNotFoundComponent}
-
+  // ,canActivate:[AuthGuard]
 ];
 
 @NgModule({

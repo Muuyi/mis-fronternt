@@ -15,7 +15,8 @@ export class LoginComponent implements OnInit {
   constructor(private usersService : ApplicationUserService,private router : Router,private toastr : ToastrService) { }
 
   ngOnInit() {
-
+    if(localStorage.getItem('token') != null)
+      this.router.navigateByUrl('/admin');
   }
   onSubmit(form : NgForm){
     this.usersService.login(form.value).subscribe(
