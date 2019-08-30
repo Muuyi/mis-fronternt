@@ -27,7 +27,7 @@ export class EmployeesListComponent implements OnInit {
 
   ngOnInit() {
     //Resetting employees form
-    // this.resetForm();
+    this.resetForm();
     //Datatables
     this.dtOptions = {
       pagingType:'full_numbers',

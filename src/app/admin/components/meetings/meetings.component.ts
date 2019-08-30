@@ -15,6 +15,9 @@ export class MeetingsComponent implements OnInit {
   constructor(private meetingsService : MeetingsService, private toastr : ToastrService) { }
 
   ngOnInit() {
+    //RESET FORM
+    this.resetForm();
+    //GET MEETINGS
     this.meetingsService.getMeetings();
   }
   //RESET FORM
@@ -37,8 +40,18 @@ export class MeetingsComponent implements OnInit {
   insertRecord(form : NgForm){
     this.meetingsService.postCustomer(form.value).subscribe(res => { 
       this.toastr.success('Record inserted successfully','Meetings addition');
+      this.meetingsService.getMeetings();
       this.resetForm(form);
     })
+  }
+  //DELETE MEETINGS
+  onDelete(id:number){
+    if(confirm("Are you sure you want to delete this record?")){
+      this.meetingsService.deleteMeeting(id).subscribe(res=>{
+        this.meetingsService.getMeetings();
+        this.toastr.warning('Record deleted successfully!!','Meeting Delete');
+      })
+    }
   }
 
 }

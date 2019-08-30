@@ -16,6 +16,7 @@ export class TasksListComponent implements OnInit {
 
   ngOnInit() {
     this.tasksService.getTasks();
+    this.employeesService.getEmployee();
   }
    //RESET FORM
    resetForm(form? : NgForm){
@@ -39,8 +40,17 @@ export class TasksListComponent implements OnInit {
   insertRecord(form : NgForm){
     this.tasksService.postTasks(form.value).subscribe(res => { 
       this.toastr.success('Record inserted successfully','Meetings addition');
+      this.tasksService.getTasks();
       this.resetForm(form);
     })
   }
-
+   //DELETE EMPLOYEES
+   onDelete(id:number){
+    if(confirm("Are you sure you want to delete this record?")){
+      this.tasksService.deleteTask(id).subscribe(res=>{
+        this.tasksService.getTasks();
+        this.toastr.warning('Record deleted successfully!!','Task Delete');
+      })
+    }
+  }
 }

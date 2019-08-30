@@ -57,6 +57,10 @@ export class AdministratorsService{
   postUsers(formData : Administrators){
     return this.http.post(environment.rootApi+'/administrators',formData);
   }
+  //DELETE USERS DATA
+  deleteUsers(id:number){
+    return this.http.delete(environment.rootApi+'/administrators/'+id);
+  }
 }
 //////////////////////////////////////////CUSTOMERS SERVICE//////////////////////
 export class CustomersService{
@@ -74,7 +78,10 @@ export class CustomersService{
   postCustomer(formData : Customers){
     return this.http.post(environment.rootApi+'/customers',formData);
   }
-
+  //DELETE CUSTOMERS DATA
+  deleteCustomers(id:number){
+    return this.http.delete(environment.rootApi+'/customers/'+id);
+  }
 }
 /////////////////////////////////////////////MEETINGS SERVICE////////////////
 export class MeetingsService{
@@ -91,6 +98,10 @@ export class MeetingsService{
   postCustomer(formData : Meetings){
     return this.http.post(environment.rootApi+'/meetings',formData);
   }
+  //DELETE MEETINGS
+  deleteMeeting(id:number){
+    return this.http.delete(environment.rootApi+'/meetings/'+id);
+  }
 
 }
 ////////////////////////////////////////////TASKS SERVICE///////////////////////
@@ -100,15 +111,18 @@ export class TasksService{
   constructor (private http : HttpClient){
 
   }
-  //GET CUSTOMERS LIST
+  //GET TASKS LIST
   getTasks(){
     return this.http.get(environment.rootApi+'/tasks').toPromise().then(res=>this.tasksList = res as Tasks[]);
   }
-  //POST CUSTOMERS
+  //POST TASKS LISTS
   postTasks(formData : Tasks){
     return this.http.post(environment.rootApi+'/tasks',formData);
   }
-
+  //DELETE TASKS
+  deleteTask(id:number){
+    return this.http.delete(environment.rootApi+'/tasks/'+id);
+  }
 }
 ///////////////////////////////////////////////PROJECTS SERVICE/////////////////////
 export class ProjectsService{
@@ -125,7 +139,10 @@ export class ProjectsService{
   postProject(formData : Projects){
     return this.http.post(environment.rootApi+'/projects',formData);
   }
-
+  //DELETE PROJECTS
+  deleteProject(id:number){
+    return this.http.delete(environment.rootApi+'/projects/'+id);
+  }
 }
 //////////////////////////////////////////////LEAVE SERVICE//////////////////////////////////////////
 export class LeaveService{
@@ -142,7 +159,10 @@ export class LeaveService{
   postLeave(formData : Leave){
     return this.http.post(environment.rootApi+'/leave',formData);
   }
-
+   //DELETE LEAVE
+   deleteLeave(id:number){
+    return this.http.delete(environment.rootApi+'/leave/'+id);
+  }
 }
 /////////////////////////////////////////////TICKETS SERVICE/////////////////////////////////////
 export class TicketsService{
@@ -158,6 +178,10 @@ export class TicketsService{
   //POST CUSTOMERS
   postTicket(formData : Tickets){
     return this.http.post(environment.rootApi+'/tickets',formData);
+  }
+   //DELETE TICKETS
+   deleteTicket(id:number){
+    return this.http.delete(environment.rootApi+'/tickets/'+id);
   }
 }
 ///////////////////////////////////////////APPLICATION USER SERVICE///////////////////////////

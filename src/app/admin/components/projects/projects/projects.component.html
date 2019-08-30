@@ -11,15 +11,15 @@
             <th>Action</th>
         </thead>
         <tbody>
-            <!-- <tr *ngFor="let proj of projectService.projectsList">
+            <tr *ngFor="let proj of projectService.projectsList">
                 <td>{{ proj.projectName}}</td>
                 <td>{{ proj.startDate }}</td>
                 <td>{{ proj.endDate}}</td>
                 <th></th>
                 <td>{{ proj.createdDate}}</td>
-                <td><button class="btn btn-sm btn-success">Edit</button> | <button class="btn btn-sm btn-danger">Delete</button></td>
+                <td><button class="btn btn-sm btn-success">Edit</button> | <button class="btn btn-sm btn-danger" (click)="onDelete(proj.id)">Delete</button></td>
             </tr>
-        </tbody> -->
+        </tbody>
     </table> 
 </div>
 <div class="modal" id="project-modal">
@@ -35,7 +35,7 @@
                         <div class="col-12">
                             <div class="form-group">
                                 <label>Project subject</label>
-                                <input type="text" name="ProjectName" #ProjectName="ngModel" [(ngModel)]="project.ProjectName" class="form-control" placeholder="Project name" />
+                                <input type="text" name="ProjectName" #ProjectName="ngModel" [(ngModel)]="projectService.projectData.ProjectName" class="form-control" placeholder="Project name" />
                             </div>
                         </div>
                         <div class="col-12">

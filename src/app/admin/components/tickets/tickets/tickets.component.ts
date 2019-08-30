@@ -18,6 +18,7 @@ export class TicketsComponent implements OnInit {
   constructor(private ticketsService : TicketsService,private toastr : ToastrService,private modalService: NgbModal,private employeesService : EmployeesService) { }
 
   ngOnInit() {
+    this.resetForm();
     this.ticketsService.getTickets();
     this.employeesService.getEmployee();
   }
@@ -38,7 +39,8 @@ export class TicketsComponent implements OnInit {
   }
   insertRecord(form:NgForm){ 
     this.ticketsService.postTicket(form.value).subscribe(res=>{
-      this.toastr.success('Record inserted successfully','Employee registration');
+      this.toastr.success('Record inserted successfully','Ticket registration');
+      this.ticketsService.getTickets();
       this.resetForm(form);
     })
   }
@@ -66,6 +68,15 @@ export class TicketsComponent implements OnInit {
       return 'by clicking on a backdrop';
     } else {
       return  `with: ${reason}`;
+    }
+  }
+  //DELETE TICKETS
+  onDelete(id:number){
+    if(confirm("Are you sure you want to delete this record?")){
+      this.ticketsService.deleteTicket(id).subscribe(res=>{
+        this.ticketsService.getTickets();
+        this.toastr.warning('Record deleted successfully!!','Ticket Delete');
+      })
     }
   }
 

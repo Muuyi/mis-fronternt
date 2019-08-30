@@ -19,7 +19,7 @@
                 <td>{{ task.endDate}}</td>
                 <th></th>
                 <td>{{ task.createdDate}}</td>
-                <td><button class="btn btn-sm btn-success">Edit</button> | <button class="btn btn-sm btn-danger">Delete</button></td>
+                <td><button class="btn btn-sm btn-success">Edit</button> | <button class="btn btn-sm btn-danger" (click)="onDelete(task.id)">Delete</button></td>
             </tr>
         </tbody>
     </table> 
@@ -37,7 +37,7 @@
                         <div class="col-12">
                             <div class="form-group">
                                 <label>Task subject</label>
-                                <input type="text" name="TaskSubject" #TaskSubject="ngModel" [(ngModel)]="task.taskSubject" class="form-control" placeholder="Task subject" />
+                                <input type="text" name="TaskSubject" #TaskSubject="ngModel" [(ngModel)]="task.TaskSubject" class="form-control" placeholder="Task subject" />
                             </div>
                         </div>
                         <div class="col-12">

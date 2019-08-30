@@ -15,7 +15,10 @@ export class LeaveComponent implements OnInit {
   constructor(private leaveService : LeaveService,private employeesService : EmployeesService,private toastr : ToastrService) { }
 
   ngOnInit() {
+    //RESET FORM
+    this.resetForm();
     this.leaveService.getLeave();
+    this.employeesService.getEmployee();
   }
   //RESET FORM
   resetForm(form? : NgForm){
@@ -39,8 +42,17 @@ export class LeaveComponent implements OnInit {
   insertRecord(form : NgForm){
     this.leaveService.postLeave(form.value).subscribe(res => { 
       this.toastr.success('Record inserted successfully','Leave Record');
+      this.leaveService.getLeave();
       this.resetForm(form);
     })
   }
-
+   //DELETE LEAVE
+   onDelete(id:number){
+    if(confirm("Are you sure you want to delete this record?")){
+      this.leaveService.deleteLeave(id).subscribe(res=>{
+        this.leaveService.getLeave();
+        this.toastr.warning('Record deleted successfully!!','Leave Delete');
+      })
+    }
+  }
 }

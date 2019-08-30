@@ -17,23 +17,11 @@
                 <td>{{ lv.endDate }}</td>
                 <td>{{ lv.placeholderId}}</td>
                 <td>{{ lv.createdDate }}</td>
-                <td><button class="btn btn-sm btn-success">Edit</button> | <button class="btn btn-sm btn-danger">Delete</button></td>
+                <td><button class="btn btn-sm btn-success">Edit</button> | <button class="btn btn-sm btn-danger" (click)="onDelete(lv.id)">Delete</button></td>
             </tr>
         </tbody>
     </table> 
 </div>
-<!-- <div class="modal" id="users-modal">
-    <div class="modal-content">
-        <h4>Signup</h4>
-        <div class="input-field col s12">
-            <input type="text" name="Username" #Username="ngModel" [(ngModel)]="users.Username" /> 
-            <label>Username</label>
-        </div>
-    </div>
-    <div class="modal-footer">
-
-    </div>
-</div> -->
 <div class="modal" id="leave-modal">
     <div class="modal-dialog modal-lg">
         <form #form="ngForm" (submit)="onSubmit(form)" >
@@ -47,7 +35,7 @@
                         <div class="col-12">
                             <div class="form-group">
                                 <label>Select Employee</label>
-                                <select class="form-control" name="EmployeesId" #EmployeesId="ngModel" [(ngModel)]="leave.EmployeesId">
+                                <select class="form-control" name="EmployeesId" #EmployeesId="ngModel" [(ngModel)]="leaveService.leaveData.EmployeesId">
                                     <option value="0">--Select--</option>
                                     <option *ngFor="let emp of employeesService.employeesList" value="{{emp.id}}">{{emp.id}} ({{emp.firstName}} {{emp.lastName}})</option>
                                 </select>
@@ -56,19 +44,19 @@
                         <div class="col-12">
                             <div class="form-group">
                                 <label>Start date</label>
-                                <input type="text" name="StartDate" #StartDate="ngModel" [(ngModel)]="leave.StartDate" class="form-control" placeholder="Start date" />
+                                <input type="text" name="StartDate" #StartDate="ngModel" [(ngModel)]="leaveService.leaveData.StartDate" class="form-control" placeholder="Start date" />
                             </div>
                         </div>
                         <div class="col-12">
                             <div class="form-group">
                                 <label>End date</label>
-                                <input type="text" name="EndDate" #EndDate="ngModel" [(ngModel)]="leave.EndDate" class="form-control" placeholder="End date" />
+                                <input type="text" name="EndDate" #EndDate="ngModel" [(ngModel)]="leaveService.leaveData.EndDate" class="form-control" placeholder="End date" />
                             </div>
                         </div>
                         <div class="col-12">
                             <div class="form-group">
                                 <label>Select placeholder Id</label>
-                                <select class="form-control" name="PlaceholderId" #PlaceholderId="ngModel" [(ngModel)]="leave.PlaceholderId">
+                                <select class="form-control" name="PlaceholderId" #PlaceholderId="ngModel" [(ngModel)]="leaveService.leaveData.PlaceholderId">
                                     <option value="0">--Select--</option>
                                     <option *ngFor="let emp of employeesService.employeesList" value="{{emp.id}}">{{emp.id}} ({{emp.firstName}} {{emp.lastName}})</option>
                                 </select>

@@ -1,25 +1,24 @@
 <div class="alert alert-success"><h3>Tickets</h3></div>
 <button class="btn btn-success" (click)="openEmployeesModal(content,null,null)">Add tickets</button>
 <div class="table-responsive">
-    <table datatable [dtOptions]="dtOptions" [dtTrigger]="dtTrigger" class="table table-striped">
+    <table class="table table-striped">
         <thead>
             <th>Name</th>
             <th>Created Date</th>
             <th>Action</th>
         </thead>
         <tbody>
-            <tr *ngFor="let ticket of ticketsService.ticketList;let i=index;">
+            <tr *ngFor="let ticket of ticketsService.ticketsList;let i=index;">
                 <td>{{ ticket.employeesId}}</td>
                 <td>{{ ticket.createdDate }}</td>
-                <td><button class="btn btn-sm btn-success" (click)="openEmployeesModal(content,ticket.id,i)">Edit</button> | <button class="btn btn-sm btn-danger">Delete</button></td>
-                <!-- <td>{{}}</td> -->
+                <td><button class="btn btn-sm btn-success" (click)="openEmployeesModal(content,ticket.id,i)">Edit</button> | <button class="btn btn-sm btn-danger" (click)="onDelete(ticket.id)">Delete</button></td>
             </tr>
         </tbody>
     </table>
 </div>
 <!--EMPLOYEES MODALL-->
-<!-- <ng-template #content let-modal>
-    <form #form="ngForm" (submit)="onSubmit(form)" >
+<ng-template #content let-modal>
+    <form #form="ngForm" (submit)="onSubmit(form)">
         <div class="modal-header">
             <h4 class="modal-title" id="modal-basic-title">Add tickets</h4>
             <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
@@ -28,8 +27,7 @@
         </div>
         <div class="modal-body">
             <div class="row">
-                <div class="col-md-6">
-                <div class="col-md-6">
+                <div class="col-12">
                     <div class="form-group">
                         <label>Select Employees</label>
                         <select class="form-control" name="EmployeesId" #DepartmentId="ngModel" [(ngModel)]="formData.EmployeesId">
@@ -44,4 +42,4 @@
             <button type="submit" class="btn btn-success">Save</button>
         </div>
     </form>
-  </ng-template> -->
+</ng-template>
