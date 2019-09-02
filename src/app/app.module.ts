@@ -17,7 +17,7 @@ import {FormsModule,ReactiveFormsModule} from '@angular/forms';
 import { PageNotFoundComponent } from './page-not-found/page-not-found.component';
 import { PersonalDetailsComponent } from './admin/components/users/personal-details/personal-details.component';
 import { ChangePasswordComponent } from './admin/components/users/change-password/change-password.component';
-import { EmployeesService,DepartmentsService,CustomersService, MeetingsService, TasksService, ProjectsService, LeaveService, TicketsService, AdministratorsService, ApplicationUserService } from './shared/employees.service';
+import { EmployeesService,DepartmentsService,CustomersService, MeetingsService, TasksService, ProjectsService, LeaveService, TicketsService, AdministratorsService, ApplicationUserService, TasksProgressService, ProjectsProgressService, TicketsProgressService } from './shared/employees.service';
 import { MeetingsComponent } from './admin/components/meetings/meetings.component';
 import { TasksListComponent } from './admin/components/tasks/tasks-list/tasks-list.component';
 import { ProjectsComponent } from './admin/components/projects/projects/projects.component';
@@ -26,6 +26,10 @@ import { LeaveComponent } from './admin/components/leave/leave/leave.component';
 import { EmployeesListComponent } from './admin/components/users/employees-list/employees-list.component';
 import { ApplicationUserComponent } from './admin/components/users/application-user/application-user.component';
 import { AuthInterceptor } from './auth/auth.interceptor';
+import { TasksProgressComponent } from './admin/components/tasks/tasks-progress/tasks-progress.component';
+import { ProjectsProgressComponent } from './admin/components/projects/projects-progress/projects-progress.component';
+import { TicketsProgressComponent } from './admin/components/tickets/tickets-progress/tickets-progress.component';
+import { DepartmentsComponent } from './admin/components/users/departments/departments.component';
 
 @NgModule({
   declarations: [
@@ -35,7 +39,11 @@ import { AuthInterceptor } from './auth/auth.interceptor';
     PersonalDetailsComponent,
     ChangePasswordComponent,
     ProjectsComponent,
-    ApplicationUserComponent
+    ApplicationUserComponent,
+    TasksProgressComponent,
+    ProjectsProgressComponent,
+    TicketsProgressComponent,
+    DepartmentsComponent
   ],
   imports: [
     BrowserModule,
@@ -53,7 +61,7 @@ import { AuthInterceptor } from './auth/auth.interceptor';
     NgxSmartModalModule.forRoot(),
   ],
   entryComponents : [EmployeesListComponent],
-  providers: [EmployeesService,DepartmentsService,CustomersService,MeetingsService,TasksService,ProjectsService,LeaveService,TicketsService,AdministratorsService,ApplicationUserService,{
+  providers: [EmployeesService,DepartmentsService,CustomersService,MeetingsService,TasksService,ProjectsService,LeaveService,TicketsService,AdministratorsService,ApplicationUserService,TasksProgressService,ProjectsProgressService,TicketsProgressService,{
     provide : HTTP_INTERCEPTORS,
     useClass : AuthInterceptor,
     multi : true

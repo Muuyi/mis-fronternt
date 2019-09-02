@@ -16,6 +16,7 @@ declare var $:any;
   styleUrls: ['./employees-list.component.scss']
 })
 export class EmployeesListComponent implements OnInit {
+  formData : Employees;
   employeesList :Employees[];
   closeResult: string;
   //DEPARTMENTS LIST
@@ -45,7 +46,7 @@ export class EmployeesListComponent implements OnInit {
   resetForm(form? : NgForm){
     if( form != null)
       form.resetForm();
-    this.employeeService.formData = {
+    this.formData = {
       Id : null,
       FirstName:'',
       LastName:'',
@@ -68,8 +69,15 @@ export class EmployeesListComponent implements OnInit {
   }
   //POPULATE EMPLOYEES RECORDS
   populateEmployeesForm(content,emp:Employees){
-    this.employeeService.formData = Object.assign({},emp);
-    console.log(this.employeeService.formData);
+    this.formData = {
+      Id : emp.Id,
+      FirstName : emp.FirstName,
+      LastName:emp.LastName,
+      Email:emp.Email,
+      Phone:emp.Phone,
+      DepartmentId:emp.DepartmentId,
+    }
+    console.log('Id '+emp.Id);
     this.openEmployeesModal(content);
   }
   //EDIT AND ADD DATA OPEN MODAL WINDOW

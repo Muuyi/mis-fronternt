@@ -1,0 +1,43 @@
+<div class="alert alert-success"><h3>Departments</h3></div>
+<button class="btn btn-success" (click)="openModal(content,null,null)">Add department</button>
+<div class="table-responsive">
+    <table datatable [dtOptions]="dtOptions" [dtTrigger]="dtTrigger" class="table table-striped">
+        <thead>
+            <th>Name</th>
+            <th>Date created</th>
+            <th>Action</th>
+        </thead>
+        <tbody>
+            <tr *ngFor="let dep of departmentsService.departmentsList;let i=index;">
+                <td>{{ dep.departmentName}}</td>
+                <td>{{ dep.createdDate }}</td>
+                <td><button class="btn btn-sm btn-success" (click)=populateEmployeesForm(content,emp,i) >Edit</button> | <button (click)="onDelete(dep.id)" class="btn btn-sm btn-danger">Delete</button></td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+<!--EMPLOYEES MODALL-->
+<ng-template #content let-modal>
+    <form #form="ngForm" (submit)="onSubmit(form)" >
+        <div class="modal-header">
+        <h4 class="modal-title" id="modal-basic-title">Add department</h4>
+        <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+            <span aria-hidden="true">&times;</span>
+        </button>
+        </div>
+        <!-- <p>{{formData.firstName}}</p> -->
+        <div class="modal-body">
+            <div class="row">
+                <div class="col-12">
+                    <div class="form-group">
+                        <label>Last name</label>
+                        <input name="DepartmentName" #DepartmentName="ngModel" [(ngModel)]="formData.DepartmentName" class="form-control" placeholder="Enter department name" />
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button type="submit" [disabled]="form.invalid" class="btn btn-success">Save</button>
+        </div>
+    </form>
+  </ng-template>

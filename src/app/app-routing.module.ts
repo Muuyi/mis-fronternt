@@ -15,6 +15,10 @@ import { LeaveComponent } from './admin/components/leave/leave/leave.component';
 import { TicketsComponent } from './admin/components/tickets/tickets/tickets.component';
 import { ApplicationUserComponent } from './admin/components/users/application-user/application-user.component';
 import { AuthGuard } from './auth/auth.guard';
+import { TasksProgressComponent } from './admin/components/tasks/tasks-progress/tasks-progress.component';
+import { ProjectsProgressComponent } from './admin/components/projects/projects-progress/projects-progress.component';
+import { TicketsProgressComponent } from './admin/components/tickets/tickets-progress/tickets-progress.component';
+import { DepartmentsComponent } from './admin/components/users/departments/departments.component';
 
 
 const routes: Routes = [
@@ -29,10 +33,14 @@ const routes: Routes = [
       {path:'customers-list',component:CustomersListComponent},
       {path:'meetings',component:MeetingsComponent},
       {path:'tasks',component:TasksListComponent},
+      {path:'tasks-progress',component:TasksProgressComponent},
       {path:'projects',component:ProjectsComponent},
+      {path:'projects-progress',component:ProjectsProgressComponent},
       {path:'leave',component:LeaveComponent},
       {path:'tickets',component:TicketsComponent},
-      {path:'application-users',component:ApplicationUserComponent}
+      {path:'tickets-progress',component:TicketsProgressComponent},
+      {path:'application-users',component:ApplicationUserComponent},
+      {path:'departments',component:DepartmentsComponent},
     ]
   },
   {path:'**', component:PageNotFoundComponent}
@@ -44,4 +52,4 @@ const routes: Routes = [
   exports: [RouterModule]
 })
 export class AppRoutingModule { }
-export const routingComponents = [LoginComponent,AdminComponent,PersonalDetailsComponent,ChangePasswordComponent,EmployeesListComponent,SystemUsersComponent,PageNotFoundComponent,CustomersListComponent,MeetingsComponent,TasksListComponent,ProjectsComponent,LeaveComponent,TicketsComponent]
+export const routingComponents = [LoginComponent,AdminComponent,PersonalDetailsComponent,ChangePasswordComponent,EmployeesListComponent,SystemUsersComponent,PageNotFoundComponent,CustomersListComponent,MeetingsComponent,TasksListComponent,ProjectsComponent,LeaveComponent,TicketsComponent,TicketsProgressComponent]

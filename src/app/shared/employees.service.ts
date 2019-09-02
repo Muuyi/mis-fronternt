@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Employees,Departments,Customers, Meetings, Tasks, Projects, Leave, Tickets, Administrators } from './employees.model';
+import { Employees,Departments,Customers, Meetings, Tasks, Projects, Leave, Tickets, Administrators, TasksProgress, ProjectsProgress } from './employees.model';
 import { HttpClient, HttpHeaders } from "@angular/common/http";
 import { environment } from 'src/environments/environment';
 import { FormBuilder, Validators, FormGroup} from '@angular/forms';
@@ -7,7 +7,6 @@ import { FormBuilder, Validators, FormGroup} from '@angular/forms';
 @Injectable({
   providedIn: 'root'
 })
-
 /////////////////////////////////////////////EMPLOYEES SERVICE///////////////////////
 export class EmployeesService {
   formData : Employees;
@@ -38,9 +37,15 @@ export class DepartmentsService{
   //GET DEPARTMENTS
   getDepartments(){
     return this.http.get(environment.rootApi+'/departments').toPromise().then(res=>this.departmentsList = res as Departments[]);
-    // .then(res=>this.departmentsList = res as Departments[]);
   }
-
+  //POST DEPARTMENTS
+  postDepartments(formData : Departments){
+    return this.http.post(environment.rootApi+'/departments',formData);
+  }
+  //DELETE USERS DATA
+  deleteDepartments(id:number){
+    return this.http.delete(environment.rootApi+'/departments/'+id);
+  }
 }
 ////////////////////////////////////////////////USERS SERVICE//////////////////////////
 export class AdministratorsService{
@@ -124,6 +129,25 @@ export class TasksService{
     return this.http.delete(environment.rootApi+'/tasks/'+id);
   }
 }
+//////////////////////////////////////////TASKS PROGRESS SERVICE///////////////////////////////
+export class TasksProgressService {
+  tasksProgressList : TasksProgress[];
+  constructor(private http : HttpClient) { 
+
+  }
+  //POST EMPLOYEE DATA
+  postTasksProgress(formData: TasksProgress){
+    return this.http.post(environment.rootApi+'/tasksProgress',formData);
+  }
+  //GET EMPLOYEES DATA
+  getTasksProgress(){
+    return this.http.get(environment.rootApi+'/tasksProgress').toPromise().then(res=>this.tasksProgressList = res as TasksProgress[]);
+  }
+  //DELETE EMPLOYEES DATA
+  deleteTasksProgress(id:number){
+    return this.http.delete(environment.rootApi+'/tasksProgress/'+id);
+  }
+}
 ///////////////////////////////////////////////PROJECTS SERVICE/////////////////////
 export class ProjectsService{
   projectData : Projects;
@@ -142,6 +166,25 @@ export class ProjectsService{
   //DELETE PROJECTS
   deleteProject(id:number){
     return this.http.delete(environment.rootApi+'/projects/'+id);
+  }
+}
+//////////////////////////////////////////////PROJECTS PROGRESS SERVICE/////////////////////////////
+export class ProjectsProgressService {
+  projectsProgressList : ProjectsProgress[];
+  constructor(private http : HttpClient) { 
+
+  }
+  //POST DATA
+  postProjectsProgress(formData: ProjectsProgress){
+    return this.http.post(environment.rootApi+'/projectsProgress',formData);
+  }
+  //GET DATA
+  getProjectsProgress(){
+    return this.http.get(environment.rootApi+'/projectsProgress').toPromise().then(res=>this.projectsProgressList = res as ProjectsProgress[]);
+  }
+  //DELETE DATA
+  deleteProjectsProgress(id:number){
+    return this.http.delete(environment.rootApi+'/projectsProgress/'+id);
   }
 }
 //////////////////////////////////////////////LEAVE SERVICE//////////////////////////////////////////
@@ -182,6 +225,25 @@ export class TicketsService{
    //DELETE TICKETS
    deleteTicket(id:number){
     return this.http.delete(environment.rootApi+'/tickets/'+id);
+  }
+}
+////////////////////////////////////////////////TICKETS PROGRESS ///////////////////////////////
+export class TicketsProgressService{
+  ticketsProgressList : Tickets[];
+  constructor (private http : HttpClient){
+
+  }
+  //GET DATA LIST
+  getTicketsProgress(){
+    return this.http.get(environment.rootApi+'/ticketsProgress').toPromise().then(res=>this.ticketsProgressList = res as Tickets[]);
+  }
+  //POST DATA
+  postTicketProgress(formData : Tickets){
+    return this.http.post(environment.rootApi+'/ticketsProgress',formData);
+  }
+   //DELETE DATA
+   deleteTicketProgress(id:number){
+    return this.http.delete(environment.rootApi+'/ticketsProgress/'+id);
   }
 }
 ///////////////////////////////////////////APPLICATION USER SERVICE///////////////////////////
@@ -231,3 +293,4 @@ export class ApplicationUserService{
   //   return this.http.get(environment.rootApi+'/ApplicationUser/UserProfile',{headers : tokenHeader})
   // }
 }
+

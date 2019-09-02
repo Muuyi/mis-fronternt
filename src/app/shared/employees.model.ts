@@ -11,6 +11,7 @@ export class Employees {
 export class Departments{
     Id:number
     DepartmentName:string;
+    CreatedDate? : Date;
 }
 //SYSTEM USERS MODEL
 export class Administrators{
@@ -46,6 +47,15 @@ export class Tasks{
     EmployeesId : number;
     CreatedDate : string;
 }
+//TASKS PROGRESS
+export class TasksProgress{
+    Id : number;
+    TasksId : number;
+    Comments : string;
+    Status : string;
+    Metric : number;
+    CreatedDate : Date;
+}
 //PROJECTS
 export class Projects{
     Id : number;
@@ -55,7 +65,14 @@ export class Projects{
     EmployeesId : number;
     CreatedDate : string;
 }
-
+//PROJECTS PROGRESS
+export class ProjectsProgress{
+    Id : number;
+    Comments : string;
+    Metric : number;
+    ProjectsId : number;
+    CreatedDate : Date;
+}
 //LEAVE MODEL
 export class Leave{
     Id : number;
@@ -71,4 +88,13 @@ export class Tickets{
     EmployeesId : number;
     CreatedDate : string;
 }
+//TICKETS PROGRESS
+export class TicketsProgress{
+    Id : number;
+    Comments : string;
+    Status : string;
+    TicketsId : number;
+    CreatedDate : Date;
+}
+
 
