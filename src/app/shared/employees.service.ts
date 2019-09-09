@@ -288,9 +288,9 @@ export class ApplicationUserService{
   //DELETE EMPLOYEES
 
   //GET USER DATA
-  // getUserProfile(){
-  //   var tokenHeader = new HttpHeaders({'Authorization':'Bearer '+localStorage.getItem('token')})
-  //   return this.http.get(environment.rootApi+'/ApplicationUser/UserProfile',{headers : tokenHeader})
-  // }
+  getUserProfile(){
+    // var tokenHeader = new HttpHeaders({'Authorization':'Bearer '+localStorage.getItem('token')})
+    return this.http.get(environment.rootApi+'/UserProfile')
+  }
 }
 

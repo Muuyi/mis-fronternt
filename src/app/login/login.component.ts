@@ -11,7 +11,10 @@ import { ToastrService } from 'ngx-toastr';
   styleUrls: ['./login.component.scss']
 })
 export class LoginComponent implements OnInit {
-  user : Administrators;
+  user = {
+    UserName : '',
+    Password : ''
+  }
   constructor(private usersService : ApplicationUserService,private router : Router,private toastr : ToastrService) { }
 
   ngOnInit() {

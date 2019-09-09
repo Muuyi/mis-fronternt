@@ -39,21 +39,21 @@ export class AdminComponent implements OnInit {
       //DISPLAYING ADMIN CONTENT
       //Profile width
       var sideNavWidth = $("#side-nav").width(); 
-      $("#content-section").css({"margin-top":headerHeight,"margin-left":sideNavWidth})
-      //GET USER DATA
-      // this.userService.getUserProfile().subscribe(
-      //   res => {
-      //     this.userDetails = res;
-      //   },
-      //   err => {
-      //     console.log(err)
-      //   }
-      // )     
+      $("#content-section").css({"margin-top":headerHeight,"margin-left":sideNavWidth}) 
     })
+    //GET USER DATA
+    this.userService.getUserProfile().subscribe(
+      res => {
+        this.userDetails = res;
+      },
+      err => {
+        console.log(err)
+      }
+    )    
   }
   //LOGOUT METHOD
   logout(){
-    localStorage.remove("token");
+    localStorage.removeItem("token");
     this.router.navigate(["/login"]);
   }
 

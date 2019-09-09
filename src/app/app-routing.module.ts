@@ -42,9 +42,9 @@ const routes: Routes = [
       {path:'application-users',component:ApplicationUserComponent},
       {path:'departments',component:DepartmentsComponent},
     ]
-  },
+    ,canActivate:[AuthGuard]
+  }, 
   {path:'**', component:PageNotFoundComponent}
-  // ,canActivate:[AuthGuard]
 ];
 
 @NgModule({

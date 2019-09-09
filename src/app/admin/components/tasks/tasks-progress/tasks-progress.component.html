@@ -13,9 +13,9 @@
             <tr *ngFor="let tasks of tasksProgresService.tasksProgressList;let i=index;">
                 <td>{{ tasks.tasksId}}</td>
                 <td>{{ tasks.status }}</td>
-                <td>{{ tasks.metric }}</td>
+                <td><ngb-progressbar type="danger" [value]=" tasks.metric ">{{tasks.metric}}%</ngb-progressbar></td>
                 <td>{{ tasks.createdDate }}</td>
-                <td><button class="btn btn-sm btn-success" (click)=populateForm(content,emp,i) >Edit</button> | <button (click)="onDelete(tasks.id)" class="btn btn-sm btn-danger">Delete</button></td>
+                <td><button class="btn btn-sm btn-success">Edit</button> | <button (click)="onDelete(tasks.id)" class="btn btn-sm btn-danger">Delete</button></td>
             </tr>
         </tbody>
     </table>

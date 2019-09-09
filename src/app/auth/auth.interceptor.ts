@@ -17,7 +17,7 @@ export class AuthInterceptor implements HttpInterceptor{
                 tap(
                     succ => {},
                     err => {
-                        if(err.status == 400){
+                        if(err.status == 401){
                             localStorage.removeItem('token');
                             this.router.navigateByUrl('/login');
                         }     
@@ -26,6 +26,6 @@ export class AuthInterceptor implements HttpInterceptor{
             )
         }
         else
-            return next .handle(req.clone());
+            return next.handle(req.clone());
     }
 }

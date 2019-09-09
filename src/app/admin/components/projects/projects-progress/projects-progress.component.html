@@ -11,7 +11,7 @@
         <tbody>
             <tr *ngFor="let proj of projectsProgressService.projectsProgressList;let i=index;">
                 <td>{{ proj.projectsId}}</td>
-                <td>{{ proj.metric }}</td>
+                <td><ngb-progressbar type="danger" [value]=" proj.metric ">{{proj.metric}}%</ngb-progressbar></td>
                 <td>{{ proj.createdDate }}</td>
                 <td><button class="btn btn-sm btn-success" (click)=populateForm(content,emp,i) >Edit</button> | <button (click)="onDelete(proj.id)" class="btn btn-sm btn-danger">Delete</button></td>
             </tr>

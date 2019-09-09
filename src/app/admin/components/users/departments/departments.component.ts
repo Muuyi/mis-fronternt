@@ -1,9 +1,13 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit,ViewChild,ElementRef } from '@angular/core';
 import { NgForm } from '@angular/forms';
 import { Departments } from 'src/app/shared/employees.model';
 import { DepartmentsService } from 'src/app/shared/employees.service';
 import { ToastrService } from 'ngx-toastr';
 import { NgbModal,ModalDismissReasons } from '@ng-bootstrap/ng-bootstrap';
+import * as jsPDF from 'jspdf';
+import 'jspdf-autotable';
+import html2canvas from 'html2canvas'
+import { analyzeAndValidateNgModules } from '@angular/compiler';
 
 @Component({
   selector: 'app-departments',
@@ -87,5 +91,25 @@ export class DepartmentsComponent implements OnInit {
       })
     }
   }
-
+  //DOWNLOAD DEPARTMENTS
+  @ViewChild('departmentsTable',{static: false}) departmentsTable : ElementRef;
+  downloadDepartments(){
+    console.log(this.departmentsService.departmentsList);
+    const doc = new jsPDF({
+      // orientation: '1',
+      // unit:'pt',
+      // format : 'carta'
+    });
+   var columns = ["ID","DEPARTMENT NAME"];
+   var rows = [];
+    var departmentsList = this.departmentsService.departmentsList;
+    departmentsList.forEach(departments);
+    function departments(key,value){
+      rows.push([key.departmentId,key.departmentName]);
+      console.log(key.deparmentName);  
+    }
+    
+    doc.autoTable(columns,rows);
+    doc.save('departments.pdf');
+  }
 }
