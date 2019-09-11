@@ -6,6 +6,9 @@ import { CustomersService } from 'src/app/shared/employees.service';
 import { Customers } from 'src/app/shared/employees.model';
 import { NgForm } from '@angular/forms';
 import { NgbModal,ModalDismissReasons } from '@ng-bootstrap/ng-bootstrap';
+import  pdfMake from "pdfmake/build/pdfmake";
+import  pdfFonts  from "pdfmake/build/vfs_fonts";
+pdfMake.vfs = pdfFonts.pdfMake.vfs;
 
 @Component({
   selector: 'app-customers-list',
@@ -72,5 +75,54 @@ export class CustomersListComponent implements OnInit {
         this.toastr.warning('Record deleted successfully!!','Customer Delete');
       })
     }
+  }
+  //GENERATE PDF
+  generatePdf(): void{
+    var tableData = [
+      [{text:'Customer name',style:'tableHeader'},{text:'Email',style:'tableHeader'},{text:'Phone',style:'tableHeader'},{text:'Address',style:'tableHeader'}]
+    ]
+    var customerList = this.customerService.customersList;
+    customerList.forEach(data);
+    function data(key,value){
+      tableData.push([key.name,key.email,key.phone,key.address]); 
+    }
+    console.log(tableData);
+    var dd = {
+      content: [
+        {
+          text:'Customers Report',
+          style:'header'
+        },
+        { 
+          // layout: 'lightHorizontalLines', // optional
+          table: {
+            // headers are automatically repeated if the table spans over multiple pages
+            // you can declare how many rows should be treated as headers
+            headerRows: 1,
+            widths: [ '*', 'auto', 100, '*' ],
+  
+            body: tableData
+            // [
+            //   [ 'First', 'Second', 'Third', 'The last one' ],
+            //   [ 'Value 1', 'Value 2', 'Value 3', 'Value 4' ],
+            //   [ { text: 'Bold value', bold: true }, 'Val 2', 'Val 3', 'Val 4' ]
+            // ]
+          }
+        }
+      ],
+      styles:{
+        header:{
+          fontSize:18,
+          bold:true,
+          alignment:'center'
+        },
+        tableHeader:{
+          bold:true,
+          alignment:'center',
+          fontSize:15
+        }
+      }
+    };
+  pdfMake.createPdf(dd).download('Customers.pdf');
   }
 }

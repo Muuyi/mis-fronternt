@@ -36,6 +36,8 @@
     "ng2-tel-input": "^2.0.3",
     "ngx-smart-modal": "^7.1.1",
     "ngx-toastr": "^10.1.0",
+    "pdfmake": "^0.1.59",
+    "pdfmake-wrapper": "^1.0.7",
     "rxjs": "~6.4.0",
     "tslib": "^1.10.0",
     "zone.js": "~0.9.1"

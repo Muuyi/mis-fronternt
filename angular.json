@@ -101,8 +101,10 @@
               "src/styles.scss"
             ],
             "scripts": [
+              "node_modules/jspdf/dist/jspdf.min.js",
               "node_modules/jspdf-autotable/dist/jspdf.plugin.autotable.js",
-              "node_modules/jspdf/dist/jspdf.min.js"
+              "node_modules/pdfmake/build/pdfmake.js",
+              "node_modules/pdfmake/build/vfs_fonts.js"
             ]
           }
         },

@@ -4,7 +4,7 @@ import { Departments } from 'src/app/shared/employees.model';
 import { DepartmentsService } from 'src/app/shared/employees.service';
 import { ToastrService } from 'ngx-toastr';
 import { NgbModal,ModalDismissReasons } from '@ng-bootstrap/ng-bootstrap';
-import * as jsPDF from 'jspdf';
+import jsPDF from 'jspdf';
 import 'jspdf-autotable';
 import html2canvas from 'html2canvas'
 import { analyzeAndValidateNgModules } from '@angular/compiler';
@@ -96,20 +96,19 @@ export class DepartmentsComponent implements OnInit {
   downloadDepartments(){
     console.log(this.departmentsService.departmentsList);
     const doc = new jsPDF({
-      // orientation: '1',
-      // unit:'pt',
-      // format : 'carta'
+      orientation: '1',
+      unit:'pt',
+      format : 'carta'
     });
    var columns = ["ID","DEPARTMENT NAME"];
    var rows = [];
     var departmentsList = this.departmentsService.departmentsList;
     departmentsList.forEach(departments);
     function departments(key,value){
-      rows.push([key.departmentId,key.departmentName]);
-      console.log(key.deparmentName);  
+      rows.push([key.departmentId,key.departmentName]); 
     }
     
-    doc.autoTable(columns,rows);
+    // doc.autoTable(columns,rows);
     doc.save('departments.pdf');
   }
 }

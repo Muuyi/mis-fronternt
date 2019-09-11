@@ -6,6 +6,10 @@ import { MatDialog } from '@angular/material';
 import { ToastrService } from 'ngx-toastr';
 import { NgbModal,ModalDismissReasons } from '@ng-bootstrap/ng-bootstrap';
 
+import  pdfMake from "pdfmake/build/pdfmake";
+import  pdfFonts  from "pdfmake/build/vfs_fonts";
+pdfMake.vfs = pdfFonts.pdfMake.vfs;
+
 @Component({
   selector: 'app-tasks-progress',
   templateUrl: './tasks-progress.component.html',
@@ -88,6 +92,51 @@ export class TasksProgressComponent implements OnInit {
         this.toastr.warning('Record deleted successfully!!','Tasks Progres Delete');
       })
     }
+  }
+   //GENERATE PDF
+   generatePdf(): void{
+    var tableData = [
+      [{text:'SERIAL NO',style:'tableHeader'},{text:'TASK NAME',style:'tableHeader'},{text:'PROGRESS',style:'tableHeader'},{text:'COMMENTS',style:'tableHeader'},{text:'STATUS',style:'tableHeader'},{text:'CREATED DATE',style:'tableHeader'}]
+    ]
+    var tasksProgressList = this.tasksProgresService.tasksProgressList;
+    tasksProgressList.forEach(data);
+    function data(key,value){
+      tableData.push([key.id,key.tasksId,key.metric,key.comments,key.status,key.createdDate]); 
+    }
+    var dd = {
+      pageSize:'A4',
+      pageOrientation:'landscape',
+      content: [
+        {
+          text:'TASKS PROGRESS REPORT',
+          style:'header'
+        },
+        { 
+          // layout: 'lightHorizontalLines', // optional
+          table: {
+            // headers are automatically repeated if the table spans over multiple pages
+            // you can declare how many rows should be treated as headers
+            headerRows: 1,
+            widths: [ '*', '*', '*', '*','*','*' ],
+  
+            body: tableData
+          }
+        }
+      ],
+      styles:{
+        header:{
+          fontSize:15,
+          bold:true,
+          alignment:'center'
+        },
+        tableHeader:{
+          bold:true,
+          alignment:'center',
+          fontSize:15
+        }
+      }
+    };
+  pdfMake.createPdf(dd).download('TasksProgressReport.pdf');
   }
 
 }

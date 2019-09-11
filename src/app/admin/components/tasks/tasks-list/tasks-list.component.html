@@ -1,5 +1,6 @@
 <div class="alert alert-success"><h3>User tasks</h3></div>
 <button class="btn btn-success" data-toggle="modal" data-target="#tasks-modal">Add task</button>
+<button class="btn btn-warning m-1" (click)="generatePdf()">Tasks Report</button>
 <div class="table-responsive">
     <table datatable [dtOptions]="dtOptions" [dtTrigger]="dtTrigger" class="table table-striped">
         <thead>

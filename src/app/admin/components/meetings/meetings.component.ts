@@ -3,6 +3,9 @@ import { MeetingsService } from 'src/app/shared/employees.service';
 import { Meetings } from 'src/app/shared/employees.model';
 import { NgForm } from '@angular/forms';
 import { ToastrService } from 'ngx-toastr';
+import  pdfMake from "pdfmake/build/pdfmake";
+import  pdfFonts  from "pdfmake/build/vfs_fonts";
+pdfMake.vfs = pdfFonts.pdfMake.vfs;
 
 @Component({
   selector: 'app-meetings',
@@ -53,5 +56,50 @@ export class MeetingsComponent implements OnInit {
       })
     }
   }
+  //GENERATE PDF
+  generatePdf(): void{
+    var tableData = [
+      [{text:'S/NO',style:'tableHeader'},{text:'MEETING SUBJECT',style:'tableHeader'},{text:'DESCRIPTION',style:'tableHeader'},{text:'MEETING DATE',style:'tableHeader'},{text:'CREATED DATE',style:'tableHeader'}]
+    ]
+    var dataList = this.meetingsService.meetingsList;
+    dataList.forEach(data);
+    function data(key,value){
+      tableData.push([key.id,key.subject,key.description,key.meetingDate,key.createdDate]); 
+    }
+    console.log(tableData);
+    var dd = {
+      pageSize:'A4',
+      pageOrientation:'landscape',
+      content: [
+        {
+          text:'MEETINGS REPORT',
+          style:'header'
+        },
+        { 
+          // layout: 'lightHorizontalLines', // optional
+          table: {
+            // headers are automatically repeated if the table spans over multiple pages
+            // you can declare how many rows should be treated as headers
+            headerRows: 1,
+            widths: [ 50, '*', '*', '*','*'],
 
+            body: tableData
+          }
+        }
+      ],
+      styles:{
+        header:{
+          fontSize:15,
+          bold:true,
+          alignment:'center'
+        },
+        tableHeader:{
+          bold:true,
+          alignment:'center',
+          fontSize:15
+        }
+      }
+    };
+  pdfMake.createPdf(dd).download('MeetingsReport.pdf');
+  }
 }
