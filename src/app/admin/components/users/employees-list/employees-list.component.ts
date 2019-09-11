@@ -8,6 +8,10 @@ import { DataTableDirective } from 'angular-datatables';
 import { MatDialog, MatDialogConfig, throwToolbarMixedModesError } from '@angular/material';
 import {NgbModal, ModalDismissReasons} from '@ng-bootstrap/ng-bootstrap';
 import { Employees } from 'src/app/shared/employees.model';
+
+import  pdfMake from "pdfmake/build/pdfmake";
+import  pdfFonts  from "pdfmake/build/vfs_fonts";
+pdfMake.vfs = pdfFonts.pdfMake.vfs;
 // import * as $ from 'jquery'; 
 declare var $:any;
 @Component({
@@ -47,7 +51,7 @@ export class EmployeesListComponent implements OnInit {
     if( form != null)
       form.resetForm();
     this.formData = {
-      Id : null,
+      EmployeeId : null,
       FirstName:'',
       LastName:'',
       Email:'',
@@ -69,15 +73,8 @@ export class EmployeesListComponent implements OnInit {
   }
   //POPULATE EMPLOYEES RECORDS
   populateEmployeesForm(content,emp:Employees){
-    this.formData = {
-      Id : emp.Id,
-      FirstName : emp.FirstName,
-      LastName:emp.LastName,
-      Email:emp.Email,
-      Phone:emp.Phone,
-      DepartmentId:emp.DepartmentId,
-    }
-    console.log('Id '+emp.Id);
+    this.formData = emp;
+    console.log(emp);
     this.openEmployeesModal(content);
   }
   //EDIT AND ADD DATA OPEN MODAL WINDOW
@@ -114,5 +111,50 @@ export class EmployeesListComponent implements OnInit {
         this.toastr.warning('Record deleted successfully!!','Employee Delete');
       })
     }
+  }
+  //GENERATE PDF
+  generatePdf(): void{
+    var tableData = [
+      [{text:'S/NO',style:'tableHeader'},{text:'EMPLOYEE NAME',style:'tableHeader'},{text:'EMAIL',style:'tableHeader'},{text:'PHONE',style:'tableHeader'},{text:'DEPARTMENT',style:'tableHeader'}]
+    ]
+    var dataList = this.employeeService.employeesList;
+    dataList.forEach(data);
+    function data(key,value){
+      tableData.push([key.employeeId,key.firstName+' '+key.lastName,key.email,key.phone,key.department.departmentName]); 
+    }
+    var dd = {
+      pageSize:'A4',
+      pageOrientation:'landscape',
+      content: [
+        {
+          text:'DEPARTMENTS REPORT',
+          style:'header'
+        },
+        { 
+          // layout: 'lightHorizontalLines', // optional
+          table: {
+            // headers are automatically repeated if the table spans over multiple pages
+            // you can declare how many rows should be treated as headers
+            headerRows: 1,
+            widths: [ '*', '*','*','*', '*'],
+  
+            body: tableData
+          }
+        }
+      ],
+      styles:{
+        header:{
+          fontSize:15,
+          bold:true,
+          alignment:'center'
+        },
+        tableHeader:{
+          bold:true,
+          alignment:'center',
+          fontSize:15
+        }
+      }
+    };
+  pdfMake.createPdf(dd).download('Employees Report.pdf');
   }
 }

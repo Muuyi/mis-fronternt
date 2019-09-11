@@ -4,10 +4,10 @@ import { Departments } from 'src/app/shared/employees.model';
 import { DepartmentsService } from 'src/app/shared/employees.service';
 import { ToastrService } from 'ngx-toastr';
 import { NgbModal,ModalDismissReasons } from '@ng-bootstrap/ng-bootstrap';
-import jsPDF from 'jspdf';
-import 'jspdf-autotable';
-import html2canvas from 'html2canvas'
-import { analyzeAndValidateNgModules } from '@angular/compiler';
+
+import  pdfMake from "pdfmake/build/pdfmake";
+import  pdfFonts  from "pdfmake/build/vfs_fonts";
+pdfMake.vfs = pdfFonts.pdfMake.vfs;
 
 @Component({
   selector: 'app-departments',
@@ -48,14 +48,10 @@ export class DepartmentsComponent implements OnInit {
     })
   }
   //POPULATE EMPLOYEES RECORDS
-  populateEmployeesForm(content,dep:Departments){
-    this.formData = {
-      Id : dep.Id,
-      DepartmentName : dep.DepartmentName
-    }
-    console.log('Id '+dep.Id);
-    this.openModal(content);
-  }
+editData(content,dep,i){
+  console.log(dep);
+  this.openModal(content);
+}
   //EDIT AND ADD DATA OPEN MODAL WINDOW
   openModal(content) {
     // if(index == null){
@@ -91,24 +87,49 @@ export class DepartmentsComponent implements OnInit {
       })
     }
   }
-  //DOWNLOAD DEPARTMENTS
-  @ViewChild('departmentsTable',{static: false}) departmentsTable : ElementRef;
-  downloadDepartments(){
-    console.log(this.departmentsService.departmentsList);
-    const doc = new jsPDF({
-      orientation: '1',
-      unit:'pt',
-      format : 'carta'
-    });
-   var columns = ["ID","DEPARTMENT NAME"];
-   var rows = [];
-    var departmentsList = this.departmentsService.departmentsList;
-    departmentsList.forEach(departments);
-    function departments(key,value){
-      rows.push([key.departmentId,key.departmentName]); 
+  //GENERATE PDF
+  generatePdf(): void{
+    var tableData = [
+      [{text:'S/NO',style:'tableHeader'},{text:'DEPARTMENT NAME',style:'tableHeader'}]
+    ]
+    var dataList = this.departmentsService.departmentsList;
+    dataList.forEach(data);
+    function data(key,value){
+      tableData.push([key.departmentId,key.departmentName]); 
     }
-    
-    // doc.autoTable(columns,rows);
-    doc.save('departments.pdf');
+    var dd = {
+      pageSize:'A4',
+      pageOrientation:'portrait',
+      content: [
+        {
+          text:'DEPARTMENTS REPORT',
+          style:'header'
+        },
+        { 
+          // layout: 'lightHorizontalLines', // optional
+          table: {
+            // headers are automatically repeated if the table spans over multiple pages
+            // you can declare how many rows should be treated as headers
+            headerRows: 1,
+            widths: [ '*', '*'],
+  
+            body: tableData
+          }
+        }
+      ],
+      styles:{
+        header:{
+          fontSize:15,
+          bold:true,
+          alignment:'center'
+        },
+        tableHeader:{
+          bold:true,
+          alignment:'center',
+          fontSize:15
+        }
+      }
+    };
+  pdfMake.createPdf(dd).download('DepartmentsReport.pdf');
   }
 }

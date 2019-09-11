@@ -1,5 +1,6 @@
 <div class="alert alert-success"><h3>Employees</h3></div>
 <button class="btn btn-success" (click)="openEmployeesModal(content,null,null)">Add employees</button>
+<button class="btn btn-warning m-1" (click)="generatePdf()">Employees Report</button>
 <div class="table-responsive">
     <table  class="table table-striped">
         <thead>
@@ -7,7 +8,6 @@
             <th>Email</th>
             <th>Phone</th>
             <th>Department</th>
-            <th>Date created</th>
             <th>Action</th>
         </thead>
         <tbody>
@@ -15,11 +15,8 @@
                 <td>{{ emp.firstName}} {{emp.lastName}}</td>
                 <td>{{ emp.email }}</td>
                 <td>{{ emp.phone }}</td>
-                <td>{{ emp.departmentId }}</td>
-                <td>{{ emp.createdDate }}</td>
-                <td><button class="btn btn-sm btn-success" (click)=populateEmployeesForm(content,emp,i) >Edit</button> | <button (click)="onDelete(emp.id)" class="btn btn-sm btn-danger">Delete</button></td>
-                <!-- (click)="openEmployeesModal(content,emp,i)" -->
-                <!-- <td>{{}}</td> -->
+                <td>{{ emp.department.departmentName }}</td>
+                <td><button class="btn btn-sm btn-success" (click)=populateEmployeesForm(content,emp,i) >Edit</button> | <button (click)="onDelete(emp.employeeId)" class="btn btn-sm btn-danger">Delete</button></td>
             </tr>
         </tbody>
     </table>

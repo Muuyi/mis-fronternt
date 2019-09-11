@@ -1,6 +1,6 @@
 //EMPLOYEES MODEL
 export class Employees {
-    Id: number; 
+    EmployeeId: number; 
     FirstName: string;
     LastName: string;
     Email: string;

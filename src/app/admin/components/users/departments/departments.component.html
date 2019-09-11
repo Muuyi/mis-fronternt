@@ -1,6 +1,6 @@
 <div class="alert alert-success"><h3>Departments</h3></div>
 <button class="btn btn-success" (click)="openModal(content,null,null)">Add department</button>
-<button class="btn btn-warning m-1" (click)="downloadDepartments()">Dowload departments</button>
+<button class="btn btn-warning m-1" (click)="generatePdf()">Departments Report</button>
 <div class="table-responsive">
     <table datatable [dtOptions]="dtOptions" [dtTrigger]="dtTrigger" class="table table-striped" id="departmentsTable">
         <thead>
@@ -12,14 +12,10 @@
             <tr *ngFor="let dep of departmentsService.departmentsList;let i=index;">
                 <td>{{ dep.departmentName}}</td>
                 <td>{{ dep.createdDate }}</td>
-                <td><button class="btn btn-sm btn-success" (click)=populateEmployeesForm(content,emp,i) >Edit</button> | <button (click)="onDelete(dep.id)" class="btn btn-sm btn-danger">Delete</button></td>
+                <td><button class="btn btn-sm btn-success" (click)=editData(content,dep,i) >Edit</button> | <button (click)="onDelete(dep.id)" class="btn btn-sm btn-danger">Delete</button></td>
             </tr>
         </tbody>
     </table>
-</div>
-<div #departmentsTable>
-    <h1>JSPDF</h1>
-    <p>This is so wonderful</p>
 </div>
 <!--EMPLOYEES MODALL-->
 <ng-template #content let-modal>
