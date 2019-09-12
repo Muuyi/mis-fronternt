@@ -38,10 +38,6 @@ export class DepartmentsService{
   getDepartments(){
     return this.http.get(environment.rootApi+'/departments').toPromise().then(res=>this.departmentsList = res as Departments[]);
   }
-  //POST DEPARTMENTS
-  postDepartments(formData : Departments){
-    return this.http.post(environment.rootApi+'/departments',formData);
-  }
   //DELETE USERS DATA
   deleteDepartments(id:number){
     return this.http.delete(environment.rootApi+'/departments/'+id);
@@ -256,6 +252,8 @@ export class ApplicationUserService{
     UserName :['',Validators.required],
     Email : ['',Validators.email],
     FullName : [''],
+    PhoneNumber : [''],
+    DepartmentId : [''],
     Passwords : this.fb.group({
       Password : ['',[Validators.required,Validators.minLength(4)]],
       ConfirmPassword : ['',Validators.required]
@@ -277,8 +275,11 @@ export class ApplicationUserService{
       UserName : this.formModel.value.UserName,
       Email : this.formModel.value.Email,
       FullName : this.formModel.value.FullName,
+      PhoneNumber : this.formModel.value.PhoneNumber,
+      DepartmentId : this.formModel.value.DepartmentId,
       Password : this.formModel.value.Passwords.Password,
     }
+    console.log(body);
     return this.http.post(environment.rootApi+'/ApplicationUser/Register',body);
   }
   //LOGIN FORM DATA

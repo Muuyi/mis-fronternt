@@ -12,33 +12,35 @@
             <tr *ngFor="let dep of departmentsService.departmentsList;let i=index;">
                 <td>{{ dep.departmentName}}</td>
                 <td>{{ dep.createdDate }}</td>
-                <td><button class="btn btn-sm btn-success" (click)=editData(content,dep,i) >Edit</button> | <button (click)="onDelete(dep.id)" class="btn btn-sm btn-danger">Delete</button></td>
+                <td><button class="btn btn-sm btn-success" (click)=editData(content,dep,i) >Edit</button> | <button (click)="onDelete(dep.departmentId)" class="btn btn-sm btn-danger">Delete</button></td>
             </tr>
         </tbody>
     </table>
 </div>
 <!--EMPLOYEES MODALL-->
 <ng-template #content let-modal>
-    <form #form="ngForm" (submit)="onSubmit(form)" >
+    <form [formGroup]="departmentsForm" (submit)="onSubmit()">
         <div class="modal-header">
-        <h4 class="modal-title" id="modal-basic-title">Add department</h4>
-        <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
-            <span aria-hidden="true">&times;</span>
-        </button>
+            <h4 class="modal-title" id="modal-basic-title">Add department</h4>
+            <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+                <span aria-hidden="true">&times;</span>
+            </button>
         </div>
-        <!-- <p>{{formData.firstName}}</p> -->
         <div class="modal-body">
             <div class="row">
                 <div class="col-12">
-                    <div class="form-group">
-                        <label>Last name</label>
-                        <input name="DepartmentName" #DepartmentName="ngModel" [(ngModel)]="formData.DepartmentName" class="form-control" placeholder="Enter department name" />
+                    <input type="hidden" formControlName="DepartmentId" />
+                    <div class="form-group required">
+                        <label>Department name</label> 
+                        <input formControlName="DepartmentName" class="form-control" placeholder="Enter department name" />
+                        <label class="text-danger" *ngIf="departmentsForm.get('DepartmentName').touched && departmentsForm.get('DepartmentName').errors?.required">This field is required</label>
+                        <label class="text-danger" *ngIf="departmentsForm.get('DepartmentName').touched && departmentsForm.get('DepartmentName').errors?.minLength">A minimun of 3 characters required</label>
                     </div>
                 </div>
             </div>
         </div>
         <div class="modal-footer">
-            <button type="submit" [disabled]="form.invalid" class="btn btn-success">Save</button>
+            <button type="submit" class="btn btn-success" [disabled]="!departmentsForm.valid">Save</button>
         </div>
     </form>
   </ng-template>

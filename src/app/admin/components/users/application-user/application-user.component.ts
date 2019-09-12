@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { AdministratorsService, ApplicationUserService } from 'src/app/shared/employees.service';
+import { AdministratorsService, ApplicationUserService, DepartmentsService } from 'src/app/shared/employees.service';
 import { NgbModal,ModalDismissReasons } from '@ng-bootstrap/ng-bootstrap';
 import { ToastrService } from 'ngx-toastr';
 
@@ -11,10 +11,11 @@ import { ToastrService } from 'ngx-toastr';
 export class ApplicationUserComponent implements OnInit {
   closeResult : string;
 
-  constructor(public userService : ApplicationUserService,private modalService: NgbModal,private toastr : ToastrService) { }
+  constructor(public userService : ApplicationUserService,private modalService: NgbModal,private toastr : ToastrService,public departmentService : DepartmentsService) { }
 
   ngOnInit() {
     this.userService.formModel.reset();
+    this.departmentService.getDepartments();
   }
   //SUBMIT FORM
   onSubmit(){

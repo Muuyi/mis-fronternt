@@ -37,6 +37,27 @@
             <div class="row">
                 <div class="col-12">
                     <div class="form-group">
+                        <label>Full name</label>
+                        <input formControlName="FullName" class="form-control" placeholder="Enter full name"/>
+                    </div>
+                </div>
+                <div class="col-12">
+                    <div class="form-group">
+                        <label>Phone number</label>
+                        <input formControlName="PhoneNumber" class="form-control" placeholder="Enter phone number"/>
+                    </div>
+                </div>
+                <div class="col-12">
+                    <div class="form-group">
+                        <label>Department</label>
+                        <select class="form-control" formControlName="DepartmentId">
+                            <option value="0">--Select--</option>
+                            <option *ngFor="let dep of departmentService.departmentsList" value="{{dep.departmentId}}">{{dep.departmentName}}</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="col-12">
+                    <div class="form-group">
                         <label>Username</label>
                         <input formControlName="UserName" class="form-control" placeholder="Username"/>
                         <label class="text-danger" *ngIf="userService.formModel.get('UserName').touched && userService.formModel.get('UserName').errors?.required">This field is mandatory</label>
@@ -47,12 +68,6 @@
                         <label>Email</label>
                         <input formControlName="Email" class="form-control" placeholder="Enter email"/>
                         <label class="text-danger" *ngIf="userService.formModel.get('Email').touched && userService.formModel.get('Email').errors?.email">Invalid email entry</label>
-                    </div>
-                </div>
-                <div class="col-12">
-                    <div class="form-group">
-                        <label>Full name</label>
-                        <input formControlName="FullName" class="form-control" placeholder="Enter full name"/>
                     </div>
                 </div>
                 <div class="col">

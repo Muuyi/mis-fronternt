@@ -1,5 +1,5 @@
 import { Component, OnInit,ViewChild,ElementRef } from '@angular/core';
-import { NgForm } from '@angular/forms';
+import { FormBuilder, Validators} from '@angular/forms';
 import { Departments } from 'src/app/shared/employees.model';
 import { DepartmentsService } from 'src/app/shared/employees.service';
 import { ToastrService } from 'ngx-toastr';
@@ -7,6 +7,8 @@ import { NgbModal,ModalDismissReasons } from '@ng-bootstrap/ng-bootstrap';
 
 import  pdfMake from "pdfmake/build/pdfmake";
 import  pdfFonts  from "pdfmake/build/vfs_fonts";
+import { HttpClient, HttpHeaders } from "@angular/common/http";
+import { environment } from 'src/environments/environment';
 pdfMake.vfs = pdfFonts.pdfMake.vfs;
 
 @Component({
@@ -17,39 +19,43 @@ pdfMake.vfs = pdfFonts.pdfMake.vfs;
 export class DepartmentsComponent implements OnInit {
   formData : Departments;
   closeResult : string;
-  constructor(private departmentsService : DepartmentsService,private toastr : ToastrService,private modalService: NgbModal) { }
-
+  
+  constructor(private departmentsService : DepartmentsService,private toastr : ToastrService,private modalService: NgbModal,private fb : FormBuilder,private http : HttpClient) { }
+  departmentsForm = this.fb.group({
+    DepartmentId : [0],
+    DepartmentName : ['',[Validators.required,Validators.minLength(3)]]
+  });
   ngOnInit() {
-    //RESET FORM
-    this.resetForm();
     //DEPARTMENTS SERVICE
     this.departmentsService.getDepartments();
   }
-  //RESET FORM
-  resetForm(form? : NgForm){
-    if( form != null)
-      form.resetForm();
-    this.formData = {
-      Id : null,
-      DepartmentName : '',
-      CreatedDate : null
-    }
-  }
   //SUBMIT FORM DATA
-  onSubmit(form: NgForm){
-    console.log(form);
-    this.insertRecord(form);
-  }
-  insertRecord(form:NgForm){ 
-    this.departmentsService.postDepartments(form.value).subscribe(res=>{
-      this.toastr.success('Record inserted successfully','Employee registration');
-      this.departmentsService.getDepartments();
-      this.resetForm(form);
-    })
+  onSubmit(){
+    var body = {
+      DepartmentId : this.departmentsForm.value.DepartmentId,
+      DepartmentName : this.departmentsForm.value.DepartmentName
+    }
+    if(this.departmentsForm.value.DepartmentId == 0){
+      this.http.post(environment.rootApi+'/departments',body).subscribe(res=>{
+        this.toastr.success('Record inserted successfully','Departments addition');
+        this.departmentsService.getDepartments();
+        this.departmentsForm.reset();
+      })
+    }else{
+      this.http.put(environment.rootApi+'/departments/'+this.departmentsForm.value.DepartmentId,body).subscribe(res=>{
+        this.toastr.info('Record updated successfully','Departments editing');
+        this.departmentsService.getDepartments();
+        this.departmentsForm.reset();
+      })
+    }
+    // this.insertRecord(body);
   }
   //POPULATE EMPLOYEES RECORDS
 editData(content,dep,i){
-  console.log(dep);
+  this.departmentsForm.setValue({
+    DepartmentId : dep.departmentId,
+    DepartmentName:dep.departmentName
+  })
   this.openModal(content);
 }
   //EDIT AND ADD DATA OPEN MODAL WINDOW
