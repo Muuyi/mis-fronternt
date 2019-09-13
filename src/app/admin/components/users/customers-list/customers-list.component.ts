@@ -4,10 +4,13 @@ import { Observable,Subject } from 'rxjs';
 
 import { CustomersService } from 'src/app/shared/employees.service';
 import { Customers } from 'src/app/shared/employees.model';
-import { NgForm } from '@angular/forms';
+import { NgForm, FormBuilder } from '@angular/forms';
 import { NgbModal,ModalDismissReasons } from '@ng-bootstrap/ng-bootstrap';
 import  pdfMake from "pdfmake/build/pdfmake";
 import  pdfFonts  from "pdfmake/build/vfs_fonts";
+import { HttpClient } from '@angular/common/http';
+import { environment } from 'src/environments/environment';
+
 pdfMake.vfs = pdfFonts.pdfMake.vfs;
 
 @Component({
@@ -16,12 +19,17 @@ pdfMake.vfs = pdfFonts.pdfMake.vfs;
   styleUrls: ['./customers-list.component.scss']
 })
 export class CustomersListComponent implements OnInit {
-  customer : Customers;
   closeResult: string;
-  constructor(private customerService:CustomersService, private toastr:ToastrService,private modalService: NgbModal) { }
-  
+  constructor(private customerService:CustomersService, private toastr:ToastrService,private modalService: NgbModal, private fb : FormBuilder,private http : HttpClient) { }
+  customersForm = this.fb.group({
+    Id : [0],
+    Name : [''],
+    Email : [''],
+    Phone : [''],
+    Address : ['']
+  })
   ngOnInit() {
-    this.resetForm();
+    // this.resetForm();
     this.customerService.getCustomers();
   }
   //OPEN MODAL
@@ -44,29 +52,64 @@ export class CustomersListComponent implements OnInit {
     }
   }
   //RESET FORM
-  resetForm(form? : NgForm){
-    if(form != null)
-      form.reset();
-      this.customerService.customersData = {
-        Id:null,
-        Name : '',
-        Email : '',
-        Phone : null,
-        Address : ''
-      }
-  }
+  // resetForm(form? : NgForm){
+  //   if(form != null)
+  //     form.reset();
+  //     this.customerService.customersData = {
+  //       Id:null,
+  //       Name : '',
+  //       Email : '',
+  //       Phone : null,
+  //       Address : ''
+  //     }
+  // }
   //SUBMIT FORM
-  onSubmit(form : NgForm){
-    this.insertRecord(form);
+  onSubmit(){
+    var body = {
+      Id : this.customersForm.value.Id,
+      Name : this.customersForm.value.Name,
+      Email : this.customersForm.value.Email,
+      Phone : this.customersForm.value.Phone,
+      Address : this.customersForm.value.Address
+    }
+    if(this.customersForm.value.Id == 0){
+      this.http.post(environment.rootApi+'/customers',body).subscribe(res=>{
+        this.toastr.success('Record inserted successfully','Customers records');
+        this.customerService.getCustomers();
+        this.customersForm.reset();
+        this.modalService.dismissAll();
+      })
+    }else{
+      this.http.put(environment.rootApi+'/customers/'+this.customersForm.value.Id,body).subscribe(res=>{
+        this.toastr.info('Record successfully updated','Customers records');
+        this.customerService.getCustomers();
+        this.customersForm.reset();
+        this.modalService.dismissAll();
+      })
+    }
+    // this.insertRecord();
   }
-  //INSERT RECORD
-  insertRecord(form : NgForm){
-    this.customerService.postCustomer(form.value).subscribe(res => { 
-      this.toastr.success('Record inserted successfully','User Registration');
-      this.customerService.getCustomers();
-      this.resetForm(form);
+  //EDIT FORM
+  editData(content,customer){
+    console.log(customer);
+    this.customersForm.patchValue({
+      Id : customer.id,
+      Name:customer.name,
+      Email : customer.email,
+      Phone : customer.phone,
+      Address : customer.address
     })
+    this.openModal(content);
   }
+  //POPULATE CUSTOMERS 
+  //INSERT RECORD
+  // insertRecord(){
+  //   this.customerService.postCustomer(form.value).subscribe(res => { 
+  //     this.toastr.success('Record inserted successfully','User Registration');
+  //     this.customerService.getCustomers();
+  //     // this.resetForm(form);
+  //   })
+  // }
   //DELETE EMPLOYEES
   onDelete(id:number){
     if(confirm("Are you sure you want to delete this record?")){
@@ -86,7 +129,6 @@ export class CustomersListComponent implements OnInit {
     function data(key,value){
       tableData.push([key.name,key.email,key.phone,key.address]); 
     }
-    console.log(tableData);
     var dd = {
       content: [
         {

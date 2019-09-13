@@ -76,9 +76,9 @@ export class CustomersService{
     return this.http.get(environment.rootApi+'/customers').toPromise().then(res=>this.customersList = res as Customers[]);
   }
   //POST CUSTOMERS
-  postCustomer(formData : Customers){
-    return this.http.post(environment.rootApi+'/customers',formData);
-  }
+  // postCustomer(formData : Customers){
+  //   return this.http.post(environment.rootApi+'/customers',formData);
+  // }
   //DELETE CUSTOMERS DATA
   deleteCustomers(id:number){
     return this.http.delete(environment.rootApi+'/customers/'+id);
@@ -96,14 +96,13 @@ export class MeetingsService{
     return this.http.get(environment.rootApi+'/meetings').toPromise().then(res=>this.meetingsList = res as Meetings[]);
   }
   //POST CUSTOMERS
-  postCustomer(formData : Meetings){
-    return this.http.post(environment.rootApi+'/meetings',formData);
-  }
+  // postCustomer(formData : Meetings){
+  //   return this.http.post(environment.rootApi+'/meetings',formData);
+  // }
   //DELETE MEETINGS
   deleteMeeting(id:number){
     return this.http.delete(environment.rootApi+'/meetings/'+id);
   }
-
 }
 ////////////////////////////////////////////TASKS SERVICE///////////////////////
 export class TasksService{

@@ -40,12 +40,14 @@ export class DepartmentsComponent implements OnInit {
         this.toastr.success('Record inserted successfully','Departments addition');
         this.departmentsService.getDepartments();
         this.departmentsForm.reset();
+        this.modalService.dismissAll();
       })
     }else{
       this.http.put(environment.rootApi+'/departments/'+this.departmentsForm.value.DepartmentId,body).subscribe(res=>{
         this.toastr.info('Record updated successfully','Departments editing');
         this.departmentsService.getDepartments();
         this.departmentsForm.reset();
+        this.modalService.dismissAll();
       })
     }
     // this.insertRecord(body);

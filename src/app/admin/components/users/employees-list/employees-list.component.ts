@@ -1,7 +1,7 @@
 import { Component, OnInit, ViewChildren } from '@angular/core';
 import {Ng2TelInputModule} from 'ng2-tel-input';
 import { EmployeesService, DepartmentsService } from 'src/app/shared/employees.service';
-import { NgForm } from '@angular/forms';
+import { NgForm, FormBuilder } from '@angular/forms';
 import { Observable,Subject } from 'rxjs';
 import { ToastrService } from 'ngx-toastr';
 import { DataTableDirective } from 'angular-datatables';
@@ -28,11 +28,17 @@ export class EmployeesListComponent implements OnInit {
   dtOptions: DataTables.Settings = {};
   dtTrigger: Subject<any> = new Subject();
   @ViewChildren(DataTableDirective) dtElement: DataTableDirective;
-  constructor(private employeeService: EmployeesService,private departmentService:DepartmentsService, private toastr : ToastrService,private dialog : MatDialog,private modalService: NgbModal ) { }
-
+  constructor(private employeeService: EmployeesService,private departmentService:DepartmentsService, private toastr : ToastrService,private dialog : MatDialog,private modalService: NgbModal, private fb : FormBuilder ) { }
+  //EMPLOYEES FORM
+  employeesForm = this.fb.group({
+    EmployeeId :[0],
+    FirstName:[''],
+    LastName:[''],
+    Email:[''],
+    Phone:[''],
+    DepartmentId:['']
+  });
   ngOnInit() {
-    //Resetting employees form
-    this.resetForm();
     //Datatables
     this.dtOptions = {
       pagingType:'full_numbers',
@@ -46,36 +52,37 @@ export class EmployeesListComponent implements OnInit {
     this.departmentService.getDepartments();
     //FORM DATA INITIALIZATION
   }
-  //RESET FORM
-  resetForm(form? : NgForm){
-    if( form != null)
-      form.resetForm();
-    this.formData = {
-      EmployeeId : null,
-      FirstName:'',
-      LastName:'',
-      Email:'',
-      Phone:null,
-      DepartmentId:0,
-    }
-  }
+
   //SUBMIT FORM DATA
   onSubmit(form: NgForm){
-    console.log(form);
-    this.insertRecord(form);
+    var body = {
+      EmployeeId: this.employeesForm.value.EmployeeId,
+      FirstName: this.employeesForm.value.FirstName,
+      LastName : this.employeesForm.value.LastName,
+      Email : this.employeesForm.value.Email,
+      Phone : this.employeesForm.value.Phone,
+      DepartmentId : this.employeesForm.value.DepartmentId
+    }
+    this.insertRecord(body);
   }
-  insertRecord(form:NgForm){ 
-    this.employeeService.postEmployee(form.value).subscribe(res=>{
+  insertRecord(body){ 
+    this.employeeService.postEmployee(body).subscribe(res=>{
       this.toastr.success('Record inserted successfully','Employee registration');
-      this.resetForm(form);
+      this.employeesForm.reset();
       this.employeeService.getEmployee();
     })
   }
   //POPULATE EMPLOYEES RECORDS
-  populateEmployeesForm(content,emp:Employees){
-    this.formData = emp;
-    console.log(emp);
-    this.openEmployeesModal(content);
+  // populateEmployeesForm(content,emp:Employees){
+  //   this.formData = emp;
+  //   console.log(emp);
+  //   this.openEmployeesModal(content);
+  // }
+  editData(content,emp,i){
+    this.employeesForm.setValue({
+      EmployeeId : emp.employeeId,
+      EmployeeName:emp.departmentName
+    })
   }
   //EDIT AND ADD DATA OPEN MODAL WINDOW
   openEmployeesModal(content) {

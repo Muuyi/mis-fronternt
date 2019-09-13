@@ -1,10 +1,14 @@
 import { Component, OnInit } from '@angular/core';
 import { MeetingsService } from 'src/app/shared/employees.service';
 import { Meetings } from 'src/app/shared/employees.model';
-import { NgForm } from '@angular/forms';
+import { NgForm, FormBuilder } from '@angular/forms';
 import { ToastrService } from 'ngx-toastr';
 import  pdfMake from "pdfmake/build/pdfmake";
 import  pdfFonts  from "pdfmake/build/vfs_fonts";
+import { HttpClient } from '@angular/common/http';
+import { environment } from 'src/environments/environment';
+import { NgbModal,ModalDismissReasons } from '@ng-bootstrap/ng-bootstrap';
+
 pdfMake.vfs = pdfFonts.pdfMake.vfs;
 
 @Component({
@@ -13,39 +17,77 @@ pdfMake.vfs = pdfFonts.pdfMake.vfs;
   styleUrls: ['./meetings.component.scss']
 })
 export class MeetingsComponent implements OnInit {
-  meeting = Meetings;
+  closeResult : string;
 
-  constructor(private meetingsService : MeetingsService, private toastr : ToastrService) { }
+  constructor(private meetingsService : MeetingsService, private toastr : ToastrService,private fb: FormBuilder,private http: HttpClient,private modalService: NgbModal) { }
+  meetingForm = this.fb.group({
+    Id:[0],
+    Subject : [''],
+    Description :[''],
+    MeetingDate :['']
+  })
 
   ngOnInit() {
     //RESET FORM
-    this.resetForm();
+    // this.resetForm();
     //GET MEETINGS
     this.meetingsService.getMeetings();
   }
   //RESET FORM
-  resetForm(form? : NgForm){
-    if(form != null)
-      form.reset();
-      this.meetingsService.meetingsData = {
-        Id:null,
-        Subject : '',
-        Description : '',
-        MeetingDate : '',
-        CreatedDate : ''
-      }
-  }
+  // resetForm(form? : NgForm){
+  //   if(form != null)
+  //     form.reset();
+  //     this.meetingsService.meetingsData = {
+  //       Id:null,
+  //       Subject : '',
+  //       Description : '',
+  //       MeetingDate : '',
+  //       CreatedDate : ''
+  //     }
+  // }
   //SUBMIT FORM
-  onSubmit(form : NgForm){
-    this.insertRecord(form);
+  onSubmit(){
+    var body = {
+      Id : this.meetingForm.value.Id,
+      Subject : this.meetingForm.value.Subject,
+      Description : this.meetingForm.value.Description,
+      MeetingDate : this.meetingForm.value.MeetingDate
+    }
+    if(this.meetingForm.value.Id == 0){
+      this.http.post(environment.rootApi+'/meetings',body).subscribe(res=>{
+        this.toastr.success('Record inserted successfully','Meetings records');
+        this.meetingsService.getMeetings();
+        this.meetingForm.reset();
+        this.modalService.dismissAll();
+      })
+    }
   }
   //INSERT RECORD
   insertRecord(form : NgForm){
     this.meetingsService.postCustomer(form.value).subscribe(res => { 
       this.toastr.success('Record inserted successfully','Meetings addition');
       this.meetingsService.getMeetings();
-      this.resetForm(form);
+      // this.resetForm(form);
     })
+  }
+   //EDIT AND ADD DATA OPEN MODAL WINDOW
+   openModal(content) {
+      this.modalService.open(content, {ariaLabelledBy: 'modal-basic-title'}).result.then((result) => {
+        this.closeResult = `Closed with: ${result}`;
+      }, (reason) => {
+        this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
+      });
+     
+  }
+  //DISMISS MODAL WINDOW
+  private getDismissReason(reason: any): string {
+    if (reason === ModalDismissReasons.ESC) {
+      return 'by pressing ESC';
+    } else if (reason === ModalDismissReasons.BACKDROP_CLICK) {
+      return 'by clicking on a backdrop';
+    } else {
+      return  `with: ${reason}`;
+    }
   }
   //DELETE MEETINGS
   onDelete(id:number){

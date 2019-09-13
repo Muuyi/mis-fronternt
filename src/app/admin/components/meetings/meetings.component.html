@@ -1,5 +1,5 @@
 <div class="alert alert-success"><h3>Meetings</h3></div>
-<button class="btn btn-success" data-toggle="modal" data-target="#meetings-modal">Add a meeting</button>
+<button class="btn btn-success" (click)="openModal(content)">Add a meeting</button>
 <button class="btn btn-warning m-1" (click)="generatePdf()">Meetings Report</button>
 <div class="table-responsive">
     <table datatable [dtOptions]="dtOptions" [dtTrigger]="dtTrigger" class="table table-striped">
@@ -21,44 +21,42 @@
         </tbody>
     </table> 
 </div>
-<div class="modal" id="meetings-modal">
-    <div class="modal-dialog modal-lg">
-        <form #form="ngForm" (submit)="onSubmit(form)" >
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h3 class="modal-title">Add meetings</h3>
-                    <button class="close" data-dismiss="modal">&times;</button>
-                </div>
-                <div class="modal-body">
-                    <div class="row">
-                        <div class="col-12">
-                            <div class="form-group">
-                                <label>Subject</label>
-                                <input type="text" name="Subject" #Subject="ngModel" [(ngModel)]="meeting.Subject" class="form-control" placeholder="Meeting subject" />
-                            </div>
+<ng-template #content let-modal>
+    <form [formGroup]="meetingForm" (submit)="onSubmit()" >
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title">Add meetings</h3>
+                <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')"><span aria-hidden="true">&times;</span></button>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-12">
+                        <div class="form-group">
+                            <label>Subject</label>
+                            <input type="text" formControlName="Subject" class="form-control" placeholder="Meeting subject" />
                         </div>
-                        <div class="col-12">
-                            <div class="form-group">
-                                <label>Meeting description</label>
-                                <input type="text" name="Description" #Description="ngModel" [(ngModel)]="meeting.Description" class="form-control" placeholder="Meeting description" />
-                            </div>
+                    </div>
+                    <div class="col-12">
+                        <div class="form-group">
+                            <label>Meeting description</label>
+                            <input type="text" formControlName="Description" class="form-control" placeholder="Meeting description" />
                         </div>
-                        <div class="col-12">
-                            <div class="form-group">
-                                <label>Meeting date</label>
+                    </div>
+                    <div class="col-12">
+                        <div class="form-group">
+                            <label>Meeting date</label>
                                 <!-- <input type="date" ngbDatepicker #d="ngbDatepicker"/> -->
-                                <input type="date" name="MeetingDate" #MeetingDate="ngModel" [(ngModel)]="meeting.MeetingDate" class="form-control" placeholder="Meeting date" />
-                            </div>
+                            <input type="date" formControlName="MeetingDate" class="form-control" placeholder="Meeting date" />
                         </div>
                     </div>
                 </div>
-                <div class="modal-footer">
-                    <button type="submit"  class="btn btn-success">Save</button>
-                    <button class="btn btn-danger" data-dismiss="modal">Close</button>
-                </div>
             </div>
-        </form>
-    </div>
-</div> 
+            <div class="modal-footer">
+                <button type="submit"  class="btn btn-success">Save</button>
+                <button class="btn btn-danger" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </form>
+</ng-template>
 
 
