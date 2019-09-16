@@ -155,9 +155,9 @@ export class ProjectsService{
     return this.http.get(environment.rootApi+'/projects').toPromise().then(res=>this.projectsList = res as Projects[]);
   }
   //POST CUSTOMERS
-  postProject(formData : Projects){
-    return this.http.post(environment.rootApi+'/projects',formData);
-  }
+  // postProject(formData : Projects){
+  //   return this.http.post(environment.rootApi+'/projects',formData);
+  // }
   //DELETE PROJECTS
   deleteProject(id:number){
     return this.http.delete(environment.rootApi+'/projects/'+id);

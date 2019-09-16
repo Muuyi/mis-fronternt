@@ -16,12 +16,12 @@
                 <td>{{ tasks.status }}</td>
                 <td><ngb-progressbar type="danger" [value]=" tasks.metric ">{{tasks.metric}}%</ngb-progressbar></td>
                 <td>{{ tasks.createdDate }}</td>
-                <td><button class="btn btn-sm btn-success">Edit</button> | <button (click)="onDelete(tasks.id)" class="btn btn-sm btn-danger">Delete</button></td>
+                <td><button class="btn btn-sm btn-success" (click)="editData(content,tasks)">Edit</button> | <button (click)="onDelete(tasks.id)" class="btn btn-sm btn-danger">Delete</button></td>
             </tr>
         </tbody>
     </table>
 </div>
-<!--EMPLOYEES MODALL-->
+<!--PROJECT PROGRESS MODALL-->
 <ng-template #content let-modal>
     <form [formGroup]="progressForm" (submit)="onSubmit()" >
         <div class="modal-header">
@@ -30,10 +30,11 @@
             <span aria-hidden="true">&times;</span>
         </button>
         </div>
-        <!-- <p>{{formData.firstName}}</p> -->
         <div class="modal-body">
             <div class="row">
                 <div class="col-12">
+                    <!-- ID -->
+                    <input type="hidden" formControlName="Id" />
                     <div class="form-group">
                         <label>Select task</label>
                         <select class="form-control" formControlName="TasksId">

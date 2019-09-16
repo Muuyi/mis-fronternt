@@ -52,7 +52,7 @@ export class TasksProgressComponent implements OnInit {
   //   }
   //   }
   //SUBMIT FORM DATA
-  onSubmit(form: NgForm){
+  onSubmit(){
     var body = {
       Id : this.progressForm.value.Id,
       TasksId : this.progressForm.value.TasksId,
@@ -77,6 +77,18 @@ export class TasksProgressComponent implements OnInit {
       })
     }
   }
+  //TASKS PROGRESS
+  //POPULATE TASKS RECORDS
+  editData(content,task){
+    this.progressForm.setValue({
+      Id : task.id,
+      TasksId : task.tasksId,
+      Comments : task.comments,
+      Status : task.status,
+      Metric : task.metric
+    })
+    this.openModal(content);
+  }
   // insertRecord(form:NgForm){ 
   //   this.tasksProgresService.postTasksProgress(form.value).subscribe(res=>{
   //     this.toastr.success('Record inserted successfully','Tasks Progress addition');
@@ -92,19 +104,11 @@ export class TasksProgressComponent implements OnInit {
   // }
   //EDIT AND ADD DATA OPEN MODAL WINDOW
   openModal(content) {
-    // if(index == null){
       this.modalService.open(content, {ariaLabelledBy: 'modal-basic-title'}).result.then((result) => {
         this.closeResult = `Closed with: ${result}`;
       }, (reason) => {
         this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
-      });
-     
-    // }else{
-    //   this.getEmployeeData = index;
-    //   this.modalService.open(content);
-    //   console.log(this.employeeService.formData);
-    // }
-      
+      });      
   }
   //DISMISS MODAL WINDOW
   private getDismissReason(reason: any): string {
@@ -133,7 +137,7 @@ export class TasksProgressComponent implements OnInit {
     var tasksProgressList = this.tasksProgresService.tasksProgressList;
     tasksProgressList.forEach(data);
     function data(key,value){
-      tableData.push([key.id,key.tasksId,key.metric,key.comments,key.status,key.createdDate]); 
+      tableData.push([key.id,key.tasks.taskSubject,key.metric,key.comments,key.status,key.createdDate]); 
     }
     var dd = {
       pageSize:'A4',
@@ -149,7 +153,7 @@ export class TasksProgressComponent implements OnInit {
             // headers are automatically repeated if the table spans over multiple pages
             // you can declare how many rows should be treated as headers
             headerRows: 1,
-            widths: [ '*', '*', '*', '*','*','*' ],
+            widths: [ 50, '*', 100, '*','*','*' ],
   
             body: tableData
           }

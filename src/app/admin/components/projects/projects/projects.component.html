@@ -1,5 +1,5 @@
 <div class="alert alert-success"><h3>Projects</h3></div>
-<button class="btn btn-success" data-toggle="modal" data-target="#project-modal">Add project</button>
+<button class="btn btn-success" (click)="openModal(content,null,null)">Add project</button>
 <div class="table-responsive">
     <table class="table table-striped">
         <thead>
@@ -15,16 +15,15 @@
                 <td>{{ proj.projectName}}</td>
                 <td>{{ proj.startDate }}</td>
                 <td>{{ proj.endDate}}</td>
-                <th></th>
+                <td>{{ proj.employee.firstName}} {{ proj.employee.lastName}}</td>
                 <td>{{ proj.createdDate}}</td>
-                <td><button class="btn btn-sm btn-success">Edit</button> | <button class="btn btn-sm btn-danger" (click)="onDelete(proj.id)">Delete</button></td>
+                <td><button class="btn btn-sm btn-success" (click)=editData(content,proj)>Edit</button> | <button class="btn btn-sm btn-danger" (click)="onDelete(proj.id)">Delete</button></td>
             </tr>
         </tbody>
     </table> 
 </div>
-<div class="modal" id="project-modal">
-    <div class="modal-dialog modal-lg">
-        <form #form="ngForm" (submit)="onSubmit(form)" >
+<ng-template #content let-modal>
+        <form [formGroup]="projectsForm" (submit)="onSubmit()" >
             <div class="modal-content">
                 <div class="modal-header">
                     <h3 class="modal-title">Add Project</h3>
@@ -32,30 +31,32 @@
                 </div>
                 <div class="modal-body">
                     <div class="row">
+                        <!-- ID -->
+                        <input type="hidden" formControlName="Id" />
                         <div class="col-12">
                             <div class="form-group">
                                 <label>Project subject</label>
-                                <input type="text" name="ProjectName" #ProjectName="ngModel" [(ngModel)]="projectService.projectData.ProjectName" class="form-control" placeholder="Project name" />
+                                <input type="text" formControlName="ProjectName" class="form-control" placeholder="Project name" />
                             </div>
                         </div>
                         <div class="col-12">
                             <div class="form-group">
                                 <label>Start date</label>
-                                <input type="date" name="StartDate" #StartDate="ngModel" [(ngModel)]="projectService.projectData.StartDate" class="form-control" placeholder="Start date" />
+                                <input type="date" formControlName="StartDate" class="form-control" placeholder="Start date" />
                             </div>
                         </div>
                         <div class="col-12">
                             <div class="form-group">
                                 <label>End date</label>
-                                <input type="date" name="EndDate" #EndDate="ngModel" [(ngModel)]="projectService.projectData.EndDate" class="form-control" placeholder="End date" />
+                                <input type="date" formControlName="EndDate" class="form-control" placeholder="End date" />
                             </div>
                         </div>
                         <div class="col-12">
                             <div class="form-group">
                                 <label>Select Employee</label>
-                                <select class="form-control" name="EmployeesId" #EmployeesId="ngModel" [(ngModel)]="projectService.projectData.EmployeesId">
+                                <select class="form-control" formControlName="EmployeeId">
                                     <option value="0">--Select--</option>
-                                    <option *ngFor="let emp of employeesService.employeesList" value="{{emp.id}}">{{emp.id}} ({{emp.firstName}} {{emp.lastName}})</option>
+                                    <option *ngFor="let emp of employeesService.employeesList" value="{{emp.employeeId}}">{{emp.employeeId}} ({{emp.firstName}} {{emp.lastName}})</option>
                                 </select>
                             </div>
                         </div>
@@ -67,8 +68,7 @@
                 </div>
             </div>
         </form>
-    </div>
-</div> 
+</ng-template>
 
 
 
