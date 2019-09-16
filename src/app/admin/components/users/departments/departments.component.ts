@@ -53,28 +53,20 @@ export class DepartmentsComponent implements OnInit {
     // this.insertRecord(body);
   }
   //POPULATE EMPLOYEES RECORDS
-editData(content,dep,i){
-  this.departmentsForm.setValue({
-    DepartmentId : dep.departmentId,
-    DepartmentName:dep.departmentName
-  })
-  this.openModal(content);
-}
+  editData(content,dep,i){
+    this.departmentsForm.setValue({
+      DepartmentId : dep.departmentId,
+      DepartmentName:dep.departmentName
+    })
+    this.openModal(content);
+  }
   //EDIT AND ADD DATA OPEN MODAL WINDOW
   openModal(content) {
-    // if(index == null){
       this.modalService.open(content, {ariaLabelledBy: 'modal-basic-title'}).result.then((result) => {
         this.closeResult = `Closed with: ${result}`;
       }, (reason) => {
         this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
       });
-     
-    // }else{
-    //   this.getEmployeeData = index;
-    //   this.modalService.open(content);
-    //   console.log(this.employeeService.formData);
-    // }
-      
   }
   //DISMISS MODAL WINDOW
   private getDismissReason(reason: any): string {

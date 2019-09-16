@@ -1,13 +1,16 @@
 import { Component, OnInit } from '@angular/core';
 import { TasksProgress } from 'src/app/shared/employees.model';
 import { TasksProgressService, TasksService } from 'src/app/shared/employees.service';
-import { NgForm } from '@angular/forms';
+import { NgForm, FormBuilder } from '@angular/forms';
 import { MatDialog } from '@angular/material';
 import { ToastrService } from 'ngx-toastr';
 import { NgbModal,ModalDismissReasons } from '@ng-bootstrap/ng-bootstrap';
 
 import  pdfMake from "pdfmake/build/pdfmake";
 import  pdfFonts  from "pdfmake/build/vfs_fonts";
+import { HttpClient } from '@angular/common/http';
+import { environment } from 'src/environments/environment';
+
 pdfMake.vfs = pdfFonts.pdfMake.vfs;
 
 @Component({
@@ -18,46 +21,75 @@ pdfMake.vfs = pdfFonts.pdfMake.vfs;
 export class TasksProgressComponent implements OnInit {
   formData : TasksProgress;
   closeResult : string;
-  constructor(private tasksProgresService : TasksProgressService, private toastr : ToastrService,private dialog : MatDialog,private modalService: NgbModal,private tasksService : TasksService ) { }
+  constructor(private tasksProgresService : TasksProgressService, private toastr : ToastrService,private dialog : MatDialog,private modalService: NgbModal,private tasksService : TasksService, private fb : FormBuilder,private http : HttpClient ) { }
+  progressForm = this.fb.group({
+    Id : [0],
+    TasksId : [''],
+    Comments : [''],
+    Status : [''],
+    Metric : ['']
+  })
 
   ngOnInit() {
     //RESET FORM
-    this.resetForm();
+    // this.resetForm();
     //TASKS SERVICE
     this.tasksService.getTasks();
     //TASKS PROGRESS SERVICE
     this.tasksProgresService.getTasksProgress();
   }
-   //RESET FORM
-   resetForm(form? : NgForm){
-    if( form != null)
-      form.resetForm();
-    this.formData = {
-      Id : null,
-      TasksId:null,
-      Comments:'',
-      Status:'',
-      Metric:null,
-      CreatedDate:null,
-    }
-  }
+  //  //RESET FORM
+  //  resetForm(form? : NgForm){
+  //   if( form != null)
+  //     form.resetForm();
+  //   this.formData = {
+  //     Id : null,
+  //     TasksId:null,
+  //     Comments:'',
+  //     Status:'',
+  //     Metric:null,
+  //     CreatedDate:null,
+  //   }
+  //   }
   //SUBMIT FORM DATA
   onSubmit(form: NgForm){
-    this.insertRecord(form);
+    var body = {
+      Id : this.progressForm.value.Id,
+      TasksId : this.progressForm.value.TasksId,
+      Comments : this.progressForm.value.Comments,
+      Status : this.progressForm.value.Status,
+      Metric : this.progressForm.value.Metric
+    }
+    // this.insertRecord(form);
+    if(this.progressForm.value.Id == 0){
+      this.http.post(environment.rootApi+'/tasksProgress',body).subscribe(res=>{
+        this.toastr.success('Record inserted successfully','Tasks Progress Records');
+        this.tasksProgresService.getTasksProgress();
+        this.progressForm.reset();
+        this.modalService.dismissAll();
+      })
+    }else{
+      this.http.put(environment.rootApi+'/tasksProgress/'+this.progressForm.value.Id,body).subscribe(res=>{
+        this.toastr.info('Record updated successfully','Tasks Progress records');
+        this.tasksProgresService.getTasksProgress();
+        this.progressForm.reset();
+        this.modalService.dismissAll();
+      })
+    }
   }
-  insertRecord(form:NgForm){ 
-    this.tasksProgresService.postTasksProgress(form.value).subscribe(res=>{
-      this.toastr.success('Record inserted successfully','Tasks Progress addition');
-      this.tasksProgresService.getTasksProgress();
-      this.resetForm(form);
-    })
-  }
+  // insertRecord(form:NgForm){ 
+  //   this.tasksProgresService.postTasksProgress(form.value).subscribe(res=>{
+  //     this.toastr.success('Record inserted successfully','Tasks Progress addition');
+  //     this.tasksProgresService.getTasksProgress();
+  //     this.resetForm(form);
+  //   })
+  // }
   //POPULATE EMPLOYEES RECORDS
-  populateEmployeesForm(content,emp:TasksProgress){
-    this.formData = Object.assign({},emp);
-    // console.log(this.employeeService.formData);
-    this.openModal(content);
-  }
+  // populateEmployeesForm(content,emp:TasksProgress){
+  //   this.formData = Object.assign({},emp);
+  //   // console.log(this.employeeService.formData);
+  //   this.openModal(content);
+  // }
   //EDIT AND ADD DATA OPEN MODAL WINDOW
   openModal(content) {
     // if(index == null){

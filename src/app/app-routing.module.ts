@@ -43,7 +43,8 @@ const routes: Routes = [
       {path:'departments',component:DepartmentsComponent},
     ]
     ,canActivate:[AuthGuard]
-  }, 
+  },
+  //  
   {path:'**', component:PageNotFoundComponent}
 ];
 

@@ -1,10 +1,13 @@
 import { Component, OnInit } from '@angular/core';
-import { NgForm } from '@angular/forms';
+import { NgForm, FormBuilder } from '@angular/forms';
 import { TasksService, EmployeesService } from 'src/app/shared/employees.service';
 import { ToastrService } from 'ngx-toastr';
 import { Tasks } from 'src/app/shared/employees.model';
 import  pdfMake from "pdfmake/build/pdfmake";
 import  pdfFonts  from "pdfmake/build/vfs_fonts";
+import { HttpClient } from '@angular/common/http';
+import { environment } from 'src/environments/environment';
+import { NgbModal,ModalDismissReasons } from '@ng-bootstrap/ng-bootstrap';
 pdfMake.vfs = pdfFonts.pdfMake.vfs;
 
 @Component({
@@ -13,40 +16,84 @@ pdfMake.vfs = pdfFonts.pdfMake.vfs;
   styleUrls: ['./tasks-list.component.scss']
 })
 export class TasksListComponent implements OnInit {
-  task = Tasks;
+  closeResult : string;
 
-  constructor(private tasksService : TasksService,private employeesService : EmployeesService,private toastr : ToastrService) { }
+  constructor(private tasksService : TasksService,private employeesService : EmployeesService,private toastr : ToastrService, private fb : FormBuilder,private http : HttpClient,private modalService: NgbModal) { }
+  tasksForm = this.fb.group({
+    Id : [0],
+    TaskSubject :[''],
+    Description : [''],
+    StartDate : [''],
+    EndDate : [''],
+    EmployeeId : ['']
+  })
 
   ngOnInit() {
     this.tasksService.getTasks();
     this.employeesService.getEmployee();
+    console.log(this.employeesService.employeesList);
   }
    //RESET FORM
-   resetForm(form? : NgForm){
-    if(form != null)
-      form.reset();
-      this.tasksService.tasksData = {
-        Id:null,
-        TaskSubject : '',
-        Description : '',
-        StartDate : '',
-        EndDate : '',
-        CreatedDate : '',
-        EmployeesId : null
-      }
-  }
+  //  resetForm(form? : NgForm){
+  //   if(form != null)
+  //     form.reset();
+  //     this.tasksService.tasksData = {
+  //       Id:null,
+  //       TaskSubject : '',
+  //       Description : '',
+  //       StartDate : '',
+  //       EndDate : '',
+  //       CreatedDate : '',
+  //       EmployeesId : null
+  //     }
+  //   }
   //SUBMIT FORM
-  onSubmit(form : NgForm){
-    this.insertRecord(form);
+  onSubmit(){
+    var body = {
+      Id : this.tasksForm.value.Id,
+      TaskSubject :this.tasksForm.value.TaskSubject,
+      Description : this.tasksForm.value.Description,
+      StartDate : this.tasksForm.value.StartDate,
+      EndDate : this.tasksForm.value.EndDate,
+      EmployeeId : this.tasksForm.value.EmployeeId
+    }
+    if(this.tasksForm.value.Id == 0){
+      this.http.post(environment.rootApi+'/tasks',body).subscribe(res=>{
+        this.toastr.success('Record inserted successfully','Tasks Records');
+        this.tasksService.getTasks();
+        this.tasksForm.reset();
+        this.modalService.dismissAll();
+      })
+    }else{
+      this.http.put(environment.rootApi+'/tasks/'+this.tasksForm.value.Id,body).subscribe(res=>{
+        this.toastr.info('Record updated successfully','Tasks records');
+        this.tasksService.getTasks();
+        this.tasksForm.reset();
+        this.modalService.dismissAll();
+      })
+    }
+    // this.insertRecord(form);
+  }
+  //POPULATE TASKS RECORDS
+  editData(content,task){
+    this.tasksForm.setValue({
+      Id : task.id,
+      TaskSubject : task.taskSubject,
+      Description : task.description,
+      StartDate : task.startDate,
+      EndDate : task.endDate,
+      EmployeeId : task.employeeId
+    })
+    this.openModal(content);
   }
   //INSERT RECORD
-  insertRecord(form : NgForm){
-    this.tasksService.postTasks(form.value).subscribe(res => { 
-      this.toastr.success('Record inserted successfully','Meetings addition');
-      this.tasksService.getTasks();
-      this.resetForm(form);
-    })
-  }
+  // insertRecord(form : NgForm){
+  //   this.tasksService.postTasks(form.value).subscribe(res => { 
+  //     this.toastr.success('Record inserted successfully','Meetings addition');
+  //     this.tasksService.getTasks();
+  //     this.resetForm(form);
+  //   })
+  // }
    //DELETE EMPLOYEES
   onDelete(id:number){
     if(confirm("Are you sure you want to delete this record?")){
@@ -54,6 +101,24 @@ export class TasksListComponent implements OnInit {
         this.tasksService.getTasks();
         this.toastr.warning('Record deleted successfully!!','Task Delete');
       })
+    }
+  }
+  //EDIT AND ADD DATA OPEN MODAL WINDOW
+  openModal(content) {
+      this.modalService.open(content, {ariaLabelledBy: 'modal-basic-title'}).result.then((result) => {
+        this.closeResult = `Closed with: ${result}`;
+      }, (reason) => {
+        this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
+      }); 
+  }
+  //DISMISS MODAL WINDOW
+  private getDismissReason(reason: any): string {
+    if (reason === ModalDismissReasons.ESC) {
+      return 'by pressing ESC';
+    } else if (reason === ModalDismissReasons.BACKDROP_CLICK) {
+      return 'by clicking on a backdrop';
+    } else {
+      return  `with: ${reason}`;
     }
   }
    //GENERATE PDF
@@ -64,7 +129,7 @@ export class TasksListComponent implements OnInit {
     var tasksList = this.tasksService.tasksList;
     tasksList.forEach(data);
     function data(key,value){
-      tableData.push([key.id,key.taskSubject,key.description,key.startDate,key.endDate,key.employeesId,key.createdDate]); 
+      tableData.push([key.id,key.taskSubject,key.description,key.startDate,key.endDate,key.employee.firstName+' '+key.employee.lastName,key.createdDate]); 
     }
     console.log(tableData);
     var dd = {

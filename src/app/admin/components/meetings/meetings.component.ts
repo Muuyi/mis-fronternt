@@ -60,15 +60,32 @@ export class MeetingsComponent implements OnInit {
         this.meetingForm.reset();
         this.modalService.dismissAll();
       })
+    }else{
+      this.http.put(environment.rootApi+'/meetings/'+this.meetingForm.value.Id,body).subscribe(res=>{
+        this.toastr.info('Record updated successfully','Departments editing');
+        this.meetingsService.getMeetings();
+        this.meetingForm.reset();
+        this.modalService.dismissAll();
+      })
     }
   }
   //INSERT RECORD
-  insertRecord(form : NgForm){
-    this.meetingsService.postCustomer(form.value).subscribe(res => { 
-      this.toastr.success('Record inserted successfully','Meetings addition');
-      this.meetingsService.getMeetings();
-      // this.resetForm(form);
+  // insertRecord(form : NgForm){
+  //   this.meetingsService.postCustomer(form.value).subscribe(res => { 
+  //     this.toastr.success('Record inserted successfully','Meetings addition');
+  //     this.meetingsService.getMeetings();
+  //     // this.resetForm(form);
+  //   })
+  // }
+  //POPULATE EMPLOYEES RECORDS
+  editData(content,meeting){
+    this.meetingForm.setValue({
+      Id:meeting.id,
+      Subject : meeting.subject,
+      Description :meeting.description,
+      MeetingDate :meeting.meetingDate
     })
+    this.openModal(content);
   }
    //EDIT AND ADD DATA OPEN MODAL WINDOW
    openModal(content) {
@@ -77,7 +94,6 @@ export class MeetingsComponent implements OnInit {
       }, (reason) => {
         this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
       });
-     
   }
   //DISMISS MODAL WINDOW
   private getDismissReason(reason: any): string {

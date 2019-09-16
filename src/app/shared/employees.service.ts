@@ -116,9 +116,9 @@ export class TasksService{
     return this.http.get(environment.rootApi+'/tasks').toPromise().then(res=>this.tasksList = res as Tasks[]);
   }
   //POST TASKS LISTS
-  postTasks(formData : Tasks){
-    return this.http.post(environment.rootApi+'/tasks',formData);
-  }
+  // postTasks(formData : Tasks){
+  //   return this.http.post(environment.rootApi+'/tasks',formData);
+  // }
   //DELETE TASKS
   deleteTask(id:number){
     return this.http.delete(environment.rootApi+'/tasks/'+id);

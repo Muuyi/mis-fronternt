@@ -12,7 +12,7 @@
         </thead>
         <tbody>
             <tr *ngFor="let tasks of tasksProgresService.tasksProgressList;let i=index;">
-                <td>{{ tasks.tasksId}}</td>
+                <td>{{ tasks.tasks.taskSubject }}</td>
                 <td>{{ tasks.status }}</td>
                 <td><ngb-progressbar type="danger" [value]=" tasks.metric ">{{tasks.metric}}%</ngb-progressbar></td>
                 <td>{{ tasks.createdDate }}</td>
@@ -23,7 +23,7 @@
 </div>
 <!--EMPLOYEES MODALL-->
 <ng-template #content let-modal>
-    <form #form="ngForm" (submit)="onSubmit(form)" >
+    <form [formGroup]="progressForm" (submit)="onSubmit()" >
         <div class="modal-header">
         <h4 class="modal-title" id="modal-basic-title">Add tasks progress</h4>
         <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
@@ -36,7 +36,7 @@
                 <div class="col-12">
                     <div class="form-group">
                         <label>Select task</label>
-                        <select class="form-control" name="TasksId" #DepartmentId="ngModel" [(ngModel)]="formData.TasksId">
+                        <select class="form-control" formControlName="TasksId">
                             <option value="0">--Select--</option>
                             <option *ngFor="let task of tasksService.tasksList" value="{{task.id}}">{{task.taskSubject}}</option>
                         </select>
@@ -45,7 +45,7 @@
                 <div class="col-12">
                     <div class="form-group">
                         <label>Select status</label>
-                        <select class="form-control" name="Status" #Status="ngModel" [(ngModel)]="formData.Status">
+                        <select class="form-control" formControlName="Status">
                             <option value="0">--Select--</option>
                             <option value="started">Started</option>
                             <option value="progress">In progress</option>
@@ -57,19 +57,19 @@
                 <div class="col-12">
                     <div class="form-group">
                         <label>Progress</label>
-                        <input type="range" name="Metric" #Metric="ngModel" [(ngModel)]="formData.Metric" min="0" max="100" class="form-control" />
+                        <input type="range" formControlName="Metric" min="0" max="100" class="form-control" />
                     </div>
                 </div>
                 <div class="col-12">
                     <div class="form-group">
                         <label>Comments</label>
-                        <input name="Comments" #Comments="ngModel" [(ngModel)]="formData.Comments" class="form-control" placeholder="Comments" />
+                        <input formControlName="Comments" class="form-control" placeholder="Comments" />
                     </div>
                 </div>
             </div>
         </div>
         <div class="modal-footer">
-            <button type="submit" [disabled]="form.invalid" class="btn btn-success">Save</button>
+            <button type="submit" class="btn btn-success">Save</button>
         </div>
     </form>
   </ng-template>
