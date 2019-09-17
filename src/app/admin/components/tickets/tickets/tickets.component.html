@@ -1,5 +1,6 @@
 <div class="alert alert-success"><h3>Tickets</h3></div>
-<button class="btn btn-success" (click)="openEmployeesModal(content,null,null)">Add tickets</button>
+<button class="btn btn-success" (click)="openModal(content,null)">Add tickets</button>
+<button class="btn btn-warning m-1" (click)="generatePdf()">Project Progress Report</button>
 <div class="table-responsive">
     <table class="table table-striped">
         <thead>
@@ -9,16 +10,16 @@
         </thead>
         <tbody>
             <tr *ngFor="let ticket of ticketsService.ticketsList;let i=index;">
-                <td>{{ ticket.employeesId}}</td>
+                <td>{{ ticket.employee.firstName }} {{ ticket.employee.lastName }}</td>
                 <td>{{ ticket.createdDate }}</td>
-                <td><button class="btn btn-sm btn-success" (click)="openEmployeesModal(content,ticket.id,i)">Edit</button> | <button class="btn btn-sm btn-danger" (click)="onDelete(ticket.id)">Delete</button></td>
+                <td><button class="btn btn-sm btn-success" (click)="editData(content,ticket)">Edit</button> | <button class="btn btn-sm btn-danger" (click)="onDelete(ticket.id)">Delete</button></td>
             </tr>
         </tbody>
     </table>
 </div>
 <!--EMPLOYEES MODALL-->
 <ng-template #content let-modal>
-    <form #form="ngForm" (submit)="onSubmit(form)">
+    <form [formGroup]="ticketsForm" (submit)="onSubmit()">
         <div class="modal-header">
             <h4 class="modal-title" id="modal-basic-title">Add tickets</h4>
             <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
@@ -28,11 +29,12 @@
         <div class="modal-body">
             <div class="row">
                 <div class="col-12">
+                    <input type="hidden" formControlName="Id" />
                     <div class="form-group">
                         <label>Select Employees</label>
-                        <select class="form-control" name="EmployeesId" #DepartmentId="ngModel" [(ngModel)]="formData.EmployeesId">
+                        <select class="form-control" formControlName="EmployeeId">
                             <option value="0">--Select--</option>
-                            <option *ngFor="let emp of employeesService.employeesList" value="{{emp.id}}">{{emp.id}} ({{emp.firstName}} {{emp.lastName}})</option>
+                            <option *ngFor="let emp of employeesService.employeesList" value="{{emp.employeeId}}">{{emp.employeeId}} ({{emp.firstName}} {{emp.lastName}})</option>
                         </select>
                     </div>
                 </div>

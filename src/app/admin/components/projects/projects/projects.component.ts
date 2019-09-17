@@ -121,5 +121,50 @@ export class ProjectsComponent implements OnInit {
       })
     }
   }
+  //GENERATE PDF
+  generatePdf(): void{
+    var tableData = [
+      [{text:'SERIAL NO',style:'tableHeader'},{text:'PROJECT NAME',style:'tableHeader'},{text:'START DATE',style:'tableHeader'},{text:'END DATE',style:'tableHeader'},{text:'EMPLOYEE NAME',style:'tableHeader'},{text:'DATE POSTED',style:'tableHeader'}]
+    ]
+    var projectList = this.projectService.projectsList;
+    projectList.forEach(data);
+    function data(key,value){
+      tableData.push([key.id,key.projectName,key.startDate,key.endDate,key.employee.firstName+' '+key.employee.lastName,key.createdDate]); 
+    }
+    var dd = {
+      pageSize:'A4',
+      pageOrientation:'landscape',
+      content: [
+        {
+          text:'PROJECTS REPORT',
+          style:'header'
+        },
+        { 
+          // layout: 'lightHorizontalLines', // optional
+          table: {
+            // headers are automatically repeated if the table spans over multiple pages
+            // you can declare how many rows should be treated as headers
+            headerRows: 1,
+            widths: [ 50, '*','*', '*','*','*' ],
+  
+            body: tableData
+          }
+        }
+      ],
+      styles:{
+        header:{
+          fontSize:15,
+          bold:true,
+          alignment:'center'
+        },
+        tableHeader:{
+          bold:true,
+          alignment:'center',
+          fontSize:15
+        }
+      }
+    };
+  pdfMake.createPdf(dd).download('ProjectsReport.pdf');
+  }
 
 }

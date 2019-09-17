@@ -170,9 +170,9 @@ export class ProjectsProgressService {
 
   }
   //POST DATA
-  postProjectsProgress(formData: ProjectsProgress){
-    return this.http.post(environment.rootApi+'/projectsProgress',formData);
-  }
+  // postProjectsProgress(formData: ProjectsProgress){
+  //   return this.http.post(environment.rootApi+'/projectsProgress',formData);
+  // }
   //GET DATA
   getProjectsProgress(){
     return this.http.get(environment.rootApi+'/projectsProgress').toPromise().then(res=>this.projectsProgressList = res as ProjectsProgress[]);
@@ -194,9 +194,9 @@ export class LeaveService{
     return this.http.get(environment.rootApi+'/leave').toPromise().then(res=>this.leaveList = res as Leave[]);
   }
   //POST CUSTOMERS
-  postLeave(formData : Leave){
-    return this.http.post(environment.rootApi+'/leave',formData);
-  }
+  // postLeave(formData : Leave){
+  //   return this.http.post(environment.rootApi+'/leave',formData);
+  // }
    //DELETE LEAVE
    deleteLeave(id:number){
     return this.http.delete(environment.rootApi+'/leave/'+id);
@@ -214,9 +214,9 @@ export class TicketsService{
     return this.http.get(environment.rootApi+'/tickets').toPromise().then(res=>this.ticketsList = res as Tickets[]);
   }
   //POST CUSTOMERS
-  postTicket(formData : Tickets){
-    return this.http.post(environment.rootApi+'/tickets',formData);
-  }
+  // postTicket(formData : Tickets){
+  //   return this.http.post(environment.rootApi+'/tickets',formData);
+  // }
    //DELETE TICKETS
    deleteTicket(id:number){
     return this.http.delete(environment.rootApi+'/tickets/'+id);
@@ -233,9 +233,9 @@ export class TicketsProgressService{
     return this.http.get(environment.rootApi+'/ticketsProgress').toPromise().then(res=>this.ticketsProgressList = res as Tickets[]);
   }
   //POST DATA
-  postTicketProgress(formData : Tickets){
-    return this.http.post(environment.rootApi+'/ticketsProgress',formData);
-  }
+  // postTicketProgress(formData : Tickets){
+  //   return this.http.post(environment.rootApi+'/ticketsProgress',formData);
+  // }
    //DELETE DATA
    deleteTicketProgress(id:number){
     return this.http.delete(environment.rootApi+'/ticketsProgress/'+id);

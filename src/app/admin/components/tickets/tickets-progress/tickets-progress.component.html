@@ -1,5 +1,6 @@
 <div class="alert alert-success"><h3>Tickets progress</h3></div>
 <button class="btn btn-success" (click)="openModal(content,null,null)">Add tickets progress</button>
+<button class="btn btn-warning m-1" (click)="generatePdf()">Tickets Progress Report</button>
 <div class="table-responsive">
     <table datatable [dtOptions]="dtOptions" [dtTrigger]="dtTrigger" class="table table-striped">
         <thead>
@@ -11,18 +12,18 @@
         </thead>
         <tbody>
             <tr *ngFor="let ticket of ticketsProgressService.ticketsProgressList;let i=index;">
-                <td>{{ ticket.ticketsId}}</td>
+                <td>{{ ticket.ticketsId}} ({{ ticket.tickets.employee.firstName}} {{ ticket.tickets.employee.lastName}})</td>
                 <td>{{ ticket.status }}</td>
                 <td>{{ ticket.comments }}</td>
                 <td>{{ ticket.createdDate }}</td>
-                <td><button class="btn btn-sm btn-success" (click)=populateForm(content,emp,i) >Edit</button> | <button (click)="onDelete(ticket.id)" class="btn btn-sm btn-danger">Delete</button></td>
+                <td><button class="btn btn-sm btn-success" (click)="editData(content,ticket)">Edit</button> | <button (click)="onDelete(ticket.id)" class="btn btn-sm btn-danger">Delete</button></td>
             </tr>
         </tbody>
     </table>
 </div>
 <!--EMPLOYEES MODALL-->
 <ng-template #content let-modal>
-    <form #form="ngForm" (submit)="onSubmit(form)" >
+    <form [formGroup]="progressForm" (submit)="onSubmit()" >
         <div class="modal-header">
         <h4 class="modal-title" id="modal-basic-title">Add tasks progress</h4>
         <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
@@ -32,19 +33,21 @@
         <!-- <p>{{formData.firstName}}</p> -->
         <div class="modal-body">
             <div class="row">
+                <!-- ID -->
+                <input type="hidden" formControlName="Id" />
                 <div class="col-12">
                     <div class="form-group">
                         <label>Select ticket</label>
-                        <select class="form-control" name="TicketsId" #TicketsId="ngModel" [(ngModel)]="formData.TicketsId">
+                        <select class="form-control" formControlName="TicketsId">
                             <option value="0">--Select--</option>
-                            <option *ngFor="let ticket of ticketsService.ticketsList" value="{{ticket.id}}">{{ticket.id}}</option>
+                            <option *ngFor="let ticket of ticketsService.ticketsList" value="{{ticket.id}}">{{ticket.id}}({{ ticket.employee.firstName}} {{ ticket.employee.lastName}})</option>
                         </select>
                     </div>
                 </div>
                 <div class="col-12">
                     <div class="form-group">
                         <label>Select status</label>
-                        <select class="form-control" name="Status" #Status="ngModel" [(ngModel)]="formData.Status">
+                        <select class="form-control" formControlName="Status">
                             <option value="0">--Select--</option>
                             <option value="open">Open</option>
                             <option value="closed">Closed</option>
@@ -55,13 +58,13 @@
                 <div class="col-12">
                     <div class="form-group">
                         <label>Comments</label>
-                        <input name="Comments" #Comments="ngModel" [(ngModel)]="formData.Comments" class="form-control" placeholder="Comments" />
+                        <input formControlName="Comments" class="form-control" placeholder="Comments" />
                     </div>
                 </div>
             </div>
         </div>
         <div class="modal-footer">
-            <button type="submit" [disabled]="form.invalid" class="btn btn-success">Save</button>
+            <button type="submit" class="btn btn-success">Save</button>
         </div>
     </form>
   </ng-template>

@@ -1,9 +1,16 @@
 import { Component, OnInit } from '@angular/core';
 import { ProjectsProgress } from 'src/app/shared/employees.model';
-import { NgForm } from '@angular/forms';
+import { NgForm,FormBuilder } from '@angular/forms';
 import { ToastrService } from 'ngx-toastr';
 import { NgbModal,ModalDismissReasons } from '@ng-bootstrap/ng-bootstrap';
 import { ProjectsProgressService, ProjectsService } from 'src/app/shared/employees.service';
+
+import  pdfMake from "pdfmake/build/pdfmake";
+import  pdfFonts  from "pdfmake/build/vfs_fonts";
+import { HttpClient } from '@angular/common/http';
+import { environment } from 'src/environments/environment';
+
+pdfMake.vfs = pdfFonts.pdfMake.vfs;
 
 @Component({
   selector: 'app-projects-progress',
@@ -13,36 +20,73 @@ import { ProjectsProgressService, ProjectsService } from 'src/app/shared/employe
 export class ProjectsProgressComponent implements OnInit {
   formData : ProjectsProgress;
   closeResult : string;
-  constructor(private projectsProgressService : ProjectsProgressService,private toastr : ToastrService,private modalService: NgbModal,private projectsService : ProjectsService ) { }
-
+  constructor(private projectsProgressService : ProjectsProgressService,private toastr : ToastrService,private modalService: NgbModal,private projectsService : ProjectsService, private fb : FormBuilder,private http : HttpClient ) { }
+  progressForm = this.fb.group({
+    Id : [0],
+    Comments : [''],
+    Metric : [''],
+    ProjectsId : ['']
+  })
   ngOnInit() {
     //RESET FORM
-    this.resetForm();
+    // this.resetForm();
     //PROJECTS SERVICE
     this.projectsService.getProjects();
+    this.projectsProgressService.getProjectsProgress();
   }
-  //RESET FORM
-  resetForm(form? : NgForm){
-    if( form != null)
-      form.resetForm();
-    this.formData = {
-      Id : null,
-      ProjectsId:null,
-      Comments:'',
-      Metric:null,
-      CreatedDate:null,
-    }
-  }
+  // //RESET FORM
+  // resetForm(form? : NgForm){
+  //   if( form != null)
+  //     form.resetForm();
+  //   this.formData = {
+  //     Id : null,
+  //     ProjectsId:null,
+  //     Comments:'',
+  //     Metric:null,
+  //     CreatedDate:null,
+  //   }
+  // }
   //SUBMIT FORM DATA
   onSubmit(form: NgForm){
     this.insertRecord(form);
   }
   insertRecord(form:NgForm){ 
-    this.projectsProgressService.postProjectsProgress(form.value).subscribe(res=>{
-      this.toastr.success('Record inserted successfully','Projects Progress addition');
-      this.projectsProgressService.getProjectsProgress();
-      this.resetForm(form);
+    var body = {
+      Id : this.progressForm.value.Id,
+      Comments : this.progressForm.value.Comments,
+      Metric : this.progressForm.value.Metric,
+      ProjectsId : this.progressForm.value.ProjectsId 
+    }
+    // this.projectsProgressService.postProjectsProgress(form.value).subscribe(res=>{
+    //   this.toastr.success('Record inserted successfully','Projects Progress addition');
+    //   this.projectsProgressService.getProjectsProgress();
+    //   // this.resetForm(form);
+    // })
+    if(this.progressForm.value.Id == 0){
+      this.http.post(environment.rootApi+'/projectsProgress',body).subscribe(res=>{
+        this.toastr.success('Record inserted successfully','Projects Progress Records');
+        this.projectsProgressService.getProjectsProgress();
+        this.progressForm.reset();
+        this.modalService.dismissAll();
+      })
+    }else{
+      this.http.put(environment.rootApi+'/projectsProgress/'+this.progressForm.value.Id,body).subscribe(res=>{
+        this.toastr.info('Record updated successfully','Projects Progress Records');
+        this.projectsProgressService.getProjectsProgress();
+        this.progressForm.reset();
+        this.modalService.dismissAll();
+      })
+    }
+  }
+  //POPULATE PROJECTS MODAL
+  editData(content,proj){
+    this.progressForm.setValue({
+      Id : proj.id,
+      Comments : proj.comments,
+      Metric : proj.metric,
+      ProjectsId : proj.projectsId 
     })
+    this.openModal(content);
   }
   //POPULATE EMPLOYEES RECORDS
   populateEmployeesForm(content){
@@ -52,19 +96,11 @@ export class ProjectsProgressComponent implements OnInit {
   }
   //EDIT AND ADD DATA OPEN MODAL WINDOW
   openModal(content) {
-    // if(index == null){
       this.modalService.open(content, {ariaLabelledBy: 'modal-basic-title'}).result.then((result) => {
         this.closeResult = `Closed with: ${result}`;
       }, (reason) => {
         this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
-      });
-     
-    // }else{
-    //   this.getEmployeeData = index;
-    //   this.modalService.open(content);
-    //   console.log(this.employeeService.formData);
-    // }
-      
+      });   
   }
   //DISMISS MODAL WINDOW
   private getDismissReason(reason: any): string {
@@ -84,5 +120,50 @@ export class ProjectsProgressComponent implements OnInit {
         this.toastr.warning('Record deleted successfully!!','Projects Progres Delete');
       })
     }
+  }
+  //GENERATE PDF
+  generatePdf(): void{
+    var tableData = [
+      [{text:'SERIAL NO',style:'tableHeader'},{text:'PROJECT NAME',style:'tableHeader'},{text:'PROGRESS',style:'tableHeader'},{text:'COMMENTS',style:'tableHeader'},{text:'DATE POSTED',style:'tableHeader'}]
+    ]
+    var projectList = this.projectsProgressService.projectsProgressList;
+    projectList.forEach(data);
+    function data(key,value){
+      tableData.push([key.id,key.projects.projectName,key.metric+'%',key.comments,key.createdDate]); 
+    }
+    var dd = {
+      pageSize:'A4',
+      pageOrientation:'landscape',
+      content: [
+        {
+          text:'PROJECTS REPORT',
+          style:'header'
+        },
+        { 
+          // layout: 'lightHorizontalLines', // optional
+          table: {
+            // headers are automatically repeated if the table spans over multiple pages
+            // you can declare how many rows should be treated as headers
+            headerRows: 1,
+            widths: [ 50, '*','*', '*','*'],
+  
+            body: tableData
+          }
+        }
+      ],
+      styles:{
+        header:{
+          fontSize:15,
+          bold:true,
+          alignment:'center'
+        },
+        tableHeader:{
+          bold:true,
+          alignment:'center',
+          fontSize:15
+        }
+      }
+    };
+  pdfMake.createPdf(dd).download('ProjectsReport.pdf');
   }
 }
