@@ -17,7 +17,7 @@ import {FormsModule,ReactiveFormsModule} from '@angular/forms';
 import { PageNotFoundComponent } from './page-not-found/page-not-found.component';
 import { PersonalDetailsComponent } from './admin/components/users/personal-details/personal-details.component';
 import { ChangePasswordComponent } from './admin/components/users/change-password/change-password.component';
-import { EmployeesService,DepartmentsService,CustomersService, MeetingsService, TasksService, ProjectsService, LeaveService, TicketsService, AdministratorsService, ApplicationUserService, TasksProgressService, ProjectsProgressService, TicketsProgressService } from './shared/employees.service';
+import { EmployeesService,DepartmentsService,CustomersService, MeetingsService,MeetingsAttendanceService, TasksService, ProjectsService, LeaveService,LeaveHolderService,TicketsService, AdministratorsService, ApplicationUserService, TasksProgressService, ProjectsProgressService, TicketsProgressService } from './shared/employees.service';
 import { MeetingsComponent } from './admin/components/meetings/meetings.component';
 import { TasksListComponent } from './admin/components/tasks/tasks-list/tasks-list.component';
 import { ProjectsComponent } from './admin/components/projects/projects/projects.component';
@@ -30,6 +30,8 @@ import { TasksProgressComponent } from './admin/components/tasks/tasks-progress/
 import { ProjectsProgressComponent } from './admin/components/projects/projects-progress/projects-progress.component';
 import { TicketsProgressComponent } from './admin/components/tickets/tickets-progress/tickets-progress.component';
 import { DepartmentsComponent } from './admin/components/users/departments/departments.component';
+import { LeavelistComponent } from './admin/components/leave/leavelist/leavelist.component';
+import { MeetingsAttendanceComponent } from './admin/components/meetings/meetings-attendance/meetings-attendance.component';
 
 @NgModule({
   declarations: [
@@ -43,7 +45,9 @@ import { DepartmentsComponent } from './admin/components/users/departments/depar
     TasksProgressComponent,
     ProjectsProgressComponent,
     TicketsProgressComponent,
-    DepartmentsComponent
+    DepartmentsComponent,
+    LeavelistComponent,
+    MeetingsAttendanceComponent
   ],
   imports: [
     BrowserModule,
@@ -61,7 +65,7 @@ import { DepartmentsComponent } from './admin/components/users/departments/depar
     NgxSmartModalModule.forRoot(),
   ],
   entryComponents : [EmployeesListComponent],
-  providers: [EmployeesService,DepartmentsService,CustomersService,MeetingsService,TasksService,ProjectsService,LeaveService,TicketsService,AdministratorsService,ApplicationUserService,TasksProgressService,ProjectsProgressService,TicketsProgressService,{
+  providers: [EmployeesService,DepartmentsService,CustomersService,MeetingsService,MeetingsAttendanceService,TasksService,ProjectsService,LeaveService,LeaveHolderService,TicketsService,AdministratorsService,ApplicationUserService,TasksProgressService,ProjectsProgressService,TicketsProgressService,{
     provide : HTTP_INTERCEPTORS,
     useClass : AuthInterceptor,
     multi : true

@@ -1,0 +1,25 @@
+<div class="alert alert-success"><h3>Meeting attendance</h3></div>
+<div class="form-group">
+    <label>Select meeting</label>
+    <select class="form-control">
+        <option value="0">--Select meeting--</option>
+        <option *ngFor="let meeting of meetingService.meetingsList" value="meeting.id">{{ meeting.subject }} ({{ meeting.meetingDate }})</option>
+    </select>
+</div>
+<button class="btn btn-warning m-1" (click)="generatePdf()">Leave report</button>
+<div class="table-responsive">
+    <table class="table table-striped">
+        <thead>
+            <th>Employee no</th>
+            <th>Employee name</th>
+            <th>In attendance</th>
+        </thead>
+        <tbody>
+            <tr *ngFor="let user of userService.userList">
+                <td>{{ user.id }}</td>
+                <td>{{ user.fullName }}</td>
+                <td><input type="checkbox" /></td>
+            </tr>
+        </tbody>
+    </table>
+</div>

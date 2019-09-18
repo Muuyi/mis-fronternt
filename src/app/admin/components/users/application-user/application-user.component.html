@@ -1,23 +1,24 @@
 <div class="alert alert-success"><h3>Application users</h3></div>
 <button class="btn btn-success" (click)="openModal(content,null,null)">Add users</button>
+<button class="btn btn-warning m-1" (click)="generatePdf()">Employees report</button>
 <div class="table-responsive">
     <table datatable [dtOptions]="dtOptions" [dtTrigger]="dtTrigger" class="table table-striped">
         <thead>
             <th>Name</th>
             <th>Email</th>
             <th>Phone</th>
+            <th>Username</th>
             <th>Department</th>
-            <th>Date created</th>
-            <th>Action</th>
+            <!-- <th>Action</th> -->
         </thead>
         <tbody>
-            <tr *ngFor="let emp of employeesList;let i=index;">
-                <td>{{ emp.firstName}} {{emp.lastName}}</td>
-                <td>{{ emp.email }}</td>
-                <td>{{ emp.phone }}</td>
-                <td>{{ emp.department }}</td>
-                <td>{{ emp.createdDate }}</td>
-                <td><button class="btn btn-sm btn-success" (click)="openEmployeesModal(content,emp.id,i)">Edit</button> | <button (click)="deleteEmployees(emp.id,i)" class="btn btn-sm btn-danger">Delete</button></td>
+            <tr *ngFor="let user of userService.userList;let i=index;">
+                <td>{{ user.fullName}}</td>
+                <td>{{ user.email }}</td>
+                <td>{{ user.phoneNumber }}</td>
+                <td>{{ user.userName }}</td>
+                <td>{{ user.department.departmentName }}</td>
+                <!-- <td><button class="btn btn-sm btn-success" (click)="openEmployeesModal(content,emp.id,i)">Edit</button> | <button (click)="deleteEmployees(emp.id,i)" class="btn btn-sm btn-danger">Delete</button></td> -->
                 <!-- <td>{{}}</td> -->
             </tr>
         </tbody>

@@ -24,8 +24,7 @@ export class LeaveComponent implements OnInit {
     Id : [0],
     EmployeeId : [''],
     StartDate : [''],
-    EndDate : [''],
-    PlaceholderId : ['']
+    EndDate : ['']
   })
   ngOnInit() {
     //RESET FORM
@@ -53,24 +52,33 @@ export class LeaveComponent implements OnInit {
       EmployeeId : this.leaveForm.value.EmployeeId,
       StartDate : this.leaveForm.value.StartDate,
       EndDate : this.leaveForm.value.EndDate,
-      PlaceholderId : this.leaveForm.value.PlaceholderId
     }
     // this.insertRecord(form);
     if(this.leaveForm.value.Id == 0){
-      this.http.post(environment.rootApi+'/ticketsProgress',body).subscribe(res=>{
+      this.http.post(environment.rootApi+'/leave',body).subscribe(res=>{
         this.toastr.success('Record inserted successfully','Leave Records');
         this.leaveService.getLeave();
         this.leaveForm.reset();
         this.modalService.dismissAll();
       })
     }else{
-      this.http.put(environment.rootApi+'/ticketsProgress/'+this.leaveForm.value.Id,body).subscribe(res=>{
+      this.http.put(environment.rootApi+'/leave/'+this.leaveForm.value.Id,body).subscribe(res=>{
         this.toastr.info('Record updated successfully','Leave Records');
         this.leaveService.getLeave();
         this.leaveForm.reset();
         this.modalService.dismissAll();
       })
     }
+  }
+  //POPULATE PROJECTS MODAL
+  editData(content,lv){
+    this.leaveForm.setValue({
+      Id : lv.id,
+      EmployeeId : lv.employeeId,
+      StartDate : lv.startDate,
+      EndDate : lv.endDate
+    })
+    this.openModal(content);
   }
   //EDIT AND ADD DATA OPEN MODAL WINDOW
   openModal(content) {
@@ -106,5 +114,50 @@ export class LeaveComponent implements OnInit {
         this.toastr.warning('Record deleted successfully!!','Leave Delete');
       })
     }
+  }
+   //GENERATE PDF
+   generatePdf(): void{
+    var tableData = [
+      [{text:'SERIAL NO',style:'tableHeader'},{text:'EMPLOYEE NAME',style:'tableHeader'},{text:'START DATE',style:'tableHeader'},{text:'END DATE',style:'tableHeader'},{text:'DATE CREATED',style:'tableHeader'}]
+    ]
+    var leaveList = this.leaveService.leaveList;
+    leaveList.forEach(data);
+    function data(key,value){
+      tableData.push([key.id,key.employee.firstName+' '+key.employee.lastName,key.startDate,key.endDate,key.createdDate]); 
+    }
+    var dd = {
+      pageSize:'A4',
+      pageOrientation:'landscape',
+      content: [
+        {
+          text:'TICKETS PROGRESS REPORT',
+          style:'header'
+        },
+        { 
+          // layout: 'lightHorizontalLines', // optional
+          table: {
+            // headers are automatically repeated if the table spans over multiple pages
+            // you can declare how many rows should be treated as headers
+            headerRows: 1,
+            widths: [ 50, '*','*','*','*'],
+  
+            body: tableData
+          }
+        }
+      ],
+      styles:{
+        header:{
+          fontSize:15,
+          bold:true,
+          alignment:'center'
+        },
+        tableHeader:{
+          bold:true,
+          alignment:'center',
+          fontSize:15
+        }
+      }
+    };
+  pdfMake.createPdf(dd).download('LeaveListReport.pdf');
   }
 }

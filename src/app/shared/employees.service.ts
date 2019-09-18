@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Employees,Departments,Customers, Meetings, Tasks, Projects, Leave, Tickets, Administrators, TasksProgress, ProjectsProgress } from './employees.model';
+import { Employees,Departments,Customers, Meetings, Tasks, Projects, Leave, Tickets, Administrators, TasksProgress, ProjectsProgress, LeaveHolder, ApplicationUser } from './employees.model';
 import { HttpClient, HttpHeaders } from "@angular/common/http";
 import { environment } from 'src/environments/environment';
 import { FormBuilder, Validators, FormGroup} from '@angular/forms';
@@ -104,6 +104,12 @@ export class MeetingsService{
     return this.http.delete(environment.rootApi+'/meetings/'+id);
   }
 }
+/////////////////////////////////////////////MEETINGS ATTENDANCE////////////////////
+export class MeetingsAttendanceService{
+  constructor (private http : HttpClient){
+    
+  }
+}
 ////////////////////////////////////////////TASKS SERVICE///////////////////////
 export class TasksService{
   tasksData : Tasks;
@@ -202,6 +208,25 @@ export class LeaveService{
     return this.http.delete(environment.rootApi+'/leave/'+id);
   }
 }
+///////////////////////////////////////////LEAVEHOLDERS SERVICE//////////////////////////////////
+export class LeaveHolderService{
+  leaveHolderList : LeaveHolder[];
+  constructor (private http : HttpClient){
+
+  }
+  //GET CUSTOMERS LIST
+  getLeaveHolder(){
+    return this.http.get(environment.rootApi+'/leaveHolder').toPromise().then(res=>this.leaveHolderList = res as LeaveHolder[]);
+  }
+  //POST CUSTOMERS
+  // postLeave(formData : Leave){
+  //   return this.http.post(environment.rootApi+'/leave',formData);
+  // }
+   //DELETE LEAVE
+   deleteHolderLeave(id:number){
+    return this.http.delete(environment.rootApi+'/leaveHolder/'+id);
+  }
+}
 /////////////////////////////////////////////TICKETS SERVICE/////////////////////////////////////
 export class TicketsService{
   ticketsData : Tickets;
@@ -243,6 +268,7 @@ export class TicketsProgressService{
 }
 ///////////////////////////////////////////APPLICATION USER SERVICE///////////////////////////
 export class ApplicationUserService{
+  userList : ApplicationUser[];
   constructor (private fb: FormBuilder,private http : HttpClient){
 
   }
@@ -286,7 +312,11 @@ export class ApplicationUserService{
     return this.http.post(environment.rootApi+'/ApplicationUser/Login',formData);
   }
   //DELETE EMPLOYEES
-
+  getUsers(){
+    // var tokenHeader = new HttpHeaders({'Authorization':'Bearer '+localStorage.getItem('token')})
+    return this.http.get(environment.rootApi+'/applicationUser').toPromise().then(res=>this.userList = res as ApplicationUser[]);
+    // .then(res=>this.ticketsProgressList = res as Tickets[]);
+  }
   //GET USER DATA
   getUserProfile(){
     // var tokenHeader = new HttpHeaders({'Authorization':'Bearer '+localStorage.getItem('token')})

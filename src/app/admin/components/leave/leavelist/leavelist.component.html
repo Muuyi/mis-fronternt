@@ -1,31 +1,33 @@
-<div class="alert alert-success"><h3>Leave management</h3></div>
+<div class="alert alert-success"><h3>Leave management list</h3></div>
 <button class="btn btn-success" (click)="openModal(content,null,null)">Add leave</button>
-<button class="btn btn-warning m-1" (click)="generatePdf()">Employees on leave report</button>
+<button class="btn btn-warning m-1" (click)="generatePdf()">Leave report</button>
 <div class="table-responsive">
     <table class="table table-striped">
         <thead>
             <th>Name</th>
             <th>Start date</th>
             <th>End date</th>
+            <th>Placeholder Name</th>
             <th>Date created</th>
             <th>Action</th>
         </thead>
         <tbody>
-            <tr *ngFor="let lv of leaveService.leaveList">
+            <tr *ngFor="let lv of leaveHolderService.leaveHolderList">
+                <td>{{ lv.leave.employee.firstName }} {{ lv.leave.employee.lastName }}</td>
+                <td>{{ lv.leave.startDate }}</td>
+                <td>{{ lv.leave.endDate }}</td>
                 <td>{{ lv.employee.firstName }} {{ lv.employee.lastName }}</td>
-                <td>{{ lv.startDate }}</td>
-                <td>{{ lv.endDate }}</td>
-                <td>{{ lv.createdDate }}</td>
+                <td>{{ lv.createdDate}}</td>
                 <td><button class="btn btn-sm btn-success" (click)="editData(content,lv)">Edit</button> | <button class="btn btn-sm btn-danger" (click)="onDelete(lv.id)">Delete</button></td>
             </tr>
         </tbody>
     </table> 
 </div>
 <ng-template #content let-modal>
-        <form [formGroup]="leaveForm" (submit)="onSubmit()" >
+        <form [formGroup]="leaveHolderForm" (submit)="onSubmit()" >
             <div class="modal-content">
                 <div class="modal-header">
-                    <h3 class="modal-title">Add leave</h3>
+                    <h3 class="modal-title">Add leave holder</h3>
                     <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
                         <span aria-hidden="true">&times;</span>
                     </button>
@@ -36,24 +38,21 @@
                         <input type="hidden" formControlName="Id" />
                         <div class="col-12">
                             <div class="form-group">
-                                <label>Select Employee</label>
-                                <select class="form-control" formControlName="EmployeeId">
+                                <label>Select Employee on leave</label>
+                                <select class="form-control" formControlName="LeaveId">
                                     <option value="0">--Select--</option>
-                                    <option *ngFor="let emp of employeesService.employeesList" value="{{emp.employeeId}}">{{emp.employeeId}} ({{emp.firstName}} {{emp.lastName}})</option>
+                                    <option *ngFor="let lv of leaveService.leaveList" value="{{lv.id}}">{{lv.employee.firstName}} {{lv.employee.lastName}} ({{ lv.startDate}} - {{ lv.endDate }})</option>
                                 </select>
                             </div>
                         </div>
                         <div class="col-12">
                             <div class="form-group">
-                                <label>Start date</label>
-                                <input type="date" formControlName="StartDate" class="form-control" placeholder="Start date" />
-                            </div>
-                        </div>
-                        <div class="col-12">
-                            <div class="form-group">
-                                <label>End date</label>
-                                <input type="date" formControlName="EndDate" class="form-control" placeholder="End date" />
-                            </div>
+                                <label>Placeholder employee</label>
+                                <select class="form-control" formControlName="EmployeeId">
+                                    <option value="0">--Select--</option>
+                                    <option *ngFor="let emp of employeesService.employeesList" value="{{emp.employeeId}}">{{emp.employeeId}} ({{emp.firstName}} {{emp.lastName}})</option>
+                                </select>
+                                </div>
                         </div>
                     </div>
                 </div>
@@ -64,4 +63,5 @@
             </div>
         </form>
 </ng-template> 
+
 

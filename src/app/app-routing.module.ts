@@ -19,6 +19,8 @@ import { TasksProgressComponent } from './admin/components/tasks/tasks-progress/
 import { ProjectsProgressComponent } from './admin/components/projects/projects-progress/projects-progress.component';
 import { TicketsProgressComponent } from './admin/components/tickets/tickets-progress/tickets-progress.component';
 import { DepartmentsComponent } from './admin/components/users/departments/departments.component';
+import { LeavelistComponent } from './admin/components/leave/leavelist/leavelist.component';
+import { MeetingsAttendanceComponent } from './admin/components/meetings/meetings-attendance/meetings-attendance.component';
 
 
 const routes: Routes = [
@@ -32,11 +34,13 @@ const routes: Routes = [
       {path:'system-users',component:SystemUsersComponent},
       {path:'customers-list',component:CustomersListComponent},
       {path:'meetings',component:MeetingsComponent},
+      {path:'meetings-attendance',component:MeetingsAttendanceComponent},
       {path:'tasks',component:TasksListComponent},
       {path:'tasks-progress',component:TasksProgressComponent},
       {path:'projects',component:ProjectsComponent},
       {path:'projects-progress',component:ProjectsProgressComponent},
       {path:'leave',component:LeaveComponent},
+      {path:'leavelist',component:LeavelistComponent},
       {path:'tickets',component:TicketsComponent},
       {path:'tickets-progress',component:TicketsProgressComponent},
       {path:'application-users',component:ApplicationUserComponent},
@@ -53,4 +57,4 @@ const routes: Routes = [
   exports: [RouterModule]
 })
 export class AppRoutingModule { }
-export const routingComponents = [LoginComponent,AdminComponent,PersonalDetailsComponent,ChangePasswordComponent,EmployeesListComponent,SystemUsersComponent,PageNotFoundComponent,CustomersListComponent,MeetingsComponent,TasksListComponent,ProjectsComponent,LeaveComponent,TicketsComponent,TicketsProgressComponent]
+export const routingComponents = [LoginComponent,AdminComponent,PersonalDetailsComponent,ChangePasswordComponent,EmployeesListComponent,SystemUsersComponent,PageNotFoundComponent,CustomersListComponent,MeetingsComponent,TasksListComponent,ProjectsComponent,LeaveComponent,LeavelistComponent,TicketsComponent,TicketsProgressComponent]

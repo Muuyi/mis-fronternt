@@ -1,3 +1,5 @@
+import { Identifiers } from '@angular/compiler';
+
 //EMPLOYEES MODEL
 export class Employees {
     EmployeeId: number; 
@@ -82,6 +84,11 @@ export class Leave{
     PlaceholderId : number;
     CreatedDate : string;
 }
+//LEAVE HOLDER MODEL
+export class LeaveHolder{
+    LeaveId : number; 
+    EmployeeId : number;
+}
 //TICKETS
 export class Tickets{
     Id : number;
@@ -95,6 +102,14 @@ export class TicketsProgress{
     Status : string;
     TicketsId : number;
     CreatedDate : Date;
+}
+//APPLICATION USER
+export class ApplicationUser{
+    UserName :string;
+    Email : string;
+    FullName : string;
+    PhoneNumber : string;
+    DepartmentId : number;
 }
 
 
