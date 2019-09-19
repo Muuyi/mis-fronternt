@@ -13,7 +13,7 @@
             <tr *ngFor="let proj of projectsProgressService.projectsProgressList;let i=index;">
                 <td>{{ proj.projects.projectName}}</td>
                 <td><ngb-progressbar type="danger" [value]=" proj.metric ">{{proj.metric}}%</ngb-progressbar></td>
-                <td>{{ proj.createdDate }}</td>
+                <td>{{ proj.createdDate | date:'medium' }}</td>
                 <td><button class="btn btn-sm btn-success" (click)=editData(content,proj) >Edit</button> | <button (click)="onDelete(proj.id)" class="btn btn-sm btn-danger">Delete</button></td>
             </tr>
         </tbody>
@@ -45,7 +45,8 @@
                 <div class="col-12">
                     <div class="form-group">
                         <label>Progress</label>
-                        <input type="range" formControlName="Metric" min="0" max="100" class="form-control" />
+                        <mat-slider thumbLabel [displayWith]="formatLabel" formControlName="Metric" tickInterval="1" min="1"  max="100"></mat-slider>
+                        <!-- <input type="range" formControlName="Metric" min="0" max="100" class="form-control" /> -->
                     </div>
                 </div>
                 <div class="col-12">

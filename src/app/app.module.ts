@@ -32,6 +32,7 @@ import { TicketsProgressComponent } from './admin/components/tickets/tickets-pro
 import { DepartmentsComponent } from './admin/components/users/departments/departments.component';
 import { LeavelistComponent } from './admin/components/leave/leavelist/leavelist.component';
 import { MeetingsAttendanceComponent } from './admin/components/meetings/meetings-attendance/meetings-attendance.component';
+import { MatSliderModule } from '@angular/material';
 
 @NgModule({
   declarations: [
@@ -61,8 +62,12 @@ import { MeetingsAttendanceComponent } from './admin/components/meetings/meeting
     MaterialModule,
     AngularFontAwesomeModule,
     NgbModule,
+    MatSliderModule,
     MatDialogModule,
     NgxSmartModalModule.forRoot(),
+  ],
+  exports:[
+    MatSliderModule
   ],
   entryComponents : [EmployeesListComponent],
   providers: [EmployeesService,DepartmentsService,CustomersService,MeetingsService,MeetingsAttendanceService,TasksService,ProjectsService,LeaveService,LeaveHolderService,TicketsService,AdministratorsService,ApplicationUserService,TasksProgressService,ProjectsProgressService,TicketsProgressService,{

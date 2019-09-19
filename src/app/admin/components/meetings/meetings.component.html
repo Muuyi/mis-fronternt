@@ -7,6 +7,7 @@
             <th>Subject</th>
             <th>Description</th>
             <th>Date</th>
+            <th>Time</th>
             <th>Date posted</th>
             <th>Action</th>
         </thead>
@@ -14,8 +15,9 @@
             <tr *ngFor="let meeting of meetingsService.meetingsList">
                 <td>{{ meeting.subject}}</td>
                 <td>{{ meeting.description }}</td>
-                <td>{{ meeting.meetingDate }}</td>
-                <td>{{ meeting.createdDate}}</td>
+                <td>{{ meeting.meetingDate | date }}</td>
+                <td>{{ meeting.meetingTime | date:'shortTime' }}</td>
+                <td>{{ meeting.createdDate | date:'medium'}}</td>
                 <td><button class="btn btn-sm btn-success" (click)="editData(content,meeting)">Edit</button> | <button (click)="onDelete(meeting.id)" class="btn btn-sm btn-danger">Delete</button></td>
             </tr>
         </tbody>
@@ -49,11 +51,20 @@
                             <input type="date" formControlName="MeetingDate" class="form-control" placeholder="Meeting date" />
                         </div>
                     </div>
+                    <div class="col-12">
+                        <div class="form-group">
+                            <label>Meeting Time</label>
+                                <!-- <input type="date" ngbDatepicker #d="ngbDatepicker"/> -->
+                            <!-- <input type="date" formControlName="MeetingDate" class="form-control" placeholder="Meeting date" /> -->
+                            <input type="time" formControlName="MeetingTime" class="form-control" placeholder="Meeting time" />
+                        </div>
+                    </div>
+                    
                 </div>
             </div>
             <div class="modal-footer">
                 <button type="submit"  class="btn btn-success">Save</button>
-                <button class="btn btn-danger" data-dismiss="modal">Close</button>
+                <button class="btn btn-danger" (click)="modal.dismiss('Cross click')">Close</button>
             </div>
         </div>
     </form>

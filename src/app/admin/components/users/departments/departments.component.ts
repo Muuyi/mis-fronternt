@@ -22,7 +22,7 @@ export class DepartmentsComponent implements OnInit {
   
   constructor(private departmentsService : DepartmentsService,private toastr : ToastrService,private modalService: NgbModal,private fb : FormBuilder,private http : HttpClient) { }
   departmentsForm = this.fb.group({
-    DepartmentId : [0],
+    DepartmentId : ['0'],
     DepartmentName : ['',[Validators.required,Validators.minLength(3)]]
   });
   ngOnInit() {
@@ -31,24 +31,32 @@ export class DepartmentsComponent implements OnInit {
   }
   //SUBMIT FORM DATA
   onSubmit(){
+    var id 
+    if(this.departmentsForm.value.DepartmentId == null){
+      id = 0;
+    }else{
+      id = this.departmentsForm.value.DepartmentId
+    }
     var body = {
-      DepartmentId : this.departmentsForm.value.DepartmentId,
+      DepartmentId : id,
       DepartmentName : this.departmentsForm.value.DepartmentName
     }
-    if(this.departmentsForm.value.DepartmentId == 0){
-      this.http.post(environment.rootApi+'/departments',body).subscribe(res=>{
-        this.toastr.success('Record inserted successfully','Departments addition');
-        this.departmentsService.getDepartments();
-        this.departmentsForm.reset();
-        this.modalService.dismissAll();
-      })
-    }else{
+    if(this.departmentsForm.value.DepartmentId > 0){
       this.http.put(environment.rootApi+'/departments/'+this.departmentsForm.value.DepartmentId,body).subscribe(res=>{
         this.toastr.info('Record updated successfully','Departments editing');
         this.departmentsService.getDepartments();
         this.departmentsForm.reset();
         this.modalService.dismissAll();
       })
+      console.log(body);
+    }else{
+      this.http.post(environment.rootApi+'/departments',body).subscribe(res=>{
+        this.toastr.success('Record inserted successfully','Departments addition');
+        this.departmentsService.getDepartments();
+        this.departmentsForm.reset();
+        this.modalService.dismissAll();
+      })
+      console.log(body);
     }
     // this.insertRecord(body);
   }

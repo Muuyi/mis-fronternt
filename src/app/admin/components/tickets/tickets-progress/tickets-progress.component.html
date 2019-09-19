@@ -15,7 +15,7 @@
                 <td>{{ ticket.ticketsId}} ({{ ticket.tickets.employee.firstName}} {{ ticket.tickets.employee.lastName}})</td>
                 <td>{{ ticket.status }}</td>
                 <td>{{ ticket.comments }}</td>
-                <td>{{ ticket.createdDate }}</td>
+                <td>{{ ticket.createdDate | date }}</td>
                 <td><button class="btn btn-sm btn-success" (click)="editData(content,ticket)">Edit</button> | <button (click)="onDelete(ticket.id)" class="btn btn-sm btn-danger">Delete</button></td>
             </tr>
         </tbody>

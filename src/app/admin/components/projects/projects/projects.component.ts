@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ProjectsService, EmployeesService } from 'src/app/shared/employees.service';
+import { ProjectsService, EmployeesService, ApplicationUserService } from 'src/app/shared/employees.service';
 import { ToastrService } from 'ngx-toastr';
 import { NgForm,FormBuilder } from '@angular/forms';
 import { Projects } from 'src/app/shared/employees.model';
@@ -20,18 +20,18 @@ pdfMake.vfs = pdfFonts.pdfMake.vfs;
 export class ProjectsComponent implements OnInit {
   closeResult : string;
 
-  constructor(private projectService : ProjectsService, private toastr : ToastrService,private employeesService : EmployeesService, private fb : FormBuilder,private modalService: NgbModal,private http : HttpClient) { }
+  constructor(private projectService : ProjectsService, private toastr : ToastrService,private userService : ApplicationUserService, private fb : FormBuilder,private modalService: NgbModal,private http : HttpClient) { }
   projectsForm = this.fb.group({
     Id : [0],
     ProjectName : [''],
     StartDate : [''],
     EndDate : [''],
-    EmployeeId :[''] 
+    ApplicationUserId :[''] 
   })
   ngOnInit() {
     //RESET FORM
     // this.resetForm();
-    this.employeesService.getEmployee();
+    this.userService.getUsers();
     this.projectService.getProjects();
   }
   //  //RESET FORM
@@ -50,24 +50,30 @@ export class ProjectsComponent implements OnInit {
   //   }
   //SUBMIT FORM
   onSubmit(form : NgForm){
+    var id 
+    if(this.projectsForm.value.Id == null){
+      id = 0;
+    }else{
+      id = this.projectsForm.value.Id
+    }
     var body = {
-      Id : this.projectsForm.value.Id,
+      Id : id,
       ProjectName : this.projectsForm.value.ProjectName,
       StartDate : this.projectsForm.value.StartDate,
       EndDate : this.projectsForm.value.EndDate,
-      EmployeeId :this.projectsForm.value.EmployeeId 
+      ApplicationUserId :this.projectsForm.value.ApplicationUserId 
     }
     // this.insertRecord(form);
-    if(this.projectsForm.value.Id == 0){
-      this.http.post(environment.rootApi+'/projects',body).subscribe(res=>{
-        this.toastr.success('Record inserted successfully','Projects Records');
+    if(this.projectsForm.value.Id > 0){
+      this.http.put(environment.rootApi+'/projects/'+this.projectsForm.value.Id,body).subscribe(res=>{
+        this.toastr.info('Record updated successfully','Projects records');
         this.projectService.getProjects();
         this.projectsForm.reset();
         this.modalService.dismissAll();
       })
     }else{
-      this.http.put(environment.rootApi+'/projects/'+this.projectsForm.value.Id,body).subscribe(res=>{
-        this.toastr.info('Record updated successfully','Projects records');
+      this.http.post(environment.rootApi+'/projects',body).subscribe(res=>{
+        this.toastr.success('Record inserted successfully','Projects Records');
         this.projectService.getProjects();
         this.projectsForm.reset();
         this.modalService.dismissAll();
@@ -80,9 +86,9 @@ export class ProjectsComponent implements OnInit {
     this.projectsForm.setValue({
       Id : proj.id,
       ProjectName : proj.projectName,
-      StartDate : proj.startDate,
-      EndDate : proj.endDate,
-      EmployeeId : proj.employeeId
+      StartDate : new Date(proj.startDate).toISOString().substring(0, 10),
+      EndDate : new Date(proj.endDate).toISOString().substring(0, 10),
+      ApplicationUserId : proj.applicationUserId
     })
     this.openModal(content);
   }
@@ -129,7 +135,7 @@ export class ProjectsComponent implements OnInit {
     var projectList = this.projectService.projectsList;
     projectList.forEach(data);
     function data(key,value){
-      tableData.push([key.id,key.projectName,key.startDate,key.endDate,key.employee.firstName+' '+key.employee.lastName,key.createdDate]); 
+      tableData.push([key.id,key.projectName,key.startDate,key.endDate,key.applicationUser.fullName,key.createdDate]); 
     }
     var dd = {
       pageSize:'A4',
@@ -145,7 +151,7 @@ export class ProjectsComponent implements OnInit {
             // headers are automatically repeated if the table spans over multiple pages
             // you can declare how many rows should be treated as headers
             headerRows: 1,
-            widths: [ 50, '*','*', '*','*','*' ],
+            widths: [ 50, 'auto','auto', 'auto','auto','auto' ],
   
             body: tableData
           }

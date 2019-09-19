@@ -48,23 +48,30 @@ export class TicketsProgressComponent implements OnInit {
   // }
   //SUBMIT FORM DATA
   onSubmit(){
+    var id 
+    if(this.progressForm.value.Id == null){
+      id = 0;
+    }else{
+      id = this.progressForm.value.Id
+    }
     // this.insertRecord(form);
     var body = {
-      Id : this.progressForm.value.Id,
+      Id :id,
       Comments : this.progressForm.value.Comments,
       Status : this.progressForm.value.Status,
       TicketsId : this.progressForm.value.TicketsId
     }
-    if(this.progressForm.value.Id == 0){
-      this.http.post(environment.rootApi+'/ticketsProgress',body).subscribe(res=>{
-        this.toastr.success('Record inserted successfully','Tickets Progress Records');
+    if(this.progressForm.value.Id > 0){
+      this.http.put(environment.rootApi+'/ticketsProgress/'+this.progressForm.value.Id,body).subscribe(res=>{
+        this.toastr.info('Record updated successfully','Tickets Progress Records');
         this.ticketsProgressService.getTicketsProgress();
         this.progressForm.reset();
         this.modalService.dismissAll();
       })
+      
     }else{
-      this.http.put(environment.rootApi+'/ticketsProgress/'+this.progressForm.value.Id,body).subscribe(res=>{
-        this.toastr.info('Record updated successfully','Tickets Progress Records');
+      this.http.post(environment.rootApi+'/ticketsProgress',body).subscribe(res=>{
+        this.toastr.success('Record inserted successfully','Tickets Progress Records');
         this.ticketsProgressService.getTicketsProgress();
         this.progressForm.reset();
         this.modalService.dismissAll();

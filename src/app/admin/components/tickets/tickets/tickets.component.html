@@ -28,16 +28,16 @@
         </div>
         <div class="modal-body">
             <div class="row">
-                <div class="col-12">
                     <input type="hidden" formControlName="Id" />
-                    <div class="form-group">
-                        <label>Select Employees</label>
-                        <select class="form-control" formControlName="EmployeeId">
-                            <option value="0">--Select--</option>
-                            <option *ngFor="let emp of employeesService.employeesList" value="{{emp.employeeId}}">{{emp.employeeId}} ({{emp.firstName}} {{emp.lastName}})</option>
-                        </select>
+                    <div class="col-12">
+                        <div class="form-group">
+                            <label>Select Employee</label>
+                            <select class="form-control" formControlName="ApplicationUserId">
+                                <option value="0">--Select--</option>
+                                <option *ngFor="let user of userService.userList" value="{{user.id}}">{{user.fullName}}</option>
+                            </select>
+                        </div>
                     </div>
-                </div>
             </div>
         </div>
         <div class="modal-footer">

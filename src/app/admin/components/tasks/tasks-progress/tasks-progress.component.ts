@@ -3,6 +3,7 @@ import { TasksProgress } from 'src/app/shared/employees.model';
 import { TasksProgressService, TasksService } from 'src/app/shared/employees.service';
 import { NgForm, FormBuilder } from '@angular/forms';
 import { MatDialog } from '@angular/material';
+import {MatSliderModule} from '@angular/material/slider';
 import { ToastrService } from 'ngx-toastr';
 import { NgbModal,ModalDismissReasons } from '@ng-bootstrap/ng-bootstrap';
 
@@ -37,6 +38,18 @@ export class TasksProgressComponent implements OnInit {
     this.tasksService.getTasks();
     //TASKS PROGRESS SERVICE
     this.tasksProgresService.getTasksProgress();
+  }
+  //SLIDER LABEL
+  formatLabel(value: number | null) {
+    if (!value) {
+      return 0;
+    }
+
+    if (value >= 1) {
+      return Math.round(value / 1) + '%';
+    }
+
+    return value;
   }
   //  //RESET FORM
   //  resetForm(form? : NgForm){
@@ -137,7 +150,7 @@ export class TasksProgressComponent implements OnInit {
     var tasksProgressList = this.tasksProgresService.tasksProgressList;
     tasksProgressList.forEach(data);
     function data(key,value){
-      tableData.push([key.id,key.tasks.taskSubject,key.metric,key.comments,key.status,key.createdDate]); 
+      tableData.push([key.id,key.tasks.taskSubject,key.metric+'%',key.comments,key.status,key.createdDate]); 
     }
     var dd = {
       pageSize:'A4',
@@ -153,7 +166,7 @@ export class TasksProgressComponent implements OnInit {
             // headers are automatically repeated if the table spans over multiple pages
             // you can declare how many rows should be treated as headers
             headerRows: 1,
-            widths: [ 50, '*', 100, '*','*','*' ],
+            widths: [ 50, 'auto','auto', 'auto','auto','auto' ],
   
             body: tableData
           }

@@ -16,10 +16,10 @@
             <tr *ngFor="let task of tasksService.tasksList">
                 <td>{{ task.taskSubject}}</td>
                 <td>{{ task.description }}</td>
-                <td>{{ task.startDate }}</td>
-                <td>{{ task.endDate}}</td>
-                <td>{{ task.employee.firstName }} {{ task.employee.lastName }}</td>
-                <td>{{ task.createdDate}}</td>
+                <td>{{ task.startDate | date }}</td>
+                <td>{{ task.endDate | date}}</td>
+                <td>{{ task.applicationUser.fullName }}</td>
+                <td>{{ task.createdDate | date }}</td>
                 <td><button class="btn btn-sm btn-success" (click)=editData(content,task)>Edit</button> | <button class="btn btn-sm btn-danger" (click)="onDelete(task.id)">Delete</button></td>
             </tr>
         </tbody>
@@ -65,9 +65,9 @@
                         <div class="col-12">
                             <div class="form-group">
                                 <label>Select Employee</label>
-                                <select class="form-control" formControlName="EmployeeId">
+                                <select class="form-control" formControlName="ApplicationUserId">
                                     <option value="0">--Select--</option>
-                                    <option *ngFor="let emp of employeesService.employeesList" value="{{emp.employeeId}}">{{emp.employeeId}} ({{emp.firstName}} {{emp.lastName}})</option>
+                                    <option *ngFor="let user of userService.userList" value="{{user.id}}">{{user.fullName}}</option>
                                 </select>
                             </div>
                         </div>

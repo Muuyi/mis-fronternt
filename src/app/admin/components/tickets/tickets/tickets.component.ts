@@ -25,7 +25,7 @@ export class TicketsComponent implements OnInit {
   constructor(private ticketsService : TicketsService,private toastr : ToastrService,private modalService: NgbModal,private employeesService : EmployeesService,private fb : FormBuilder,private http : HttpClient) { }
   ticketsForm = this.fb.group({
     Id : [0],
-    EmployeeId : ['']
+    ApplicationUserId : ['']
   })
   ngOnInit() {
     // this.resetForm();
@@ -46,7 +46,7 @@ export class TicketsComponent implements OnInit {
   onSubmit(form: NgForm){
     var body = {
       Id : this.ticketsForm.value.Id,
-      EmployeeId:this.ticketsForm.value.EmployeeId,
+      ApplicationUserId:this.ticketsForm.value.ApplicationUserId,
     }
     // this.insertRecord(form);
     if(this.ticketsForm.value.Id == 0){

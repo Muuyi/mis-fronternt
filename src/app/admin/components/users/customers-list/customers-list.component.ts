@@ -65,26 +65,35 @@ export class CustomersListComponent implements OnInit {
   // }
   //SUBMIT FORM
   onSubmit(){
+    var id 
+    if(this.customersForm.value.Id == null){
+      id = 0;
+    }else{
+      id = this.customersForm.value.Id
+    }
     var body = {
-      Id : this.customersForm.value.Id,
+      Id : id,
       Name : this.customersForm.value.Name,
       Email : this.customersForm.value.Email,
-      Phone : this.customersForm.value.Phone,
+      Phone : parseInt(this.customersForm.value.Phone),
       Address : this.customersForm.value.Address
     }
-    if(this.customersForm.value.Id == 0){
-      this.http.post(environment.rootApi+'/customers',body).subscribe(res=>{
-        this.toastr.success('Record inserted successfully','Customers records');
-        this.customerService.getCustomers();
-        this.customersForm.reset();
-        this.modalService.dismissAll();
-      })
-    }else{
+    console.log(body);
+    if(this.customersForm.value.Id > 0){
       this.http.put(environment.rootApi+'/customers/'+this.customersForm.value.Id,body).subscribe(res=>{
         this.toastr.info('Record successfully updated','Customers records');
         this.customerService.getCustomers();
         this.customersForm.reset();
         this.modalService.dismissAll();
+        console.log(body);
+      })
+    }else{
+      this.http.post(environment.rootApi+'/customers',body).subscribe(res=>{
+        this.toastr.success('Record inserted successfully','Customers records');
+        this.customerService.getCustomers();
+        this.customersForm.reset();
+        this.modalService.dismissAll();
+        console.log(body);
       })
     }
     // this.insertRecord();

@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { NgForm, FormBuilder } from '@angular/forms';
-import { TasksService, EmployeesService } from 'src/app/shared/employees.service';
+import { TasksService, EmployeesService, ApplicationUserService } from 'src/app/shared/employees.service';
 import { ToastrService } from 'ngx-toastr';
 import { Tasks } from 'src/app/shared/employees.model';
 import  pdfMake from "pdfmake/build/pdfmake";
@@ -18,20 +18,21 @@ pdfMake.vfs = pdfFonts.pdfMake.vfs;
 export class TasksListComponent implements OnInit {
   closeResult : string;
 
-  constructor(private tasksService : TasksService,private employeesService : EmployeesService,private toastr : ToastrService, private fb : FormBuilder,private http : HttpClient,private modalService: NgbModal) { }
+  constructor(private tasksService : TasksService,private userService : ApplicationUserService,private toastr : ToastrService, private fb : FormBuilder,private http : HttpClient,private modalService: NgbModal) { }
   tasksForm = this.fb.group({
     Id : [0],
     TaskSubject :[''],
     Description : [''],
     StartDate : [''],
     EndDate : [''],
-    EmployeeId : ['']
+    ApplicationUserId : ['']
   })
 
   ngOnInit() {
     this.tasksService.getTasks();
-    this.employeesService.getEmployee();
-    console.log(this.employeesService.employeesList);
+    this.userService.getUsers();
+    // this.employeesService.getEmployee();
+    // console.log(this.employeesService.employeesList);
   }
    //RESET FORM
   //  resetForm(form? : NgForm){
@@ -49,24 +50,30 @@ export class TasksListComponent implements OnInit {
   //   }
   //SUBMIT FORM
   onSubmit(){
+    var id 
+    if(this.tasksForm.value.Id == null){
+      id = 0;
+    }else{
+      id = this.tasksForm.value.Id
+    }
     var body = {
-      Id : this.tasksForm.value.Id,
+      Id : id,
       TaskSubject :this.tasksForm.value.TaskSubject,
       Description : this.tasksForm.value.Description,
       StartDate : this.tasksForm.value.StartDate,
       EndDate : this.tasksForm.value.EndDate,
-      EmployeeId : this.tasksForm.value.EmployeeId
+      ApplicationUserId : this.tasksForm.value.ApplicationUserId
     }
-    if(this.tasksForm.value.Id == 0){
-      this.http.post(environment.rootApi+'/tasks',body).subscribe(res=>{
-        this.toastr.success('Record inserted successfully','Tasks Records');
+    if(this.tasksForm.value.Id > 0){
+      this.http.put(environment.rootApi+'/tasks/'+this.tasksForm.value.Id,body).subscribe(res=>{
+        this.toastr.info('Record updated successfully','Tasks records');
         this.tasksService.getTasks();
         this.tasksForm.reset();
         this.modalService.dismissAll();
       })
     }else{
-      this.http.put(environment.rootApi+'/tasks/'+this.tasksForm.value.Id,body).subscribe(res=>{
-        this.toastr.info('Record updated successfully','Tasks records');
+      this.http.post(environment.rootApi+'/tasks',body).subscribe(res=>{
+        this.toastr.success('Record inserted successfully','Tasks Records');
         this.tasksService.getTasks();
         this.tasksForm.reset();
         this.modalService.dismissAll();
@@ -76,13 +83,13 @@ export class TasksListComponent implements OnInit {
   }
   //POPULATE TASKS RECORDS
   editData(content,task){
-    this.tasksForm.setValue({
+    this.tasksForm.patchValue({
       Id : task.id,
       TaskSubject : task.taskSubject,
       Description : task.description,
-      StartDate : task.startDate,
-      EndDate : task.endDate,
-      EmployeeId : task.employeeId
+      StartDate : new Date(task.startDate).toISOString().substring(0, 10),
+      EndDate : new Date(task.endDate).toISOString().substring(0, 10),
+      ApplicationUserId : task.applicationUserId
     })
     this.openModal(content);
   }
@@ -129,7 +136,7 @@ export class TasksListComponent implements OnInit {
     var tasksList = this.tasksService.tasksList;
     tasksList.forEach(data);
     function data(key,value){
-      tableData.push([key.id,key.taskSubject,key.description,key.startDate,key.endDate,key.employee.firstName+' '+key.employee.lastName,key.createdDate]); 
+      tableData.push([key.id,key.taskSubject,key.description,key.startDate,key.endDate,key.applicationUser.fullName,key.createdDate]); 
     }
     console.log(tableData);
     var dd = {
@@ -137,7 +144,7 @@ export class TasksListComponent implements OnInit {
       pageOrientation:'landscape',
       content: [
         {
-          text:'TASKS PROGRESS REPORT',
+          text:'TASKS REPORT',
           style:'header'
         },
         { 

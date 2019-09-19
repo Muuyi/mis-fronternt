@@ -24,7 +24,8 @@ export class MeetingsComponent implements OnInit {
     Id:[0],
     Subject : [''],
     Description :[''],
-    MeetingDate :['']
+    MeetingDate :[''],
+    MeetingTime : ['']
   })
 
   ngOnInit() {
@@ -47,22 +48,29 @@ export class MeetingsComponent implements OnInit {
   // }
   //SUBMIT FORM
   onSubmit(){
+    var id 
+    if(this.meetingForm.value.Id == null){
+      id = 0;
+    }else{
+      id = this.meetingForm.value.Id
+    }
     var body = {
-      Id : this.meetingForm.value.Id,
+      Id :id,
       Subject : this.meetingForm.value.Subject,
       Description : this.meetingForm.value.Description,
-      MeetingDate : this.meetingForm.value.MeetingDate
+      MeetingDate : this.meetingForm.value.MeetingDate,
+      MeetingTime : this.meetingForm.value.MeetingTime
     }
-    if(this.meetingForm.value.Id == 0){
-      this.http.post(environment.rootApi+'/meetings',body).subscribe(res=>{
-        this.toastr.success('Record inserted successfully','Meetings records');
+    if(this.meetingForm.value.Id > 0){
+      this.http.put(environment.rootApi+'/meetings/'+this.meetingForm.value.Id,body).subscribe(res=>{
+        this.toastr.info('Record updated successfully','Departments editing');
         this.meetingsService.getMeetings();
         this.meetingForm.reset();
         this.modalService.dismissAll();
       })
     }else{
-      this.http.put(environment.rootApi+'/meetings/'+this.meetingForm.value.Id,body).subscribe(res=>{
-        this.toastr.info('Record updated successfully','Departments editing');
+      this.http.post(environment.rootApi+'/meetings',body).subscribe(res=>{
+        this.toastr.success('Record inserted successfully','Meetings records');
         this.meetingsService.getMeetings();
         this.meetingForm.reset();
         this.modalService.dismissAll();
@@ -83,7 +91,8 @@ export class MeetingsComponent implements OnInit {
       Id:meeting.id,
       Subject : meeting.subject,
       Description :meeting.description,
-      MeetingDate :meeting.meetingDate
+      MeetingDate :new Date(meeting.meetingDate).toISOString().substring(0, 10),
+      MeetingTime :meeting.meetingTime
     })
     this.openModal(content);
   }

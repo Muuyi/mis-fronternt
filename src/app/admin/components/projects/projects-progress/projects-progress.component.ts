@@ -4,6 +4,8 @@ import { NgForm,FormBuilder } from '@angular/forms';
 import { ToastrService } from 'ngx-toastr';
 import { NgbModal,ModalDismissReasons } from '@ng-bootstrap/ng-bootstrap';
 import { ProjectsProgressService, ProjectsService } from 'src/app/shared/employees.service';
+import {MatSliderModule} from '@angular/material/slider';
+
 
 import  pdfMake from "pdfmake/build/pdfmake";
 import  pdfFonts  from "pdfmake/build/vfs_fonts";
@@ -47,36 +49,47 @@ export class ProjectsProgressComponent implements OnInit {
   //   }
   // }
   //SUBMIT FORM DATA
-  onSubmit(form: NgForm){
-    this.insertRecord(form);
+  onSubmit(){
+    this.insertRecord();
   }
-  insertRecord(form:NgForm){ 
+  insertRecord(){ 
+    var id 
+    if(this.progressForm.value.Id == null){
+      id = 0;
+    }else{
+      id = this.progressForm.value.Id
+    }
     var body = {
-      Id : this.progressForm.value.Id,
+      Id : id,
       Comments : this.progressForm.value.Comments,
       Metric : this.progressForm.value.Metric,
       ProjectsId : this.progressForm.value.ProjectsId 
     }
-    // this.projectsProgressService.postProjectsProgress(form.value).subscribe(res=>{
-    //   this.toastr.success('Record inserted successfully','Projects Progress addition');
-    //   this.projectsProgressService.getProjectsProgress();
-    //   // this.resetForm(form);
-    // })
-    if(this.progressForm.value.Id == 0){
-      this.http.post(environment.rootApi+'/projectsProgress',body).subscribe(res=>{
-        this.toastr.success('Record inserted successfully','Projects Progress Records');
-        this.projectsProgressService.getProjectsProgress();
-        this.progressForm.reset();
-        this.modalService.dismissAll();
-      })
-    }else{
+    if(this.progressForm.value.Id > 0){
       this.http.put(environment.rootApi+'/projectsProgress/'+this.progressForm.value.Id,body).subscribe(res=>{
         this.toastr.info('Record updated successfully','Projects Progress Records');
         this.projectsProgressService.getProjectsProgress();
         this.progressForm.reset();
         this.modalService.dismissAll();
       })
+    }else{
+      this.http.post(environment.rootApi+'/projectsProgress',body).subscribe(res=>{
+        this.toastr.success('Record inserted successfully','Projects Progress Records');
+        this.projectsProgressService.getProjectsProgress();
+        this.progressForm.reset();
+        this.modalService.dismissAll();
+      })
     }
+  }
+  //SLIDER LABEL
+  formatLabel(value: number | null) {
+    if (!value) {
+      return 0;
+    }
+    if (value >= 1) {
+      return Math.round(value / 1) + '%';
+    }
+    return value;
   }
   //POPULATE PROJECTS MODAL
   editData(content,proj){
@@ -145,7 +158,7 @@ export class ProjectsProgressComponent implements OnInit {
             // headers are automatically repeated if the table spans over multiple pages
             // you can declare how many rows should be treated as headers
             headerRows: 1,
-            widths: [ 50, '*','*', '*','*'],
+            widths: [ 'auto', 'auto','auto', 'auto','auto'],
   
             body: tableData
           }
