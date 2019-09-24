@@ -22,6 +22,7 @@ import { DepartmentsComponent } from './admin/components/users/departments/depar
 import { LeavelistComponent } from './admin/components/leave/leavelist/leavelist.component';
 import { MeetingsAttendanceComponent } from './admin/components/meetings/meetings-attendance/meetings-attendance.component';
 import { MeetingsProgressComponent } from './admin/components/meetings/meetings-progress/meetings-progress.component';
+import { MeetingsDetailsComponent } from './admin/components/meetings/meetings-details/meetings-details.component';
 
 
 const routes: Routes = [
@@ -37,6 +38,7 @@ const routes: Routes = [
       {path:'meetings',component:MeetingsComponent},
       {path:'meetings-attendance',component:MeetingsAttendanceComponent},
       {path:'meeting-progress',component:MeetingsProgressComponent},
+      {path:'meetings/meeting-details',component:MeetingsDetailsComponent},
       {path:'tasks',component:TasksListComponent},
       {path:'tasks-progress',component:TasksProgressComponent},
       {path:'projects',component:ProjectsComponent},
@@ -59,4 +61,4 @@ const routes: Routes = [
   exports: [RouterModule]
 })
 export class AppRoutingModule { }
-export const routingComponents = [LoginComponent,AdminComponent,PersonalDetailsComponent,ChangePasswordComponent,EmployeesListComponent,SystemUsersComponent,PageNotFoundComponent,CustomersListComponent,MeetingsComponent,MeetingsProgressComponent,TasksListComponent,ProjectsComponent,LeaveComponent,LeavelistComponent,TicketsComponent,TicketsProgressComponent]
+export const routingComponents = [LoginComponent,AdminComponent,PersonalDetailsComponent,ChangePasswordComponent,EmployeesListComponent,SystemUsersComponent,PageNotFoundComponent,CustomersListComponent,MeetingsComponent,MeetingsProgressComponent,TasksListComponent,ProjectsComponent,LeaveComponent,LeavelistComponent,TicketsComponent,TicketsProgressComponent,MeetingsDetailsComponent]

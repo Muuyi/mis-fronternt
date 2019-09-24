@@ -125,6 +125,10 @@ export class MeetingProgressService{
     return this.http.delete(environment.rootApi+'/meetingProgress/'+id);
   }
 }
+/////////////////////////////////////////////MEETING DETAILS SERVICE////////////////
+export class MeetingDetailsService{
+  
+}
 ////////////////////////////////////////////TASKS SERVICE///////////////////////
 export class TasksService{
   tasksData : Tasks;
