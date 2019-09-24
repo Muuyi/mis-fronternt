@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Employees,Departments,Customers, Meetings, Tasks, Projects, Leave, Tickets, Administrators, TasksProgress, ProjectsProgress, LeaveHolder, ApplicationUser } from './employees.model';
+import { Employees,Departments,Customers, Meetings, Tasks, Projects, Leave, Tickets, Administrators, TasksProgress, ProjectsProgress, LeaveHolder, ApplicationUser, MeetingProgress } from './employees.model';
 import { HttpClient, HttpHeaders } from "@angular/common/http";
 import { environment } from 'src/environments/environment';
 import { FormBuilder, Validators, FormGroup} from '@angular/forms';
@@ -108,6 +108,21 @@ export class MeetingsService{
 export class MeetingsAttendanceService{
   constructor (private http : HttpClient){
     
+  }
+}
+//////////////////////////////////////////////MEETING PROGESS SERVICE//////////////
+export class MeetingProgressService{
+  meetingProgressList : MeetingProgress[];
+  constructor (private http : HttpClient){
+
+  }
+  //GET MEETINGS PROGRESSS
+  getMeetingProgress(){
+    return this.http.get(environment.rootApi+'/meetingProgress').toPromise().then(res=>this.meetingProgressList = res as MeetingProgress[]);
+  }
+  //DELETE MEETINGS PROGRESS
+  deleteMeetingProgress(id:number){
+    return this.http.delete(environment.rootApi+'/meetingProgress/'+id);
   }
 }
 ////////////////////////////////////////////TASKS SERVICE///////////////////////

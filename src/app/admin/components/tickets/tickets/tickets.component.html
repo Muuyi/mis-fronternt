@@ -10,8 +10,8 @@
         </thead>
         <tbody>
             <tr *ngFor="let ticket of ticketsService.ticketsList;let i=index;">
-                <td>{{ ticket.employee.firstName }} {{ ticket.employee.lastName }}</td>
-                <td>{{ ticket.createdDate }}</td>
+                <td>{{ ticket.applicationUser.fullName }}</td>
+                <td>{{ ticket.createdDate | date:'medium' }}</td>
                 <td><button class="btn btn-sm btn-success" (click)="editData(content,ticket)">Edit</button> | <button class="btn btn-sm btn-danger" (click)="onDelete(ticket.id)">Delete</button></td>
             </tr>
         </tbody>

@@ -5,7 +5,6 @@
     <table datatable [dtOptions]="dtOptions" [dtTrigger]="dtTrigger" class="table table-striped">
         <thead>
             <th>Subject</th>
-            <th>Description</th>
             <th>Date</th>
             <th>Time</th>
             <th>Date posted</th>
@@ -14,11 +13,10 @@
         <tbody>
             <tr *ngFor="let meeting of meetingsService.meetingsList">
                 <td>{{ meeting.subject}}</td>
-                <td>{{ meeting.description }}</td>
                 <td>{{ meeting.meetingDate | date }}</td>
                 <td>{{ meeting.meetingTime | date:'shortTime' }}</td>
                 <td>{{ meeting.createdDate | date:'medium'}}</td>
-                <td><button class="btn btn-sm btn-success" (click)="editData(content,meeting)">Edit</button> | <button (click)="onDelete(meeting.id)" class="btn btn-sm btn-danger">Delete</button></td>
+                <td><button class="btn btn-info btn-sm"><i class="material-icons">unfold_more</i></button> | <button class="btn btn-sm btn-success" (click)="editData(content,meeting)"><i class="material-icons">edit</i></button> | <button (click)="onDelete(meeting.id)" class="btn btn-sm btn-danger"><i class="material-icons">delete</i></button></td>
             </tr>
         </tbody>
     </table> 
@@ -41,7 +39,8 @@
                     <div class="col-12">
                         <div class="form-group">
                             <label>Meeting description</label>
-                            <input type="text" formControlName="Description" class="form-control" placeholder="Meeting description" />
+                            <!-- <input type="text" formControlName="Description" class="form-control" placeholder="Meeting description" /> -->
+                            <textarea class="form-control" formControlName="Description"></textarea>
                         </div>
                     </div>
                     <div class="col-12">

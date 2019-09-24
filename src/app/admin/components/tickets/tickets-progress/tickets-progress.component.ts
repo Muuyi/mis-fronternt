@@ -130,7 +130,7 @@ export class TicketsProgressComponent implements OnInit {
     var ticketList = this.ticketsProgressService.ticketsProgressList;
     ticketList.forEach(data);
     function data(key,value){
-      tableData.push([key.id,key.ticketsId+' ('+key.tickets.employee.firstName+' '+key.tickets.employee.lastName+')',key.status,key.comments,key.createdDate]); 
+      tableData.push([key.id,key.ticketsId+' ('+key.tickets.applicationUser.fullName+')',key.status,key.comments,key.createdDate]); 
     }
     var dd = {
       pageSize:'A4',

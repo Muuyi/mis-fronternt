@@ -21,6 +21,7 @@ import { TicketsProgressComponent } from './admin/components/tickets/tickets-pro
 import { DepartmentsComponent } from './admin/components/users/departments/departments.component';
 import { LeavelistComponent } from './admin/components/leave/leavelist/leavelist.component';
 import { MeetingsAttendanceComponent } from './admin/components/meetings/meetings-attendance/meetings-attendance.component';
+import { MeetingsProgressComponent } from './admin/components/meetings/meetings-progress/meetings-progress.component';
 
 
 const routes: Routes = [
@@ -35,6 +36,7 @@ const routes: Routes = [
       {path:'customers-list',component:CustomersListComponent},
       {path:'meetings',component:MeetingsComponent},
       {path:'meetings-attendance',component:MeetingsAttendanceComponent},
+      {path:'meeting-progress',component:MeetingsProgressComponent},
       {path:'tasks',component:TasksListComponent},
       {path:'tasks-progress',component:TasksProgressComponent},
       {path:'projects',component:ProjectsComponent},
@@ -44,7 +46,7 @@ const routes: Routes = [
       {path:'tickets',component:TicketsComponent},
       {path:'tickets-progress',component:TicketsProgressComponent},
       {path:'application-users',component:ApplicationUserComponent},
-      {path:'departments',component:DepartmentsComponent},
+      {path:'departments',component:DepartmentsComponent}
     ]
     ,canActivate:[AuthGuard]
   },
@@ -57,4 +59,4 @@ const routes: Routes = [
   exports: [RouterModule]
 })
 export class AppRoutingModule { }
-export const routingComponents = [LoginComponent,AdminComponent,PersonalDetailsComponent,ChangePasswordComponent,EmployeesListComponent,SystemUsersComponent,PageNotFoundComponent,CustomersListComponent,MeetingsComponent,TasksListComponent,ProjectsComponent,LeaveComponent,LeavelistComponent,TicketsComponent,TicketsProgressComponent]
+export const routingComponents = [LoginComponent,AdminComponent,PersonalDetailsComponent,ChangePasswordComponent,EmployeesListComponent,SystemUsersComponent,PageNotFoundComponent,CustomersListComponent,MeetingsComponent,MeetingsProgressComponent,TasksListComponent,ProjectsComponent,LeaveComponent,LeavelistComponent,TicketsComponent,TicketsProgressComponent]

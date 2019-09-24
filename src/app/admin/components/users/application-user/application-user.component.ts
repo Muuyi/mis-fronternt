@@ -31,6 +31,7 @@ export class ApplicationUserComponent implements OnInit {
         if(res.succeeded){
           this.toastr.success('Record inserted successfully','User registration');
           this.userService.formModel.reset();
+          this.modalService.dismissAll();
           this.userService.getUsers();
         }else{
           res.errors.forEach(element => {

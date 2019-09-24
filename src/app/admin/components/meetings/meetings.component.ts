@@ -55,7 +55,7 @@ export class MeetingsComponent implements OnInit {
       id = this.meetingForm.value.Id
     }
     var body = {
-      Id :id,
+      Id :parseInt(id),
       Subject : this.meetingForm.value.Subject,
       Description : this.meetingForm.value.Description,
       MeetingDate : this.meetingForm.value.MeetingDate,

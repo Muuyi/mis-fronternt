@@ -17,7 +17,7 @@ import {FormsModule,ReactiveFormsModule} from '@angular/forms';
 import { PageNotFoundComponent } from './page-not-found/page-not-found.component';
 import { PersonalDetailsComponent } from './admin/components/users/personal-details/personal-details.component';
 import { ChangePasswordComponent } from './admin/components/users/change-password/change-password.component';
-import { EmployeesService,DepartmentsService,CustomersService, MeetingsService,MeetingsAttendanceService, TasksService, ProjectsService, LeaveService,LeaveHolderService,TicketsService, AdministratorsService, ApplicationUserService, TasksProgressService, ProjectsProgressService, TicketsProgressService } from './shared/employees.service';
+import { EmployeesService,DepartmentsService,CustomersService, MeetingsService,MeetingsAttendanceService, TasksService, ProjectsService, LeaveService,LeaveHolderService,TicketsService, AdministratorsService, ApplicationUserService, TasksProgressService, ProjectsProgressService, TicketsProgressService, MeetingProgressService } from './shared/employees.service';
 import { MeetingsComponent } from './admin/components/meetings/meetings.component';
 import { TasksListComponent } from './admin/components/tasks/tasks-list/tasks-list.component';
 import { ProjectsComponent } from './admin/components/projects/projects/projects.component';
@@ -33,6 +33,7 @@ import { DepartmentsComponent } from './admin/components/users/departments/depar
 import { LeavelistComponent } from './admin/components/leave/leavelist/leavelist.component';
 import { MeetingsAttendanceComponent } from './admin/components/meetings/meetings-attendance/meetings-attendance.component';
 import { MatSliderModule } from '@angular/material';
+import { MeetingsProgressComponent } from './admin/components/meetings/meetings-progress/meetings-progress.component';
 
 @NgModule({
   declarations: [
@@ -48,7 +49,8 @@ import { MatSliderModule } from '@angular/material';
     TicketsProgressComponent,
     DepartmentsComponent,
     LeavelistComponent,
-    MeetingsAttendanceComponent
+    MeetingsAttendanceComponent,
+    MeetingsProgressComponent
   ],
   imports: [
     BrowserModule,
@@ -70,7 +72,7 @@ import { MatSliderModule } from '@angular/material';
     MatSliderModule
   ],
   entryComponents : [EmployeesListComponent],
-  providers: [EmployeesService,DepartmentsService,CustomersService,MeetingsService,MeetingsAttendanceService,TasksService,ProjectsService,LeaveService,LeaveHolderService,TicketsService,AdministratorsService,ApplicationUserService,TasksProgressService,ProjectsProgressService,TicketsProgressService,{
+  providers: [EmployeesService,DepartmentsService,CustomersService,MeetingsService,MeetingsAttendanceService,MeetingProgressService,TasksService,ProjectsService,LeaveService,LeaveHolderService,TicketsService,AdministratorsService,ApplicationUserService,TasksProgressService,ProjectsProgressService,TicketsProgressService,{
     provide : HTTP_INTERCEPTORS,
     useClass : AuthInterceptor,
     multi : true

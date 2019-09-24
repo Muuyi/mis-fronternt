@@ -7,7 +7,7 @@ import  pdfFonts  from "pdfmake/build/vfs_fonts";
 import { HttpClient } from '@angular/common/http';
 import { environment } from 'src/environments/environment';
 import { NgbModal,ModalDismissReasons } from '@ng-bootstrap/ng-bootstrap';
-import { LeaveHolderService, LeaveService, EmployeesService } from 'src/app/shared/employees.service';
+import { LeaveHolderService, LeaveService, EmployeesService, ApplicationUserService } from 'src/app/shared/employees.service';
 
 pdfMake.vfs = pdfFonts.pdfMake.vfs;
 
@@ -18,24 +18,24 @@ pdfMake.vfs = pdfFonts.pdfMake.vfs;
 })
 export class LeavelistComponent implements OnInit {
   closeResult : string;
-  constructor(private toastr : ToastrService,private http : HttpClient,private fb : FormBuilder,private modalService:NgbModal,private leaveHolderService : LeaveHolderService,private leaveService : LeaveService,private employeesService : EmployeesService) { }
+  constructor(private toastr : ToastrService,private http : HttpClient,private fb : FormBuilder,private modalService:NgbModal,private leaveHolderService : LeaveHolderService,private leaveService : LeaveService,private userService : ApplicationUserService) { }
   leaveHolderForm = this.fb.group({
     Id : [0],
     LeaveId : [''],
-    EmployeeId : ['']
+    ApplicationUserId : ['']
   })
 
   ngOnInit() {
     this.leaveHolderService.getLeaveHolder();
     this.leaveService.getLeave();
-    this.employeesService.getEmployee();
+    this.userService.getUsers();
   }
   //SUBMIT FORM
   onSubmit(form : NgForm){
     var body = {
       Id : this.leaveHolderForm.value.Id,
       LeaveId : this.leaveHolderForm.value.LeaveId,
-      EmployeeId : this.leaveHolderForm.value.EmployeeId,
+      ApplicationUserId : this.leaveHolderForm.value.ApplicationUserId,
      
     }
     // this.insertRecord(form);
@@ -78,7 +78,7 @@ export class LeavelistComponent implements OnInit {
     this.leaveHolderForm.setValue({
       Id : lv.id,
       LeaveId : lv.leaveId,
-      EmployeeId : lv.employeeId
+      ApplicationUserId : lv.applicationUserId
     })
     this.openModal(content);
   }
@@ -99,7 +99,7 @@ export class LeavelistComponent implements OnInit {
     var leaveList = this.leaveHolderService.leaveHolderList;
     leaveList.forEach(data);
     function data(key,value){
-      tableData.push([key.id,key.leave.employee.firstName+' '+key.leave.employee.lastName,key.leave.startDate,key.leave.endDate,key.employee.firstName+' '+key.employee.lastName,key.createdDate]); 
+      tableData.push([key.id,key.leave.applicationUser.fullName,key.leave.startDate,key.leave.endDate,key.applicationUser.fullName,key.createdDate]); 
     }
     var dd = {
       pageSize:'A4',
@@ -115,7 +115,7 @@ export class LeavelistComponent implements OnInit {
             // headers are automatically repeated if the table spans over multiple pages
             // you can declare how many rows should be treated as headers
             headerRows: 1,
-            widths: [ 50, '*','*','*','*','*'],
+            widths: [ 'auto', 'auto','auto','auto','auto','auto'],
   
             body: tableData
           }

@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { LeaveService, EmployeesService } from 'src/app/shared/employees.service';
+import { LeaveService, EmployeesService, ApplicationUserService } from 'src/app/shared/employees.service';
 import { ToastrService } from 'ngx-toastr';
 import { NgForm,FormBuilder } from '@angular/forms';
 import { Leave } from 'src/app/shared/employees.model';
@@ -19,10 +19,11 @@ pdfMake.vfs = pdfFonts.pdfMake.vfs;
 export class LeaveComponent implements OnInit {
   closeResult : string;
 
-  constructor(private leaveService : LeaveService,private employeesService : EmployeesService,private toastr : ToastrService,private http : HttpClient,private fb : FormBuilder,private modalService:NgbModal) { }
+  constructor(private leaveService : LeaveService,private userService : ApplicationUserService,private toastr : ToastrService,private http : HttpClient,private fb : FormBuilder,private modalService:NgbModal) { }
   leaveForm = this.fb.group({
     Id : [0],
-    EmployeeId : [''],
+    ApplicationUserId : [''],
+    Type : [''],
     StartDate : [''],
     EndDate : ['']
   })
@@ -30,7 +31,7 @@ export class LeaveComponent implements OnInit {
     //RESET FORM
     // this.resetForm();
     this.leaveService.getLeave();
-    this.employeesService.getEmployee();
+    this.userService.getUsers();
   }
   //RESET FORM
   // resetForm(form? : NgForm){
@@ -47,23 +48,30 @@ export class LeaveComponent implements OnInit {
   // }
   //SUBMIT FORM
   onSubmit(form : NgForm){
+    var id 
+    if(this.leaveForm.value.Id == null){
+      id = 0;
+    }else{
+      id = this.leaveForm.value.Id
+    }
     var body = {
       Id : this.leaveForm.value.Id,
-      EmployeeId : this.leaveForm.value.EmployeeId,
+      ApplicationUserId : this.leaveForm.value.ApplicationUserId,
+      Type : this.leaveForm.value.Type,
       StartDate : this.leaveForm.value.StartDate,
-      EndDate : this.leaveForm.value.EndDate,
+      EndDate : this.leaveForm.value.EndDate
     }
     // this.insertRecord(form);
-    if(this.leaveForm.value.Id == 0){
-      this.http.post(environment.rootApi+'/leave',body).subscribe(res=>{
-        this.toastr.success('Record inserted successfully','Leave Records');
+    if(this.leaveForm.value.Id > 0){
+      this.http.put(environment.rootApi+'/leave/'+this.leaveForm.value.Id,body).subscribe(res=>{
+        this.toastr.info('Record updated successfully','Leave Records');
         this.leaveService.getLeave();
         this.leaveForm.reset();
         this.modalService.dismissAll();
       })
     }else{
-      this.http.put(environment.rootApi+'/leave/'+this.leaveForm.value.Id,body).subscribe(res=>{
-        this.toastr.info('Record updated successfully','Leave Records');
+      this.http.post(environment.rootApi+'/leave',body).subscribe(res=>{
+        this.toastr.success('Record inserted successfully','Leave Records');
         this.leaveService.getLeave();
         this.leaveForm.reset();
         this.modalService.dismissAll();
@@ -72,11 +80,12 @@ export class LeaveComponent implements OnInit {
   }
   //POPULATE PROJECTS MODAL
   editData(content,lv){
-    this.leaveForm.setValue({
+    this.leaveForm.patchValue({
       Id : lv.id,
-      EmployeeId : lv.employeeId,
-      StartDate : lv.startDate,
-      EndDate : lv.endDate
+      ApplicationUserId : lv.applicationUserId,
+      Type : lv.type,
+      StartDate : new Date(lv.startDate).toISOString().substring(0,10),
+      EndDate : new Date(lv.endDate).toISOString().substring(0,10)
     })
     this.openModal(content);
   }
@@ -118,19 +127,19 @@ export class LeaveComponent implements OnInit {
    //GENERATE PDF
    generatePdf(): void{
     var tableData = [
-      [{text:'SERIAL NO',style:'tableHeader'},{text:'EMPLOYEE NAME',style:'tableHeader'},{text:'START DATE',style:'tableHeader'},{text:'END DATE',style:'tableHeader'},{text:'DATE CREATED',style:'tableHeader'}]
+      [{text:'S/NO',style:'tableHeader'},{text:'EMPLOYEE NAME',style:'tableHeader'},{text:'LEAVE TYPE',style:'tableHeader'},{text:'START DATE',style:'tableHeader'},{text:'END DATE',style:'tableHeader'},{text:'DATE CREATED',style:'tableHeader'}]
     ]
     var leaveList = this.leaveService.leaveList;
     leaveList.forEach(data);
     function data(key,value){
-      tableData.push([key.id,key.employee.firstName+' '+key.employee.lastName,key.startDate,key.endDate,key.createdDate]); 
+      tableData.push([key.id,key.applicationUser.fullName,key.type,key.startDate,key.endDate,key.createdDate]); 
     }
     var dd = {
       pageSize:'A4',
       pageOrientation:'landscape',
       content: [
         {
-          text:'TICKETS PROGRESS REPORT',
+          text:'LEAVE REPORT',
           style:'header'
         },
         { 
@@ -139,7 +148,7 @@ export class LeaveComponent implements OnInit {
             // headers are automatically repeated if the table spans over multiple pages
             // you can declare how many rows should be treated as headers
             headerRows: 1,
-            widths: [ 50, '*','*','*','*'],
+            widths: [ 50, 'auto','auto','auto','auto','auto'],
   
             body: tableData
           }

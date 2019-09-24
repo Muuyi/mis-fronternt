@@ -1,10 +1,12 @@
 <div class="alert alert-success"><h3>Leave management</h3></div>
 <button class="btn btn-success" (click)="openModal(content,null,null)">Add leave</button>
 <button class="btn btn-warning m-1" (click)="generatePdf()">Employees on leave report</button>
+{{ userService.usersList | json }}
 <div class="table-responsive">
     <table class="table table-striped">
         <thead>
             <th>Name</th>
+            <th>Leave type</th>
             <th>Start date</th>
             <th>End date</th>
             <th>Date created</th>
@@ -12,10 +14,11 @@
         </thead>
         <tbody>
             <tr *ngFor="let lv of leaveService.leaveList">
-                <td>{{ lv.employee.firstName }} {{ lv.employee.lastName }}</td>
-                <td>{{ lv.startDate }}</td>
-                <td>{{ lv.endDate }}</td>
-                <td>{{ lv.createdDate }}</td>
+                <td>{{ lv.applicationUser.fullName }}</td>
+                <td>{{ lv.type }}</td>
+                <td>{{ lv.startDate | date:'medium'}}</td>
+                <td>{{ lv.endDate | date:'medium'}}</td>
+                <td>{{ lv.createdDate | date:'medium'}}</td>
                 <td><button class="btn btn-sm btn-success" (click)="editData(content,lv)">Edit</button> | <button class="btn btn-sm btn-danger" (click)="onDelete(lv.id)">Delete</button></td>
             </tr>
         </tbody>
@@ -37,9 +40,20 @@
                         <div class="col-12">
                             <div class="form-group">
                                 <label>Select Employee</label>
-                                <select class="form-control" formControlName="EmployeeId">
+                                <select class="form-control" formControlName="ApplicationUserId">
                                     <option value="0">--Select--</option>
-                                    <option *ngFor="let emp of employeesService.employeesList" value="{{emp.employeeId}}">{{emp.employeeId}} ({{emp.firstName}} {{emp.lastName}})</option>
+                                    <option *ngFor="let user of userService.userList" value="{{user.id}}">{{user.fullName}}</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-12">
+                            <div class="form-group">
+                                <label>Leave type</label>
+                                <select class="form-control" formControlName="Type">
+                                    <option value="0">--Select--</option>
+                                    <option value="Maternity leave">Maternity leave</option>
+                                    <option value="Normal leave">Normal leave</option>
+                                    <option value="Illness leave">Illness leave</option>
                                 </select>
                             </div>
                         </div>

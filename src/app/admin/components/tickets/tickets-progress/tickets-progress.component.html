@@ -12,10 +12,10 @@
         </thead>
         <tbody>
             <tr *ngFor="let ticket of ticketsProgressService.ticketsProgressList;let i=index;">
-                <td>{{ ticket.ticketsId}} ({{ ticket.tickets.employee.firstName}} {{ ticket.tickets.employee.lastName}})</td>
+                <td>{{ ticket.ticketsId}} ({{ ticket.tickets.applicationUser.fullName}})</td>
                 <td>{{ ticket.status }}</td>
                 <td>{{ ticket.comments }}</td>
-                <td>{{ ticket.createdDate | date }}</td>
+                <td>{{ ticket.createdDate | date:'medium' }}</td>
                 <td><button class="btn btn-sm btn-success" (click)="editData(content,ticket)">Edit</button> | <button (click)="onDelete(ticket.id)" class="btn btn-sm btn-danger">Delete</button></td>
             </tr>
         </tbody>
@@ -25,7 +25,7 @@
 <ng-template #content let-modal>
     <form [formGroup]="progressForm" (submit)="onSubmit()" >
         <div class="modal-header">
-        <h4 class="modal-title" id="modal-basic-title">Add tasks progress</h4>
+        <h4 class="modal-title" id="modal-basic-title">Add tickets progress</h4>
         <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
             <span aria-hidden="true">&times;</span>
         </button>
@@ -40,7 +40,7 @@
                         <label>Select ticket</label>
                         <select class="form-control" formControlName="TicketsId">
                             <option value="0">--Select--</option>
-                            <option *ngFor="let ticket of ticketsService.ticketsList" value="{{ticket.id}}">{{ticket.id}}({{ ticket.employee.firstName}} {{ ticket.employee.lastName}})</option>
+                            <option *ngFor="let ticket of ticketsService.ticketsList" value="{{ticket.id}}">{{ticket.id}}({{ ticket.applicationUser.fullName}})</option>
                         </select>
                     </div>
                 </div>

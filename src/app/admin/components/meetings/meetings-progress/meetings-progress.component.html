@@ -1,0 +1,93 @@
+<div class="alert alert-success"><h3>Meeting progress</h3></div>
+<button class="btn btn-success" (click)="openModal(content,null,null)">Add meeting progress</button>
+<button class="btn btn-warning m-1" (click)="generatePdf()">Meeting Progress Report</button>
+<div class="table-responsive">
+    <table datatable [dtOptions]="dtOptions" [dtTrigger]="dtTrigger" class="table table-striped">
+        <thead>
+            <th>Meeting</th>
+            <th>STATUS</th>
+            <th>DATE CREATED</th>
+            <th>ACTION</th>
+        </thead>
+        <tbody>
+            <tr *ngFor="let meet of progressService.meetingProgressList;let i=index;">
+                <td>{{ meet.meetings.subject}}</td>
+                <td>{{ meet.meetingStatus }}</td>
+                <td>{{ meet.createdDate | date:'medium' }}</td>
+                <td><button class="btn btn-sm btn-success" (click)=editData(content,meet) >Edit</button> | <button (click)="onDelete(meet.id)" class="btn btn-sm btn-danger">Delete</button></td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+<!--EMPLOYEES MODALL-->
+<ng-template #content let-modal>
+    <form [formGroup]="progressForm" (submit)="onSubmit()" >
+        <div class="modal-header">
+        <h4 class="modal-title" id="modal-basic-title">Add meeting progress</h4>
+        <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+            <span aria-hidden="true">&times;</span>
+        </button>
+        </div>
+        <!-- <p>{{formData.firstName}}</p> -->
+        <div class="modal-body">
+            <div class="row">
+                <!-- ID -->
+                <input type="hidden" formControlName="Id" />
+                <div class="col-12">
+                    <div class="form-group">
+                        <label>Select project</label>
+                        <select class="form-control" formControlName="MeetingsId">
+                            <option value="0">--Select--</option>
+                            <option *ngFor="let meeting of meetingService.meetingsList" value="{{meeting.id}}">{{meeting.subject}}</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="col-12">
+                    <div class="form-group">
+                        <label>Select status</label>
+                        <select class="form-control" formControlName="MeetingStatus" (change)="addFields()">
+                            <option value="0">--Select--</option>
+                            <option value="Lead">Lead</option>
+                            <option value="Deal">Deal</option>
+                            <option value="Project">Project</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+            <div [class.hiddenFields]="displayProjectForm">
+                <div class="col-12">
+                    <div class="form-group">
+                        <label>Project subject</label>
+                        <input type="text" formControlName="ProjectName" class="form-control" placeholder="Project name" />
+                    </div>
+                </div>
+                <div class="col-12">
+                    <div class="form-group">
+                        <label>Start date</label>
+                        <input type="date" formControlName="StartDate" class="form-control" placeholder="Start date" />
+                    </div>
+                </div>
+                <div class="col-12">
+                    <div class="form-group">
+                        <label>End date</label>
+                        <input type="date" formControlName="EndDate" class="form-control" placeholder="End date" />
+                    </div>
+                </div>
+                <div class="col-12">
+                    <div class="form-group">
+                        <label>Select Employee</label>
+                        <select class="form-control" formControlName="ApplicationUserId">
+                            <option value="0">--Select--</option>
+                            <option *ngFor="let user of userService.userList" value="{{user.id}}">{{user.fullName}}</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button type="submit" class="btn btn-success">Save</button>
+        </div>
+    </form>
+  </ng-template>
+
+

@@ -13,11 +13,11 @@
         </thead>
         <tbody>
             <tr *ngFor="let lv of leaveHolderService.leaveHolderList">
-                <td>{{ lv.leave.employee.firstName }} {{ lv.leave.employee.lastName }}</td>
-                <td>{{ lv.leave.startDate }}</td>
-                <td>{{ lv.leave.endDate }}</td>
-                <td>{{ lv.employee.firstName }} {{ lv.employee.lastName }}</td>
-                <td>{{ lv.createdDate}}</td>
+                <td>{{ lv.leave.applicationUser.fullName }}</td>
+                <td>{{ lv.leave.startDate | date}}</td>
+                <td>{{ lv.leave.endDate | date}}</td>
+                <td>{{ lv.applicationUser.fullName }}</td>
+                <td>{{ lv.createdDate | date:'medium'}}</td>
                 <td><button class="btn btn-sm btn-success" (click)="editData(content,lv)">Edit</button> | <button class="btn btn-sm btn-danger" (click)="onDelete(lv.id)">Delete</button></td>
             </tr>
         </tbody>
@@ -41,18 +41,18 @@
                                 <label>Select Employee on leave</label>
                                 <select class="form-control" formControlName="LeaveId">
                                     <option value="0">--Select--</option>
-                                    <option *ngFor="let lv of leaveService.leaveList" value="{{lv.id}}">{{lv.employee.firstName}} {{lv.employee.lastName}} ({{ lv.startDate}} - {{ lv.endDate }})</option>
+                                    <option *ngFor="let lv of leaveService.leaveList" value="{{lv.id}}">{{ lv.applicationUser.fullName }} ({{ lv.startDate | date}} - {{ lv.endDate | date }})</option>
                                 </select>
                             </div>
                         </div>
                         <div class="col-12">
                             <div class="form-group">
-                                <label>Placeholder employee</label>
-                                <select class="form-control" formControlName="EmployeeId">
+                                <label>Select Employee</label>
+                                <select class="form-control" formControlName="ApplicationUserId">
                                     <option value="0">--Select--</option>
-                                    <option *ngFor="let emp of employeesService.employeesList" value="{{emp.employeeId}}">{{emp.employeeId}} ({{emp.firstName}} {{emp.lastName}})</option>
+                                    <option *ngFor="let user of userService.userList" value="{{user.id}}">{{user.fullName}}</option>
                                 </select>
-                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>

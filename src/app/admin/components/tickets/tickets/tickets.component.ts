@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { TicketsService, EmployeesService } from 'src/app/shared/employees.service';
+import { TicketsService, EmployeesService, ApplicationUserService } from 'src/app/shared/employees.service';
 import { Tickets } from 'src/app/shared/employees.model';
 import { NgForm, FormBuilder } from '@angular/forms';
 import {NgbModal, ModalDismissReasons} from '@ng-bootstrap/ng-bootstrap';
@@ -22,7 +22,7 @@ export class TicketsComponent implements OnInit {
   formData : Tickets;
   ticketsList : Tickets[];
   closeResult: string;
-  constructor(private ticketsService : TicketsService,private toastr : ToastrService,private modalService: NgbModal,private employeesService : EmployeesService,private fb : FormBuilder,private http : HttpClient) { }
+  constructor(private ticketsService : TicketsService,private toastr : ToastrService,private modalService: NgbModal,private userService : ApplicationUserService,private fb : FormBuilder,private http : HttpClient) { }
   ticketsForm = this.fb.group({
     Id : [0],
     ApplicationUserId : ['']
@@ -30,7 +30,7 @@ export class TicketsComponent implements OnInit {
   ngOnInit() {
     // this.resetForm();
     this.ticketsService.getTickets();
-    this.employeesService.getEmployee();
+    this.userService.getUsers();
   }
   //RESET FORM
   // resetForm(form? : NgForm){
@@ -44,32 +44,38 @@ export class TicketsComponent implements OnInit {
   // }
   //SUBMIT FORM DATA
   onSubmit(form: NgForm){
+    var id 
+    if(this.ticketsForm.value.Id == null){
+      id = 0;
+    }else{
+      id = this.ticketsForm.value.Id
+    }
     var body = {
-      Id : this.ticketsForm.value.Id,
+      Id : id,
       ApplicationUserId:this.ticketsForm.value.ApplicationUserId,
     }
     // this.insertRecord(form);
-    if(this.ticketsForm.value.Id == 0){
-      this.http.post(environment.rootApi+'/tickets',body).subscribe(res=>{
-        this.toastr.success('Record inserted successfully','Tickets Records');
-        this.ticketsService.getTickets();
-        this.ticketsForm.reset();
-        this.modalService.dismissAll();
-      })
-    }else{
+    if(this.ticketsForm.value.Id > 0){
       this.http.put(environment.rootApi+'/tickets/'+this.ticketsForm.value.Id,body).subscribe(res=>{
         this.toastr.info('Record updated successfully','Tickets Records');
         this.ticketsService.getTickets();
         this.ticketsForm.reset();
         this.modalService.dismissAll();
       })
+    }else{
+      this.http.post(environment.rootApi+'/tickets',body).subscribe(res=>{
+        this.toastr.success('Record inserted successfully','Tickets Records');
+        this.ticketsService.getTickets();
+        this.ticketsForm.reset();
+        this.modalService.dismissAll();
+      }) 
     }
   }
   //POPULATE PROJECTS MODAL
   editData(content,ticket){
     this.ticketsForm.setValue({
       Id : ticket.id,
-      EmployeeId : ticket.employeeId
+      ApplicationUserId : ticket.applicationUserId
     })
     this.openModal(content);
   }
@@ -114,7 +120,7 @@ export class TicketsComponent implements OnInit {
     var ticketList = this.ticketsService.ticketsList;
     ticketList.forEach(data);
     function data(key,value){
-      tableData.push([key.id,key.employee.firstName+' '+key.employee.lastName,key.createdDate]); 
+      tableData.push([key.id,key.applicationUser.fullName,key.createdDate]); 
     }
     var dd = {
       pageSize:'A4',

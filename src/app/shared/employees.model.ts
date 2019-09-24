@@ -39,6 +39,13 @@ export class Meetings{
     MeetingDate : string;
     CreatedDate : String;
 }
+//MEETINGS PROGRESS
+export class MeetingProgress{
+    Id : number;
+    MeetingsId : number;
+    MeetingStatus : string;
+    CreatedDate : string;
+}
 //TASKS
 export class Tasks{
     Id : number;
@@ -78,16 +85,15 @@ export class ProjectsProgress{
 //LEAVE MODEL
 export class Leave{
     Id : number;
-    EmployeesId : number;
+    ApplicationUserId : string;
     StartDate : string;
     EndDate : string;
-    PlaceholderId : number;
     CreatedDate : string;
 }
 //LEAVE HOLDER MODEL
 export class LeaveHolder{
     LeaveId : number; 
-    EmployeeId : number;
+    ApplicationUserId : string;
 }
 //TICKETS
 export class Tickets{
