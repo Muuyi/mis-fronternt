@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { MeetingsService } from 'src/app/shared/employees.service';
 
 @Component({
   selector: 'app-meetings-details',
@@ -6,10 +7,10 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./meetings-details.component.scss']
 })
 export class MeetingsDetailsComponent implements OnInit {
-
-  constructor() { }
+  details = [];
+  constructor(private meetingsService : MeetingsService) { }
 
   ngOnInit() {
+    this.meetingsService.share.subscribe(x => this.details = x);
   }
-
 }

@@ -1,1 +1,13 @@
-<p>meetings-progress-details works!</p>
+{{ details | json }}
+
+<div class="alert alert-success">
+    <h3>{{ details.meetings.subject }}</h3>
+    <h6>Status : {{ details.meetingStatus }}</h6>
+</div>
+<div class="row">
+    <div class="col-7">
+    </div>
+    <div class="col-5 alert alert-secondary">
+        {{ meetings | json }}
+    </div>
+</div>

@@ -34,6 +34,9 @@ export class MeetingsComponent implements OnInit {
     //GET MEETINGS
     this.meetingsService.getMeetings();
   }
+  updateDetailsContent(data){
+    this.meetingsService.meetingsDetails(data);
+  }
   //RESET FORM
   // resetForm(form? : NgForm){
   //   if(form != null)

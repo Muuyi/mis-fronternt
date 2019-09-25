@@ -23,6 +23,7 @@ import { LeavelistComponent } from './admin/components/leave/leavelist/leavelist
 import { MeetingsAttendanceComponent } from './admin/components/meetings/meetings-attendance/meetings-attendance.component';
 import { MeetingsProgressComponent } from './admin/components/meetings/meetings-progress/meetings-progress.component';
 import { MeetingsDetailsComponent } from './admin/components/meetings/meetings-details/meetings-details.component';
+import { MeetingsProgressDetailsComponent } from './admin/components/meetings/meetings-progress/meetings-progress-details/meetings-progress-details.component';
 
 
 const routes: Routes = [
@@ -39,6 +40,7 @@ const routes: Routes = [
       {path:'meetings-attendance',component:MeetingsAttendanceComponent},
       {path:'meeting-progress',component:MeetingsProgressComponent},
       {path:'meetings/meeting-details',component:MeetingsDetailsComponent},
+      {path:'meeting-progress/meeting-progress-details',component:MeetingsProgressDetailsComponent},
       {path:'tasks',component:TasksListComponent},
       {path:'tasks-progress',component:TasksProgressComponent},
       {path:'projects',component:ProjectsComponent},

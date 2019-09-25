@@ -16,7 +16,7 @@
                 <td>{{ meeting.meetingDate | date }}</td>
                 <td>{{ meeting.meetingTime | date:'shortTime' }}</td>
                 <td>{{ meeting.createdDate | date:'medium'}}</td>
-                <td><a routerLink="meeting-details"><button class="btn btn-info btn-sm"><i class="material-icons">unfold_more</i></button></a> | <button class="btn btn-sm btn-success" (click)="editData(content,meeting)"><i class="material-icons">edit</i></button> | <button (click)="onDelete(meeting.id)" class="btn btn-sm btn-danger"><i class="material-icons">delete</i></button></td>
+                <td><a routerLink="meeting-details" (click)="updateDetailsContent(meeting)"><button class="btn btn-info btn-sm"><i class="material-icons">unfold_more</i></button></a> | <button class="btn btn-sm btn-success" (click)="editData(content,meeting)"><i class="material-icons">edit</i></button> | <button (click)="onDelete(meeting.id)" class="btn btn-sm btn-danger"><i class="material-icons">delete</i></button></td>
             </tr>
         </tbody>
     </table> 

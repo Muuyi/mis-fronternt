@@ -24,6 +24,7 @@ export class MeetingsProgressComponent implements OnInit {
     Id : ['0'],
     MeetingsId : [''],
     MeetingStatus : [''],
+    Description : [''],
     ProjectName:[''],
     StartDate : [''],
     EndDate : [''],
@@ -45,13 +46,18 @@ export class MeetingsProgressComponent implements OnInit {
     var body = {
       Id : parseInt(id),
       MeetingsId:this.progressForm.value.MeetingsId,
-      MeetingStatus : this.progressForm.value.MeetingStatus
+      MeetingStatus : this.progressForm.value.MeetingStatus,
+      Description : this.progressForm.value.Description,
     }
     var projectForm = {
       ProjectName : this.progressForm.value.ProjectName,
       StartDate : this.progressForm.value.StartDate,
       EndDate : this.progressForm.value.EndDate,
       ApplicationUserId :this.progressForm.value.ApplicationUserId 
+    }
+    var historyBody = {
+      MeetingsId:this.progressForm.value.MeetingsId,
+      MeetingStatus : this.progressForm.value.MeetingStatus
     }
     // this.insertRecord(form);
     if(this.progressForm.value.Id > 0){
@@ -78,15 +84,30 @@ export class MeetingsProgressComponent implements OnInit {
         // this.modalService.dismissAll();
       }) 
     }
+    this.http.post(environment.rootApi+'/meetingsProgressHistory',historyBody).subscribe(); 
   }
   //POPULATE PROJECTS MODAL
   editData(content,meet){
     this.progressForm.patchValue({
       Id : meet.id,
       MeetingsId : meet.meetingsId,
-      MeetingStatus : meet.meetingStatus
+      MeetingStatus : meet.meetingStatus,
+      Description : meet.description
     })
     this.openModal(content);
+  }
+  //MEETINGS PROGRESS DETAILS
+  updateDetailsContent(data,id){
+    this.progressService.meetingsProgressDetails(data,id);
+  }
+  //DELETE PROGRESS
+  onDelete(id:number){
+    if(confirm("Are you sure you want to delete this record?")){
+      this.progressService.deleteMeetingProgress(id).subscribe(res=>{
+        this.progressService.getMeetingProgress();
+        this.toastr.warning('Record deleted successfully!!','Meeting Delete');
+      })
+    }
   }
   //ADD FIELDS
   addFields(){

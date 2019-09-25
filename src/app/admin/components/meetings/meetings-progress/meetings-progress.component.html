@@ -14,7 +14,7 @@
                 <td>{{ meet.meetings.subject}}</td>
                 <td>{{ meet.meetingStatus }}</td>
                 <td>{{ meet.createdDate | date:'medium' }}</td>
-                <td><button class="btn btn-sm btn-success" (click)=editData(content,meet) >Edit</button> | <button (click)="onDelete(meet.id)" class="btn btn-sm btn-danger">Delete</button></td>
+                <td><a routerLink="meeting-progress-details" (click)="updateDetailsContent(meet,meet.meetingsId)"><button class="btn btn-info btn-sm"><i class="material-icons">unfold_more</i></button></a> | <button class="btn btn-sm btn-success" (click)=editData(content,meet) ><i class="material-icons">edit</i></button> | <button (click)="onDelete(meet.id)" class="btn btn-sm btn-danger"><i class="material-icons">delete</i></button></td>
             </tr>
         </tbody>
     </table>
@@ -53,6 +53,13 @@
                         </select>
                     </div>
                 </div>
+                <div class="col-12">
+                        <div class="form-group">
+                            <label>Meeting progress description</label>
+                            <!-- <input type="text" formControlName="Description" class="form-control" placeholder="Meeting description" /> -->
+                            <textarea class="form-control" formControlName="Description"></textarea>
+                        </div>
+                    </div>
             </div>
             <div [class.hiddenFields]="displayProjectForm">
                 <div class="col-12">

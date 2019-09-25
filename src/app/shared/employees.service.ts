@@ -3,6 +3,7 @@ import { Employees,Departments,Customers, Meetings, Tasks, Projects, Leave, Tick
 import { HttpClient, HttpHeaders } from "@angular/common/http";
 import { environment } from 'src/environments/environment';
 import { FormBuilder, Validators, FormGroup} from '@angular/forms';
+import { BehaviorSubject } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -88,8 +89,13 @@ export class CustomersService{
 export class MeetingsService{
   meetingsData : Meetings;
   meetingsList : Meetings[];
+  private content = new BehaviorSubject<any>([]);
+  public share = this.content.asObservable();
   constructor (private http : HttpClient){
 
+  }
+  meetingsDetails(data){
+    this.content.next(data);
   }
   //GET CUSTOMERS LIST
   getMeetings(){
@@ -113,8 +119,20 @@ export class MeetingsAttendanceService{
 //////////////////////////////////////////////MEETING PROGESS SERVICE//////////////
 export class MeetingProgressService{
   meetingProgressList : MeetingProgress[];
+  private content = new BehaviorSubject<any>([]);
+  public share = this.content.asObservable();
+  public meetingsId
   constructor (private http : HttpClient){
 
+  }
+  //MEETINGS PROGRESS
+  meetingsProgressDetails(data,id){
+    this.content.next(data);
+    this.meetingsId = id;
+  }
+  getMeetings(){
+    return this.http.get(environment.rootApi+'/meetingsProgressHistory/'+this.meetingsId).toPromise()
+    // .then(res=>this.meetingsList = res as Meetings[]);
   }
   //GET MEETINGS PROGRESSS
   getMeetingProgress(){
