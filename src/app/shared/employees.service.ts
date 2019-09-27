@@ -151,12 +151,32 @@ export class MeetingDetailsService{
 export class TasksService{
   tasksData : Tasks;
   tasksList : Tasks[];
-  constructor (private http : HttpClient){
+  private content = new BehaviorSubject<any>([]);
+  public share = this.content.asObservable();
+  constructor (private http : HttpClient,private fb : FormBuilder){
 
   }
   //GET TASKS LIST
   getTasks(){
     return this.http.get(environment.rootApi+'/tasks').toPromise().then(res=>this.tasksList = res as Tasks[]);
+  }
+  //GET TASKS PROGRESS DETAILS
+  taskDetails(data){
+    this.content.next(data);
+  }
+  taskDetailForm = this.fb.group({
+      ApplicationUserId :[''],
+      Metric :[''],
+      Status : ['']
+  })
+  //FILL FORM DETAILS
+  formDetails(id,metric,status){
+    this.taskDetailForm.setValue({
+      ApplicationUserId:id,
+      Metric:metric,
+      Status : status
+    })
+    console.log(id +' '+metric +' '+status);
   }
   //POST TASKS LISTS
   // postTasks(formData : Tasks){

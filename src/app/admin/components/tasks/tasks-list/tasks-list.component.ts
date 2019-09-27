@@ -48,6 +48,11 @@ export class TasksListComponent implements OnInit {
   //       EmployeesId : null
   //     }
   //   }
+  //LIST COMPONENT LIST
+  updateDetailsContent(task,id,metric,status){
+    this.tasksService.taskDetails(task);
+    this.tasksService.formDetails(id,metric,status);
+  }
   //SUBMIT FORM
   onSubmit(){
     var id 

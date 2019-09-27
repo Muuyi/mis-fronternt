@@ -20,7 +20,8 @@
                 <td>{{ task.endDate | date}}</td>
                 <td>{{ task.applicationUser.fullName }}</td>
                 <td>{{ task.createdDate | date }}</td>
-                <td><button class="btn btn-sm btn-success" (click)=editData(content,task)>Edit</button> | <button class="btn btn-sm btn-danger" (click)="onDelete(task.id)">Delete</button></td>
+                <!-- <a routerLink="tasks-list-details" (click)="updateDetailsContent(task)"><button class="btn btn-info btn-sm"><i class="material-icons">unfold_more</i></button></a>  -->
+                <td><a routerLink="tasks-list-details" (click)="updateDetailsContent(task,task.applicationUserId,task.metric,task.status)"><button class="btn btn-info btn-sm"><i class="material-icons">unfold_more</i></button></a> |<button class="btn btn-sm btn-success" (click)=editData(content,task)><i class="material-icons">edit</i></button> | <button class="btn btn-sm btn-danger" (click)="onDelete(task.id)"><i class="material-icons">delete</i></button></td>
             </tr>
         </tbody>
     </table> 

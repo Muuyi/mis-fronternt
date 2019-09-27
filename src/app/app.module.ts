@@ -38,6 +38,7 @@ import { MeetingsDetailsComponent } from './admin/components/meetings/meetings-d
 import { MeetingsProgressDetailsComponent } from './admin/components/meetings/meetings-progress/meetings-progress-details/meetings-progress-details.component';
 import { ProjectsProgressDetailsComponent } from './admin/components/projects/projects-progress/projects-progress-details/projects-progress-details.component';
 import { TicketsProgressDetailsComponent } from './admin/components/tickets/tickets-progress/tickets-progress-details/tickets-progress-details.component';
+import { TasksListDetailsComponent } from './admin/components/tasks/tasks-list/tasks-list-details/tasks-list-details.component';
 
 @NgModule({
   declarations: [
@@ -58,7 +59,8 @@ import { TicketsProgressDetailsComponent } from './admin/components/tickets/tick
     MeetingsDetailsComponent,
     MeetingsProgressDetailsComponent,
     ProjectsProgressDetailsComponent,
-    TicketsProgressDetailsComponent
+    TicketsProgressDetailsComponent,
+    TasksListDetailsComponent
   ],
   imports: [
     BrowserModule,

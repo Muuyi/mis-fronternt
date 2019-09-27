@@ -1,0 +1,47 @@
+{{ details | json }}
+<div class="alert alert-success">
+    <h3>{{ details.taskSubject }}</h3>
+    <h6>{{ details.startDate | date:'full'}} - {{ details.endDate | date:'full' }}</h6>
+</div>
+<div class="row">
+    <div class="col-sm-8">
+        <form [formGroup]="tasksService.taskDetailForm">
+            <div class="alert alert-warning">
+                <h3>Edit task</h3>
+                <div class="form-group">
+                    <label>Reasign task</label>
+                    <select class="form-control" formControlName="ApplicationUserId">
+                        <option value="0">--Select--</option>
+                        <option *ngFor="let user of userService.userList" value="{{user.id}}">{{user.fullName}}</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Progress Metric</label>
+                    <mat-slider thumbLabel [displayWith]="formatLabel" formControlName="Metric" tickInterval="1" min="1"  max="100" class="form-control"></mat-slider>
+                </div>
+                <div class="form-group">
+                    <label>Select status</label>
+                    <select class="form-control" formControlName="Status">
+                        <option value="">--Select--</option>
+                        <option value="started">Started</option>
+                        <option value="progress">In progress</option>
+                        <option value="completed">Completed</option>
+                        <option value="postponed">Postponed</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <input type="submit" class="btn btn-success form-control" value="Submit changes" />
+                </div>
+            </div>
+        </form>
+    </div>
+    <div class="col-sm-4 alert alert-secondary" >
+        <h2 style="font-weight:bolder;">Progress History</h2>
+        <div *ngFor="let t of details.tasksProgress" style="border-bottom:2px solid #808080;">
+            <h4><b>Status: </b>{{t.status}}</h4>
+            <small>{{ t.createdDate | date:'full' }}</small>
+            <ngb-progressbar type="danger" [value]=" t.metric ">{{ t.metric }}%</ngb-progressbar>
+            <p>{{ t.comments }}</p>
+        </div>
+    </div>
+</div>

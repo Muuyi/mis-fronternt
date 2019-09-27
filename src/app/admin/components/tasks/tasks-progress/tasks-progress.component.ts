@@ -73,6 +73,11 @@ export class TasksProgressComponent implements OnInit {
       Status : this.progressForm.value.Status,
       Metric : this.progressForm.value.Metric
     }
+    var tasksForm = {
+      Id : this.progressForm.value.TasksId,
+      Status : this.progressForm.value.Status,
+      Metric : this.progressForm.value.Metric
+    }
     // this.insertRecord(form);
     if(this.progressForm.value.Id == 0){
       this.http.post(environment.rootApi+'/tasksProgress',body).subscribe(res=>{
@@ -89,6 +94,8 @@ export class TasksProgressComponent implements OnInit {
         this.modalService.dismissAll();
       })
     }
+    this.http.patch(environment.rootApi+'/tasks/'+this.progressForm.value.TasksId,tasksForm).subscribe();
+    console.log(tasksForm +' - '+this.progressForm.value.TasksId)
   }
   //TASKS PROGRESS
   //POPULATE TASKS RECORDS

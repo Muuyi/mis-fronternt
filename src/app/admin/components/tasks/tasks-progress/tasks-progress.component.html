@@ -12,7 +12,7 @@
         </thead>
         <tbody>
             <tr *ngFor="let tasks of tasksProgresService.tasksProgressList;let i=index;">
-                <td>{{ tasks.tasks.taskSubject }}</td>
+                <td>{{ tasks.taskSubject }}</td>
                 <td>{{ tasks.status }}</td>
                 <td><ngb-progressbar type="danger" [value]=" tasks.metric ">{{tasks.metric}}%</ngb-progressbar></td>
                 <td>{{ tasks.createdDate | date }}</td>

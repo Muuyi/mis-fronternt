@@ -24,6 +24,7 @@ import { MeetingsAttendanceComponent } from './admin/components/meetings/meeting
 import { MeetingsProgressComponent } from './admin/components/meetings/meetings-progress/meetings-progress.component';
 import { MeetingsDetailsComponent } from './admin/components/meetings/meetings-details/meetings-details.component';
 import { MeetingsProgressDetailsComponent } from './admin/components/meetings/meetings-progress/meetings-progress-details/meetings-progress-details.component';
+import { TasksListDetailsComponent } from './admin/components/tasks/tasks-list/tasks-list-details/tasks-list-details.component';
 
 
 const routes: Routes = [
@@ -42,6 +43,7 @@ const routes: Routes = [
       {path:'meetings/meeting-details',component:MeetingsDetailsComponent},
       {path:'meeting-progress/meeting-progress-details',component:MeetingsProgressDetailsComponent},
       {path:'tasks',component:TasksListComponent},
+      {path:'tasks/tasks-list-details',component:TasksListDetailsComponent},
       {path:'tasks-progress',component:TasksProgressComponent},
       {path:'projects',component:ProjectsComponent},
       {path:'projects-progress',component:ProjectsProgressComponent},
@@ -63,4 +65,4 @@ const routes: Routes = [
   exports: [RouterModule]
 })
 export class AppRoutingModule { }
-export const routingComponents = [LoginComponent,AdminComponent,PersonalDetailsComponent,ChangePasswordComponent,EmployeesListComponent,SystemUsersComponent,PageNotFoundComponent,CustomersListComponent,MeetingsComponent,MeetingsProgressComponent,TasksListComponent,ProjectsComponent,LeaveComponent,LeavelistComponent,TicketsComponent,TicketsProgressComponent,MeetingsDetailsComponent]
+export const routingComponents = [LoginComponent,AdminComponent,PersonalDetailsComponent,ChangePasswordComponent,EmployeesListComponent,SystemUsersComponent,PageNotFoundComponent,CustomersListComponent,MeetingsComponent,MeetingsProgressComponent,TasksListComponent,ProjectsComponent,LeaveComponent,LeavelistComponent,TicketsComponent,TicketsProgressComponent,MeetingsDetailsComponent,TasksListDetailsComponent]

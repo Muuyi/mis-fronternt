@@ -5,9 +5,13 @@
     <h6>Status : {{ details.meetingStatus }}</h6>
 </div>
 <div class="row">
-    <div class="col-7">
+    <div class="col-7 alert alert-light">
+        {{ details.meetings.description }}
     </div>
     <div class="col-5 alert alert-secondary">
-        {{ meetings | json }}
+        <h2>Meetings History</h2>
+        <div *ngFor="let mt of details.meetings.meetingsProgressHistory">
+            <b>{{ mt.meetingStatus}}</b> : {{ mt.createdDate | date:'short'}}
+        </div>
     </div>
 </div>
