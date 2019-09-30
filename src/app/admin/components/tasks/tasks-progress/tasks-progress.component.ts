@@ -79,23 +79,23 @@ export class TasksProgressComponent implements OnInit {
       Metric : this.progressForm.value.Metric
     }
     // this.insertRecord(form);
-    if(this.progressForm.value.Id == 0){
-      this.http.post(environment.rootApi+'/tasksProgress',body).subscribe(res=>{
-        this.toastr.success('Record inserted successfully','Tasks Progress Records');
-        this.tasksProgresService.getTasksProgress();
-        this.progressForm.reset();
-        this.modalService.dismissAll();
-      })
-    }else{
+    if(this.progressForm.value.Id > 0){
       this.http.put(environment.rootApi+'/tasksProgress/'+this.progressForm.value.Id,body).subscribe(res=>{
         this.toastr.info('Record updated successfully','Tasks Progress records');
         this.tasksProgresService.getTasksProgress();
         this.progressForm.reset();
         this.modalService.dismissAll();
       })
+    }else{
+      this.http.post(environment.rootApi+'/tasksProgress',body).subscribe(res=>{
+        this.toastr.success('Record inserted successfully','Tasks Progress Records');
+        this.tasksProgresService.getTasksProgress();
+        this.progressForm.reset();
+        this.modalService.dismissAll();
+      })   
     }
     this.http.patch(environment.rootApi+'/tasks/'+this.progressForm.value.TasksId,tasksForm).subscribe();
-    console.log(tasksForm +' - '+this.progressForm.value.TasksId)
+    // console.log(tasksForm +' - '+this.progressForm.value.TasksId)
   }
   //TASKS PROGRESS
   //POPULATE TASKS RECORDS

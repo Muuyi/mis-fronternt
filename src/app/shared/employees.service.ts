@@ -165,18 +165,33 @@ export class TasksService{
     this.content.next(data);
   }
   taskDetailForm = this.fb.group({
+      Id:[''],
+      TasksId : [''],
+      TaskSubject :[''],
+      Description : [''],
+      StartDate : [''],
+      EndDate : [''],
       ApplicationUserId :[''],
       Metric :[''],
-      Status : ['']
+      Status : [''],
+      Comments : [''],
+      CreatedDate : ['']
   })
   //FILL FORM DETAILS
-  formDetails(id,metric,status){
-    this.taskDetailForm.setValue({
-      ApplicationUserId:id,
-      Metric:metric,
-      Status : status
+  formDetails(task){
+    this.taskDetailForm.patchValue({
+      Id:task.id,
+      TaskSubject :task.taskSubject,
+      Description : task.description,
+      StartDate : task.startDate,
+      EndDate : task.endDate,
+      ApplicationUserId:task.applicationUserId,
+      Metric:task.metric,
+      Status : task.status,
+      CreatedDate : task.createdDate,
+      Comments : task.comments,
+      TasksId:task.id
     })
-    console.log(id +' '+metric +' '+status);
   }
   //POST TASKS LISTS
   // postTasks(formData : Tasks){
@@ -210,12 +225,24 @@ export class TasksProgressService {
 export class ProjectsService{
   projectData : Projects;
   projectsList : Projects[];
-  constructor (private http : HttpClient){
+  private content = new BehaviorSubject<any>([]);
+  public share = this.content.asObservable();
+  constructor (private http : HttpClient, private fb : FormBuilder){
 
   }
+  //PROJECTS DETAILS FORM
+  projectDetailForm = this.fb.group({
+    ApplicationUserId :[''],
+    Metric :[''],
+    Status : ['']
+})
   //GET CUSTOMERS LIST
   getProjects(){
     return this.http.get(environment.rootApi+'/projects').toPromise().then(res=>this.projectsList = res as Projects[]);
+  }
+  //PROJECT DETAILS
+  projectDetails(proj){
+    this.content.next(proj);
   }
   //POST CUSTOMERS
   // postProject(formData : Projects){

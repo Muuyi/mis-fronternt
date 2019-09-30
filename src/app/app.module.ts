@@ -36,7 +36,7 @@ import { MatSliderModule } from '@angular/material';
 import { MeetingsProgressComponent } from './admin/components/meetings/meetings-progress/meetings-progress.component';
 import { MeetingsDetailsComponent } from './admin/components/meetings/meetings-details/meetings-details.component';
 import { MeetingsProgressDetailsComponent } from './admin/components/meetings/meetings-progress/meetings-progress-details/meetings-progress-details.component';
-import { ProjectsProgressDetailsComponent } from './admin/components/projects/projects-progress/projects-progress-details/projects-progress-details.component';
+import { ProjectsProgressDetailsComponent } from './admin/components/projects/projects/projects-progress-details/projects-progress-details.component';
 import { TicketsProgressDetailsComponent } from './admin/components/tickets/tickets-progress/tickets-progress-details/tickets-progress-details.component';
 import { TasksListDetailsComponent } from './admin/components/tasks/tasks-list/tasks-list-details/tasks-list-details.component';
 

@@ -49,7 +49,7 @@ export class ProjectsComponent implements OnInit {
      
   //   }
   //SUBMIT FORM
-  onSubmit(form : NgForm){
+  onSubmit(){
     var id 
     if(this.projectsForm.value.Id == null){
       id = 0;
@@ -91,6 +91,10 @@ export class ProjectsComponent implements OnInit {
       ApplicationUserId : proj.applicationUserId
     })
     this.openModal(content);
+  }
+  /////UPDATE DETAILS CONTENT
+  updateDetailsContent(proj){
+    this.projectService.projectDetails(proj);
   }
   //INSERT RECORD
   // insertRecord(form : NgForm){

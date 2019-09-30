@@ -49,9 +49,9 @@ export class TasksListComponent implements OnInit {
   //     }
   //   }
   //LIST COMPONENT LIST
-  updateDetailsContent(task,id,metric,status){
+  updateDetailsContent(task){
     this.tasksService.taskDetails(task);
-    this.tasksService.formDetails(id,metric,status);
+    this.tasksService.formDetails(task);
   }
   //SUBMIT FORM
   onSubmit(){
