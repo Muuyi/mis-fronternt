@@ -48,8 +48,6 @@ export class TasksListDetailsComponent implements OnInit {
       ApplicationUserId :this.tasksService.taskDetailForm.value.ApplicationUserId,
       Comments : this.tasksService.taskDetailForm.value.Comments
     }
-    console.log(body);
-    console.log(progressForm);
     this.http.post(environment.rootApi+'/tasksProgress',progressForm).subscribe(res=>{
       this.http.put(environment.rootApi+'/tasks/'+this.tasksService.taskDetailForm.value.Id,body).subscribe(res=>{
         this.toastr.info('Record updated successfully','Tasks Progress records');

@@ -234,7 +234,12 @@ export class ProjectsService{
   projectDetailForm = this.fb.group({
     ApplicationUserId :[''],
     Metric :[''],
-    Status : ['']
+    Id : [0],
+    ProjectName : [''],
+    StartDate : [''],
+    EndDate : [''],
+    ProjectsId : [''],
+    Comments : ['']
 })
   //GET CUSTOMERS LIST
   getProjects(){
@@ -243,6 +248,19 @@ export class ProjectsService{
   //PROJECT DETAILS
   projectDetails(proj){
     this.content.next(proj);
+  }
+  //PROJECT DETAILS FORM DATA
+  formDetails(proj){
+    this.projectDetailForm.patchValue({
+      ApplicationUserId :proj.applicationUserId,
+      Metric :proj.metric,
+      Id : proj.id,
+      ProjectName : proj.projectName,
+      StartDate : proj.startDate,
+      EndDate : proj.endDate,
+      ProjectsId : proj.projectsId,
+      Comments : proj.comments
+    })
   }
   //POST CUSTOMERS
   // postProject(formData : Projects){

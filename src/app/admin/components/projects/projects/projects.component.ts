@@ -95,6 +95,7 @@ export class ProjectsComponent implements OnInit {
   /////UPDATE DETAILS CONTENT
   updateDetailsContent(proj){
     this.projectService.projectDetails(proj);
+    this.projectService.formDetails(proj);
   }
   //INSERT RECORD
   // insertRecord(form : NgForm){

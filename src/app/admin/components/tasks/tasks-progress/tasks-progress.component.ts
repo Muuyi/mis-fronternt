@@ -157,7 +157,8 @@ export class TasksProgressComponent implements OnInit {
     var tasksProgressList = this.tasksProgresService.tasksProgressList;
     tasksProgressList.forEach(data);
     function data(key,value){
-      tableData.push([key.id,key.tasks.taskSubject,key.metric+'%',key.comments,key.status,key.createdDate]); 
+      console.log(key);
+      tableData.push([key.id,key.taskSubject,key.metric+'%',key.description,key.status,key.createdDate]); 
     }
     var dd = {
       pageSize:'A4',

@@ -142,7 +142,7 @@ export class ProjectsProgressComponent implements OnInit {
     var projectList = this.projectsProgressService.projectsProgressList;
     projectList.forEach(data);
     function data(key,value){
-      tableData.push([key.id,key.projects.projectName,key.metric+'%',key.comments,key.createdDate]); 
+      tableData.push([key.id,key.projects.projectName,key.metric+'%',key.description,key.createdDate]); 
     }
     var dd = {
       pageSize:'A4',
