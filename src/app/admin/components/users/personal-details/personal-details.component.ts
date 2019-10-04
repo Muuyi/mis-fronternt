@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { NgForm } from '@angular/forms';
-import { ApplicationUserService } from 'src/app/shared/employees.service';
+import { ApplicationUserService, DepartmentsService } from 'src/app/shared/employees.service';
 
 @Component({
   selector: 'app-personal-details',
@@ -14,9 +14,10 @@ export class PersonalDetailsComponent implements OnInit {
     UserName : '',
     Email : ''
   }
-  constructor(private usersService : ApplicationUserService) { }
+  constructor(private usersService : ApplicationUserService,private departmentService : DepartmentsService ) { }
 
   ngOnInit() {
+    this.departmentService.getDepartments();
     //GET USER DATA
     this.usersService.getUserProfile().subscribe(
       res => {

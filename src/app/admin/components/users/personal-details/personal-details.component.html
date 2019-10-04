@@ -15,6 +15,17 @@
                 <input #Email="ngModel" name="Email" [(ngModel)]="formData.Email" class="form-control" required/>
             </div>
             <div class="form-group">
+                <label>Phone</label>
+                <input #Phone="ngModel" name="Phone" [(ngModel)]="formData.Phone" class="form-control" required/>
+            </div>
+                <div class="form-group">
+                    <label>Department</label>
+                    <select class="form-control" formControlName="DepartmentId">
+                        <option value="0">--Select--</option>
+                        <option *ngFor="let dep of departmentService.departmentsList" value="{{dep.departmentId}}">{{dep.departmentName}}</option>
+                    </select>
+                </div>
+            <div class="form-group">
                 <button type="submit" class="btn btn-success form-control">Update personal details</button>
             </div>
         </form>
