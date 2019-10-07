@@ -371,6 +371,8 @@ export class TicketsProgressService{
 ///////////////////////////////////////////APPLICATION USER SERVICE///////////////////////////
 export class ApplicationUserService{
   userList : ApplicationUser[];
+  imageUrl : string = "assets/images/profile.png";
+  fileToUpload : File=null;
   constructor (private fb: FormBuilder,private http : HttpClient){
 
   }
@@ -421,8 +423,17 @@ export class ApplicationUserService{
   }
   //GET USER DATA
   getUserProfile(){
-    // var tokenHeader = new HttpHeaders({'Authorization':'Bearer '+localStorage.getItem('token')})
-    return this.http.get(environment.rootApi+'/UserProfile')
+    var tokenHeader = new HttpHeaders({'Authorization':'Bearer '+localStorage.getItem('token')})
+    return this.http.get(environment.rootApi+'/UserProfile',{headers:tokenHeader})
+  }
+  //UPLOAD IMAGE
+  uploadImage(file : FileList){
+    this.fileToUpload = file.item(0);
+    var reader = new FileReader();
+    reader.onload = (event:any) => {
+      this.imageUrl = event.target.result;
+    }
+    reader.readAsDataURL(this.fileToUpload);
   }
 }
 

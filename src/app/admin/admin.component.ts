@@ -10,6 +10,7 @@ import { ApplicationUserService } from '../shared/employees.service';
 })
 export class AdminComponent implements OnInit {
   userDetails;
+  imageUrl : string = "assets/images/profile.png";
   constructor(private router : Router, private userService : ApplicationUserService) { }
 
   ngOnInit() {

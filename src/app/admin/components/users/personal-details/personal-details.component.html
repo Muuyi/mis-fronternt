@@ -1,22 +1,27 @@
 <div class="alert alert-success"><h3>Edit personal details</h3></div>
 <div class="row">
     <div class="col">
-        <form #form="ngForm" (submit)="onSubmiy">
+        <div>
+            <h5>Update profile picture</h5>
+            <img [src]="usersService.imageUrl" class="img-responsive" width="100px" height="100px" />
+            <input type="file" (change)="usersService.uploadImage($event.target.files)"/>
+        </div>
+        <form [formGroup]="profileForm" (submit)="onSubmiy">
             <div class="form-group">
                 <label>Full name</label>
-                <input #FullName="ngModel" name="FullName" [(ngModel)]="formData.FullName" class="form-control" required/>
+                <input formControlName="FullName" class="form-control" required/>
             </div>
             <div class="form-group">
                 <label>Username</label>
-                <input #Username="ngModel" name="Username" [(ngModel)]="formData.Username" class="form-control" required/>
+                <input formControlName="UserName" class="form-control" required/>
             </div>
             <div class="form-group">
                 <label>Email</label>
-                <input #Email="ngModel" name="Email" [(ngModel)]="formData.Email" class="form-control" required/>
+                <input formControlName="Email" class="form-control" required/>
             </div>
             <div class="form-group">
-                <label>Phone</label>
-                <input #Phone="ngModel" name="Phone" [(ngModel)]="formData.Phone" class="form-control" required/>
+                <label>Phone number</label>
+                <input formControlName="PhoneNumber" class="form-control" required/>
             </div>
                 <div class="form-group">
                     <label>Department</label>
