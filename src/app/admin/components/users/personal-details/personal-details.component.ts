@@ -17,6 +17,10 @@ export class PersonalDetailsComponent implements OnInit {
     PhoneNumber: [''],
     DepartmentId:['']
   })
+  imageForm = this.fb.group({
+    Id:[''],
+    ImageName:['']
+  })
   ngOnInit() {
     this.departmentService.getDepartments();
     //GET USER DATA

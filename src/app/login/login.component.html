@@ -6,7 +6,7 @@
             <div class="input-group mb-3">
                 <i class="fab fa-accessible-icon"></i>
                 <div class="input-group-prepend">
-                    <span class="input-group-text" id="basic-addon1"><i class="fas fa-user"></i></span>
+                    <span class="input-group-text" id="basic-addon1"><i class="material-icons">account_circle</i></span>
                 </div>
                 <input #UserName="ngModel" name="UserName" [(ngModel)]="user.UserName" class="form-control" placeholder="Username" required>
             </div>
@@ -14,11 +14,15 @@
         <div class="form-group col">
             <div class="input-group mb-3">
                 <div class="input-group-prepend">
-                    <span class="input-group-text" id="basic-addon1"><i class="fas fa-user"></i></span>
+                    <span class="input-group-text" id="basic-addon1"><i class="material-icons">vpn_key</i></span>
                 </div>
                 <input type="password" #Password="ngModel" name="Password" [(ngModel)]="user.Password" class="form-control" placeholder="Password" required>
             </div>
         </div>
         <button type="submit" class="btn btn-success form-control" [disabled]="form.invalid">Login</button>
+        <div style="text-align:center;">
+            <i><small><b>Username:</b>admin</small></i><br>
+            <i><small><b>Password:</b>Admin@12345</small></i>
+        </div>
     </form>
 </section>

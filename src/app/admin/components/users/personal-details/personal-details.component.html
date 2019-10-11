@@ -1,11 +1,14 @@
 <div class="alert alert-success"><h3>Edit personal details</h3></div>
 <div class="row">
     <div class="col">
-        <div>
-            <h5>Update profile picture</h5>
-            <img [src]="usersService.imageUrl" class="img-responsive" width="100px" height="100px" />
-            <input type="file" (change)="usersService.uploadImage($event.target.files)"/>
-        </div>
+        <form [formGroup]="imageForm">
+            <input type="hidden" formControlName="Id" />
+            <div>
+                <h5>Update profile picture</h5>
+                <img [src]="usersService.imageUrl" formControlName="ImageName" class="img-responsive" width="100px" height="100px" />
+                <input type="file" (change)="usersService.uploadImage($event.target.files)"/>
+            </div>
+        </form>
         <form [formGroup]="profileForm" (submit)="onSubmiy">
             <div class="form-group">
                 <label>Full name</label>

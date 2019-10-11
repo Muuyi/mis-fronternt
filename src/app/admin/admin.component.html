@@ -12,8 +12,8 @@
             <div id="side-nav">
                 <div id="user-profile">
                     <img [src]="userService.imageUrl" class="img-responsive" width="100px" height="100px" />
-                    <p>{{ userDetails.userName }}</p>
-                </div>
+                    <p *ngIf="userDetails.userName">{{ userDetails.userName }}</p>
+                </div><br>
                 <div id="navigation-body">
                     <ul id="menu">
                         <li><a href="">User accounts<i class="material-icons">expand_more</i></a>
